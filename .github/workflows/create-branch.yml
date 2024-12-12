@@ -1,0 +1,32 @@
+name: Create Branch on Issue Creation
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  create_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Branch for the Issue
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          # 브랜치 이름 처리 (공백, 특수문자 정리)
+          ISSUE_TITLE_CLEAN=$(echo "${ISSUE_TITLE}" | tr ' ' '-' | tr -d '[:punct:]')
+          BRANCH_NAME="feature/#${ISSUE_NUMBER}-${ISSUE_TITLE_CLEAN}"
+
+          echo "Creating branch: $BRANCH_NAME"
+
+          # 'develop' 브랜치를 기준으로 최신 상태 업데이트 후 브랜치 생성
+          git fetch origin develop
+          git checkout develop
+          git pull origin develop
+          git checkout -b "$BRANCH_NAME"
+
+          # 브랜치를 원격 저장소로 푸시
+          git push origin "$BRANCH_NAME"
