@@ -1,4 +1,5 @@
 import Image from 'next/image';
+
 export default function Footer() {
   return (
     <div className="flex justify-around h-24 bg-gray-100 items-center text-base">
@@ -10,17 +11,22 @@ export default function Footer() {
       <div className="flex justify-around gap-2">
         <Image
           src={'/image/envelope-square.svg'}
-          alt=""
+          alt="e-mail"
           width={24}
           height={24}
         />
         <Image
           src={'/image/facebook-square.svg'}
-          alt=""
+          alt="facebook"
           width={24}
           height={24}
         />
-        <Image src={'/image/instagram.svg'} alt="" width={24} height={24} />
+        <Image
+          src={'/image/instagram.svg'}
+          alt="instagram"
+          width={24}
+          height={24}
+        />
       </div>
     </div>
   );
