@@ -30,6 +30,7 @@
   font-style: normal;
 }
 
+// 프로젝트 전역 폰트 설정
 @layer base {
   body {
     @apply font-spoqa;
