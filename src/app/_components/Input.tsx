@@ -1,3 +1,5 @@
+import { JSX } from 'react';
+
 interface InputProps {
   type: string;
   value: string; // 상태값 지정
@@ -8,7 +10,7 @@ interface InputProps {
   error?: string;
 }
 
-export const Input: React.FC<InputProps> = ({
+export const Input = ({
   type,
   value,
   onChange,
@@ -16,7 +18,7 @@ export const Input: React.FC<InputProps> = ({
   label,
   placeholder,
   error,
-}) => {
+}: InputProps) => {
   return (
     <div className={`flex flex-col gap-2 ${className || ''}`}>
       {label && (
