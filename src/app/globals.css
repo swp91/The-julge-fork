@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-//폰트
+/*폰트*/
 @font-face {
   font-family: 'SpoqaHanSansNeo';
   src:
@@ -30,7 +30,7 @@
   font-style: normal;
 }
 
-// 프로젝트 전역 폰트 설정
+/*프로젝트 전역 폰트 설정*/
 @layer base {
   body {
     @apply font-spoqa;
