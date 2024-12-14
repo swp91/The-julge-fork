@@ -22,10 +22,10 @@ jobs:
         run: |
           echo "MAPPING_JSON=$(cat <<EOF
           {
-            "Stemplun": "이하림",
-            "jh-zhirun": "지윤",
-            "Hogn-hyeonbin": "홍현빈",
-            "swp91": "박성우"
+            \"Stemplun\": \"\uC774\uD558\uB9BC\",
+            \"jh-zhirun\": \"\uC9C0\uC724\",
+            \"Hogn-hyeonbin\": \"\uD64D\uD604\uBE48\",
+            \"swp91\": \"\uBC15\uC131\uC6B0\"
           }
           EOF
           )" >> $GITHUB_ENV
