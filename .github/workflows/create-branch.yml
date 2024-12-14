@@ -30,3 +30,17 @@ jobs:
 
           # 브랜치를 원격 저장소로 푸시
           git push origin "$BRANCH_NAME"
+
+      - name: Assign Issue to the Creator
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const assignee = context.payload.issue.user.login; // Issue 작성자의 GitHub username
+
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              assignees: [assignee] // Assignee로 Issue 작성자를 추가
+            });
