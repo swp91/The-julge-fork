@@ -36,6 +36,12 @@ jobs:
           summary: "${{ github.event.issue.title }}"
           description: "${{ steps.md2jira.outputs.output-text }}"
 
+      - name: Transition Jira Issue to In Progress
+        uses: atlassian/gajira-transition@v3
+        with:
+          issue: ${{ steps.create-jira.outputs.issue }}
+          transition: 진행 중 
+
       - name: Add Jira Issue Key to GitHub Issue
         uses: actions/github-script@v6
         with:
