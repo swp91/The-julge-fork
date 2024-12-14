@@ -20,7 +20,7 @@ jobs:
       - name: Define GitHub to Jira Mapping
         id: mapping
         run: |
-          echo "::set-output name=mapping::$(cat <<EOF
+          echo "MAPPING_JSON=$(cat <<EOF
           {
             "Stemplun": "이하림",
             "jh-zhirun": "지윤",
@@ -28,17 +28,23 @@ jobs:
             "swp91": "박성우"
           }
           EOF
-          )"
+          )" >> $GITHUB_ENV
+          echo "Mapping JSON successfully saved to environment variable."
 
       - name: Get Assignee for Jira
         id: get-assignee
         run: |
           # GitHub Issue 작성자 확인
           GITHUB_USERNAME="${{ github.event.issue.user.login }}"
+          echo "GitHub Username: $GITHUB_USERNAME"
 
-          # 매핑된 Jira 계정 가져오기
-          MAPPING='${{ steps.mapping.outputs.mapping }}'
+          # 환경 변수에서 매핑 데이터 가져오기
+          MAPPING=$MAPPING_JSON
+          echo "Mapping JSON: $MAPPING"
+
+          # Assignee 값 추출
           ASSIGNEE=$(echo "$MAPPING" | jq -r --arg USERNAME "$GITHUB_USERNAME" '.[$USERNAME]')
+          echo "Parsed Assignee: $ASSIGNEE"
 
           if [ "$ASSIGNEE" == "null" ]; then
             echo "Error: No Jira user mapping found for GitHub user: $GITHUB_USERNAME"
@@ -46,7 +52,7 @@ jobs:
           fi
 
           echo "Jira Assignee: $ASSIGNEE"
-          echo "::set-output name=assignee::$ASSIGNEE"
+          echo "ASSIGNEE=$ASSIGNEE" >> $GITHUB_ENV
 
       - name: Create Jira Issue
         id: create-jira
@@ -59,7 +65,7 @@ jobs:
           fields: |
             {
               "assignee": {
-                "name": "${{ steps.get-assignee.outputs.assignee }}"
+                "name": "${{ env.ASSIGNEE }}"
               }
             }
 
