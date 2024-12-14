@@ -21,7 +21,7 @@ jobs:
         run: |
           echo '{
             "Stemplun": "'${{ secrets.JIRA_ACCOUNTID_HARIM }}'",
-            "jh-zhirun": "'${{ secrets.JIRA_ACCOUNTID_JIYOON }}'",
+            "h-zhirun": "'${{ secrets.JIRA_ACCOUNTID_JIYOON }}'",
             "Hogn-hyeonbin": "'${{ secrets.JIRA_ACCOUNTID_HYUNBIN }}'",
             "swp91": "'${{ secrets.JIRA_ACCOUNTID_SEONGWOO }}'"
           }' > mapping.json
