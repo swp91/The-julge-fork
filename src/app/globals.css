@@ -34,3 +34,17 @@
     @apply font-spoqa;
   }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin-right: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #7d7986;
+  border-radius: 40px;
+}
