@@ -1,4 +1,5 @@
-name: Create Jira issue
+name: Create Jira Issue with Assignee
+
 on:
   issues:
     types:
@@ -6,7 +7,7 @@ on:
 
 jobs:
   create-jira-issue:
-    name: Create Jira issue
+    name: Create Jira Issue
     runs-on: ubuntu-latest
     steps:
       - name: Login to Jira
@@ -16,16 +17,36 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-      - name: Convert markdown to Jira Syntax
-        uses: peter-evans/jira2md@v1
-        id: md2jira
-        with:
-          input-text: |
-            ### Github Issue Link
-            - ${{ github.event.issue.html_url }}
+      - name: Define GitHub to Jira Mapping
+        id: mapping
+        run: |
+          echo "::set-output name=mapping::$(cat <<EOF
+          {
+            "Stemplun": "이하림",
+            "jh-zhirun": "지윤",
+            "Hogn-hyeonbin": "홍현빈",
+            "swp91": "박성우"
+          }
+          EOF
+          )"
 
-            ${{ github.event.issue.body }}
-          mode: md2jira
+      - name: Get Assignee for Jira
+        id: get-assignee
+        run: |
+          # GitHub Issue 작성자 확인
+          GITHUB_USERNAME="${{ github.event.issue.user.login }}"
+
+          # 매핑된 Jira 계정 가져오기
+          MAPPING='${{ steps.mapping.outputs.mapping }}'
+          ASSIGNEE=$(echo "$MAPPING" | jq -r --arg USERNAME "$GITHUB_USERNAME" '.[$USERNAME]')
+
+          if [ "$ASSIGNEE" == "null" ]; then
+            echo "Error: No Jira user mapping found for GitHub user: $GITHUB_USERNAME"
+            exit 1
+          fi
+
+          echo "Jira Assignee: $ASSIGNEE"
+          echo "::set-output name=assignee::$ASSIGNEE"
 
       - name: Create Jira Issue
         id: create-jira
@@ -34,19 +55,19 @@ jobs:
           project: T3
           issuetype: Task
           summary: "${{ github.event.issue.title }}"
-          description: "${{ steps.md2jira.outputs.output-text }}"
-
-      - name: Transition Jira Issue to In Progress
-        uses: atlassian/gajira-transition@v3
-        with:
-          issue: ${{ steps.create-jira.outputs.issue }}
-          transition: 진행 중 
+          description: "${{ github.event.issue.body }}"
+          fields: |
+            {
+              "assignee": {
+                "name": "${{ steps.get-assignee.outputs.assignee }}"
+              }
+            }
 
       - name: Add Jira Issue Key to GitHub Issue
         uses: actions/github-script@v6
         with:
           script: |
-            const jiraIssueKey = '${{ steps.create-jira.outputs.issue }}'; // 생성된 Jira 이슈 키
+            const jiraIssueKey = '${{ steps.create-jira.outputs.issue }}';
             const issueNumber = context.payload.issue.number;
 
             // GitHub Issue에 Jira Issue 키를 댓글로 추가
