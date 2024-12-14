@@ -47,4 +47,4 @@ jobs:
         uses: atlassian/gajira-transition@v3
         with:
           issue: ${{ steps.fetch-jira-key.outputs.jiraIssueKey }}
-          transition: Done # Jira 워크플로우의 상태 전환 이름
+          transition: 완료
