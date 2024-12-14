@@ -20,9 +20,9 @@ jobs:
       - name: Create JSON Mapping File
         run: |
           echo '{
-            "Stemplun": "accountId_1",
-            "jh-zhirun": "accountId_2",
-            "Hogn-hyeonbin": "accountId_3",
+            "Stemplun": "712020:69408110-5a5a-40db-950d-da7d72f75f1a",
+            "jh-zhirun": "712020:69ecba30-a6f7-4239-bb86-706266c54879",
+            "Hogn-hyeonbin": "712020:9490ee23-f329-4af1-929d-82c1ae0902ff",
             "swp91": "712020:2028a842-679b-4fc1-a0e2-83b3bf158ef1"
           }' > mapping.json
           echo "Mapping file created."
