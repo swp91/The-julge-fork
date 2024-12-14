@@ -9,6 +9,7 @@ jobs:
     name: Update Jira Issue
     runs-on: ubuntu-latest
     steps:
+      # 1. Jira 로그인
       - name: Login to Jira
         uses: atlassian/gajira-login@v3
         env:
@@ -16,6 +17,7 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
+      # 2. Jira 이슈 키 추출
       - name: Fetch Jira Issue Key from GitHub Issue Comments
         id: fetch-jira-key
         uses: actions/github-script@v6
@@ -28,6 +30,7 @@ jobs:
               issue_number: issueNumber,
             });
 
+            // "Jira Issue created:"로 시작하는 댓글에서 이슈 키 추출
             const jiraComment = comments.data.find(comment =>
               comment.body.startsWith('Jira Issue created:')
             );
@@ -39,8 +42,9 @@ jobs:
             const jiraIssueKey = jiraComment.body.split(': ')[1].trim();
             core.setOutput('jiraIssueKey', jiraIssueKey);
 
+      # 3. Jira 이슈 상태 전환
       - name: Transition Jira Issue to Done
         uses: atlassian/gajira-transition@v3
         with:
           issue: ${{ steps.fetch-jira-key.outputs.jiraIssueKey }}
-          transition: Done
+          transition: Done # Jira 워크플로우의 상태 전환 이름
