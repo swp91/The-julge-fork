@@ -17,19 +17,15 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-      - name: Define GitHub to Jira Mapping
-        id: mapping
+      - name: Create JSON Mapping File
         run: |
-          echo "MAPPING_JSON=$(cat <<EOF
-          {
-            \"Stemplun\": \"\uC774\uD558\uB9BC\",
-            \"jh-zhirun\": \"\uC9C0\uC724\",
-            \"Hogn-hyeonbin\": \"\uD64D\uD604\uBE48\",
-            \"swp91\": \"\uBC15\uC131\uC6B0\"
-          }
-          EOF
-          )" >> $GITHUB_ENV
-          echo "Mapping JSON successfully saved to environment variable."
+          echo '{
+            "Stemplun": "이하림",
+            "jh-zhirun": "지윤",
+            "Hogn-hyeonbin": "홍현빈",
+            "swp91": "박성우"
+          }' > mapping.json
+          echo "Mapping file created."
 
       - name: Get Assignee for Jira
         id: get-assignee
@@ -38,12 +34,8 @@ jobs:
           GITHUB_USERNAME="${{ github.event.issue.user.login }}"
           echo "GitHub Username: $GITHUB_USERNAME"
 
-          # 환경 변수에서 매핑 데이터 가져오기
-          MAPPING=$MAPPING_JSON
-          echo "Mapping JSON: $MAPPING"
-
-          # Assignee 값 추출
-          ASSIGNEE=$(echo "$MAPPING" | jq -r --arg USERNAME "$GITHUB_USERNAME" '.[$USERNAME]')
+          # JSON 파일에서 Assignee 추출
+          ASSIGNEE=$(jq -r --arg USERNAME "$GITHUB_USERNAME" '.[$USERNAME]' mapping.json)
           echo "Parsed Assignee: $ASSIGNEE"
 
           if [ "$ASSIGNEE" == "null" ]; then
