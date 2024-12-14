@@ -1,0 +1,46 @@
+name: Update Jira Issue on GitHub Issue Closed
+on:
+  issues:
+    types:
+      - closed
+
+jobs:
+  update-jira-issue:
+    name: Update Jira Issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+
+      - name: Fetch Jira Issue Key from GitHub Issue Comments
+        id: fetch-jira-key
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issueNumber = context.payload.issue.number;
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+            });
+
+            const jiraComment = comments.data.find(comment =>
+              comment.body.startsWith('Jira Issue created:')
+            );
+
+            if (!jiraComment) {
+              throw new Error('No Jira issue key found in comments');
+            }
+
+            const jiraIssueKey = jiraComment.body.split(': ')[1].trim();
+            core.setOutput('jiraIssueKey', jiraIssueKey);
+
+      - name: Transition Jira Issue to Done
+        uses: atlassian/gajira-transition@v3
+        with:
+          issue: ${{ steps.fetch-jira-key.outputs.jiraIssueKey }}
+          transition: Done
