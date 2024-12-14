@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 interface InputProps {
   type: string;
   value: string; // 상태값 지정
@@ -18,21 +20,19 @@ export const Input = ({
   error,
 }: InputProps) => {
   return (
-    // 너비는 사용자 지정(w-64 나중에 꼭 지우기)
-    <div className={`flex flex-col gap-2 w-64 ${className || ''}`}>
-      {label && (
-        <label className="w-full block text-16 text-base text-black">
-          {label}
-        </label>
-      )}
+    <div className={clsx('flex flex-col gap-2', className)}>
+      {label && <label className="text-16 text-black">{label}</label>}
       <input
-        className={`w-full py-4 px-5 border rounded-md ${error ? 'border-red-40' : 'border-gray-300'} focus:border-black focus:outline-none focus:ring-0`}
+        className={clsx(
+          'py-4 px-5 border rounded-md focus:border-black focus:outline-none',
+          error ? 'border-red-40' : 'border-gray-300',
+        )}
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
       />
-      {error && <p className="w-full px-2 text-12 text-red-40">{error}</p>}
+      {error && <p className="px-2 text-12 text-red-40">{error}</p>}
     </div>
   );
 };
