@@ -30,11 +30,9 @@ jobs:
       - name: Get Assignee for Jira
         id: get-assignee
         run: |
-          # GitHub Issue 작성자 확인
           GITHUB_USERNAME="${{ github.event.issue.user.login }}"
           echo "GitHub Username: $GITHUB_USERNAME"
 
-          # JSON 파일에서 Assignee 추출
           ASSIGNEE=$(jq -r --arg USERNAME "$GITHUB_USERNAME" '.[$USERNAME]' mapping.json)
           echo "Parsed Assignee: $ASSIGNEE"
 
@@ -43,7 +41,6 @@ jobs:
             exit 1
           fi
 
-          echo "Jira Assignee: $ASSIGNEE"
           echo "ASSIGNEE=$ASSIGNEE" >> $GITHUB_ENV
 
       - name: Create Jira Issue
@@ -61,6 +58,12 @@ jobs:
               }
             }
 
+      - name: Transition Jira Issue to "In Progress"
+        uses: atlassian/gajira-transition@v3
+        with:
+          issue: ${{ steps.create-jira.outputs.issue }}
+          transition: 진행 중
+
       - name: Add Jira Issue Key to GitHub Issue
         uses: actions/github-script@v6
         with:
@@ -68,7 +71,6 @@ jobs:
             const jiraIssueKey = '${{ steps.create-jira.outputs.issue }}';
             const issueNumber = context.payload.issue.number;
 
-            // GitHub Issue에 Jira Issue 키를 댓글로 추가
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
