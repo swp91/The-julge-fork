@@ -90,12 +90,19 @@ export default function Header() {
 
   // 우측 메뉴 부분
   const Menu = () => {
+    // 로그아웃 함수
+    const handleLogout = () => {
+      localStorage.removeItem('authToken'); // 토큰 삭제
+      setIsLogin(false); // 로그인 상태 업데이트
+      setIsNotification(false); // 알림 상태 초기화
+    };
+
     return (
       <div>
         {isLogin ? (
           <div className="flex gap-4 lg:gap-10">
             <Link href={'/mystore'}>내 가게</Link>
-            <button>로그아웃</button>
+            <button onClick={handleLogout}>로그아웃</button>
             <button>
               <Image
                 src={'/image/notification-active.svg'}
