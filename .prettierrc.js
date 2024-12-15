@@ -1,5 +1,6 @@
 module.exports = {
   singleQuote: true, // 문자열에 작은 따옴표를 사용합니다. (예: 'string')
+  jsxSingleQuote: true, //JSX 에도 따옴표 1개로 설정
   semi: true, // 코드 끝에 세미콜론(;)을 추가합니다.
   tabWidth: 2, // 들여쓰기에 사용할 공백의 개수를 설정합니다. (2칸)
   useTabs: false, // 들여쓰기에 탭 대신 공백을 사용합니다.
