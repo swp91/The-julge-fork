@@ -2,21 +2,21 @@ import clsx from 'clsx';
 
 interface InputProps {
   type: string;
-  value: string; // 상태값 지정
+  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string; // 스타일 추가 지정
-  label?: string; // 라벨 표시만을 위한 props
+  className?: string;
+  label?: string;
   placeholder?: string;
   error?: string;
 }
 
 export const Input = ({
-  type,
+  type = 'text',
   value,
   onChange,
   className,
   label,
-  placeholder,
+  placeholder = '입력',
   error,
 }: InputProps) => {
   return (
