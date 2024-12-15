@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-//폰트
 @font-face {
   font-family: 'SpoqaHanSansNeo';
   src:
@@ -30,9 +29,22 @@
   font-style: normal;
 }
 
-// 프로젝트 전역 폰트 설정
 @layer base {
   body {
     @apply font-spoqa;
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin-right: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #7d7986;
+  border-radius: 40px;
 }
