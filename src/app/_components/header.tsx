@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import clsx from 'clsx';
+import axios from 'axios';
 
 export default function Header() {
   const [windowWidth, setWindowWidth] = useState(0);
@@ -28,6 +29,26 @@ export default function Header() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+  }, []);
+
+  //알람 유무 확인
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+
+    if (token) {
+      axios
+        .get(`/users/{user_id}/alerts`, {
+          headers: { Authorization: `Bearer ${token}` },
+          params: { offset: 0, limit: 1 }, // 내용은 필요 없으므로 1개만 요청
+        })
+        .then((response) => {
+          const { count } = response.data; // 응답의 count 확인
+          setIsNotification(count > 0); // count가 0보다 크면 알림 있음
+        })
+        .catch((error) => {
+          console.error('알림 정보를 가져오는데 실패했습니다.', error);
+        });
+    }
   }, []);
 
   // 로고 부분
