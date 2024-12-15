@@ -3,15 +3,20 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 export default function Header() {
   const [windowWidth, setWindowWidth] = useState(0);
-  const [isLogin, setIsLogin] = useState();
-  const [isNotification, setIsNotification] = useState({
-    activeNotify: 'hidden',
-    inactiveNotify: '',
-  });
+  const [isLogin, setIsLogin] = useState(false);
+  const [isNotification, setIsNotification] = useState(false);
 
+  //로그인 여부 확인
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // localStorage에서 토큰 확인
+    setIsLogin(!!token); // 토큰이 있으면 true, 없으면 false
+  }, []);
+
+  //화면 넓이 확인
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -76,14 +81,14 @@ export default function Header() {
                 alt="알람 활성화"
                 width={24}
                 height={24}
-                className={`${isNotification.activeNotify}`}
+                className={`${clsx({ hidden: !isNotification })}`}
               />
               <Image
                 src={'/image/notification-inactive.svg'}
                 alt="알람 비활성화"
                 width={24}
                 height={24}
-                className={`${isNotification.inactiveNotify}`}
+                className={`${clsx({ hidden: isNotification })}`}
               />
             </button>
           </div>
