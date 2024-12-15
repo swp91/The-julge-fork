@@ -11,13 +11,13 @@ export default function Header() {
   const [isLogin, setIsLogin] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
 
-  //로그인 여부 확인
+  // 로그인 여부 확인
   useEffect(() => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰 확인
-    setIsLogin(!!token); // 토큰이 있으면 true, 없으면 false
+    const token = localStorage.getItem('authToken');
+    setIsLogin(!!token);
   }, []);
 
-  //화면 넓이 확인
+  // 화면 넓이 확인
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -31,7 +31,7 @@ export default function Header() {
     };
   }, []);
 
-  //알람 유무 확인
+  // 알람 유무 확인
   useEffect(() => {
     const token = localStorage.getItem('authToken');
 
@@ -52,49 +52,45 @@ export default function Header() {
   }, []);
 
   // 로고 부분
-  const Logo = () => {
-    return (
-      <Link href={'/'}>
-        <Image
-          src={'/image/logo.svg'}
-          alt="the-julge로고"
-          width={108}
-          height={20}
-        />
-      </Link>
-    );
-  };
+  const Logo = () => (
+    <Link href={'/'}>
+      <Image
+        src={'/image/logo.svg'}
+        alt="the-julge로고"
+        width={108}
+        height={20}
+      />
+    </Link>
+  );
 
   // 검색 Input 부분
-  const Search = () => {
-    return (
-      <div
-        className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[450px] ${
-          windowWidth >= 744 ? 'ml-5' : 'mx-auto justify-center'
-        }`}>
-        <Image
-          src={'/image/search.svg'}
-          alt="검색"
-          width={20}
-          height={20}
-          className="ml-2"
-        />
-        <input
-          type="text"
-          className="min-w-[300px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1"
-          placeholder="가게 이름으로 찾아보세요."
-        />
-      </div>
-    );
-  };
+  const Search = () => (
+    <div
+      className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[450px] ${
+        windowWidth >= 744 ? 'ml-5' : 'mx-auto justify-center'
+      }`}>
+      <Image
+        src={'/image/search.svg'}
+        alt="검색"
+        width={20}
+        height={20}
+        className="ml-2"
+      />
+      <input
+        type="text"
+        className="min-w-[300px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1"
+        placeholder="가게 이름으로 찾아보세요."
+      />
+    </div>
+  );
 
   // 우측 메뉴 부분
   const Menu = () => {
     // 로그아웃 함수
     const handleLogout = () => {
-      localStorage.removeItem('authToken'); // 토큰 삭제
-      setIsLogin(false); // 로그인 상태 업데이트
-      setIsNotification(false); // 알림 상태 초기화
+      localStorage.removeItem('authToken');
+      setIsLogin(false);
+      setIsNotification(false);
     };
 
     return (
@@ -134,7 +130,7 @@ export default function Header() {
     <div>
       {windowWidth >= 744 ? (
         <div className="h-[102px] md:h-[70px] flex items-center justify-around">
-          <div className="flex items-center gap-9 md:gap-16 lg:gap-20">
+          <div className="flex items-center gap-9 lg:gap-20">
             <Logo />
             <Search />
           </div>
@@ -142,7 +138,7 @@ export default function Header() {
         </div>
       ) : (
         <div className="h-[102px] md:h-[70px] flex flex-col justify-center">
-          <div className="flex items-center gap-5 md:gap-20 justify-around mt-2 mb-5">
+          <div className="flex items-center gap-5 justify-around mt-2 mb-5">
             <Logo />
             <Menu />
           </div>
