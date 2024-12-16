@@ -65,6 +65,11 @@ export default {
         // 28 PX
         '28b': ['28px', { lineHeight: '35px', fontWeight: '700' }], // 볼드
       },
+      screens: {
+        sm: '375px',
+        md: '744px',
+        lg: '1440px',
+      },
     },
   },
   plugins: [],
