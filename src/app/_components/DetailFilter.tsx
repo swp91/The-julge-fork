@@ -32,7 +32,7 @@ const options = [
   '서울시 중랑구',
 ];
 
-export default function DetailFilter() {
+const DetailFilter = () => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [amount, setAmount] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -151,4 +151,6 @@ export default function DetailFilter() {
       </div>
     </form>
   );
-}
+};
+
+export default DetailFilter;
