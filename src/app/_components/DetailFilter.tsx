@@ -32,7 +32,12 @@ const options = [
   '서울시 중랑구',
 ];
 
-const DetailFilter = () => {
+interface DetailFilterProps {
+  isVisible: boolean; // 폼 표시 제어
+  onClose: () => void; // 상세 검색 폼 닫기 함수
+}
+
+const DetailFilter: React.FC<DetailFilterProps> = ({ isVisible, onClose }) => {
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [amount, setAmount] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -49,11 +54,13 @@ const DetailFilter = () => {
     setSelectedOptions(selectedOptions.filter((item) => item !== option));
   };
 
+  if (!isVisible) return null;
+
   return (
-    <form className='p-4 max-w-[390px] max-h-[840px] mx-auto bg-white rounded-[10px] shadow-md'>
+    <form className='p-4 max-w-[375px] max-h-[840px] mx-auto bg-white rounded-[10px] shadow-md'>
       <div className='flex justify-between items-center mb-4'>
         <h2 className='text-xl font-bold'>상세 필터</h2>
-        <button type='button' className='text-gray-500'>
+        <button type='button' className='text-gray-500' onClick={onClose}>
           <Image
             src={'/image/closeBtn.svg'}
             alt='닫힘버튼'
