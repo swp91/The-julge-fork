@@ -135,7 +135,11 @@ export default function DetailFilter() {
       <div className='flex gap-4'>
         <button
           type='reset'
-          onClick={() => setSelectedOptions([])}
+          onClick={() => {
+            setSelectedOptions([]);
+            setAmount('');
+            setStartDate('');
+          }}
           className='py-2 px-4 bg-gray-200 text-gray-700 rounded-md w-1/2'>
           초기화
         </button>
