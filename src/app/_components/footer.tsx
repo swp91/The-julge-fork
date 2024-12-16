@@ -21,12 +21,10 @@ export default function Footer() {
 
   return (
     <div className="bg-gray-100 text-base">
-      {windowWidth >= 640 ? (
-        <div className="sm:flex sm:justify-around sm:items-center sm:h-24">
-          <p className="text-gray-500 text-center sm:text-left">
-            ©codeit - 2024
-          </p>
-          <div className="flex justify-center gap-7 text-gray-500 sm:justify-around">
+      {windowWidth >= 744 ? (
+        <div className="flex justify-around items-center h-24">
+          <p className="text-gray-500 text-left">©codeit - 2024</p>
+          <div className="flex gap-7 text-gray-500 justify-around">
             <p>Privacy Policy</p>
             <p>FAQ</p>
           </div>
