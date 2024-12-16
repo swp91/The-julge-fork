@@ -67,7 +67,7 @@ export default function Header() {
   const Search = () => (
     <div
       className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[450px] ${
-        windowWidth >= 744 ? 'ml-5' : 'mx-auto justify-center'
+        windowWidth >= 768 ? 'ml-5' : 'mx-auto justify-center'
       }`}>
       <Image
         src={'/image/search.svg'}
@@ -128,7 +128,7 @@ export default function Header() {
 
   return (
     <div>
-      {windowWidth >= 744 ? (
+      {windowWidth >= 768 ? (
         <div className="h-[102px] md:h-[70px] flex items-center justify-around">
           <div className="flex items-center gap-9 lg:gap-20">
             <Logo />
