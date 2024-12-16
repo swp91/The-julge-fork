@@ -1,0 +1,98 @@
+name: Create Jira Issue with Assignee and Due Date
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  create-jira-issue:
+    name: Create Jira Issue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to Jira
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+
+      - name: Create Mapping File from Secrets
+        run: |
+          echo '{
+            "Stemplun": "'${{ secrets.JIRA_ACCOUNTID_HARIM }}'",
+            "h-zhirun": "'${{ secrets.JIRA_ACCOUNTID_JIYOON }}'",
+            "Hogn-hyeonbin": "'${{ secrets.JIRA_ACCOUNTID_HYUNBIN }}'",
+            "swp91": "'${{ secrets.JIRA_ACCOUNTID_SEONGWOO }}'"
+          }' > mapping.json
+          echo "Mapping file created from secrets."
+
+      - name: Extract Due Date from Issue Body
+        id: extract-duedate
+        run: |
+          # Extract "12-17" from the issue body
+          RAW_DUE_DATE=$(echo "${{ github.event.issue.body }}" | grep -oP '(?<=작업 완료를 목표로 하는 날짜: )\d{2}-\d{2}')
+          echo "Extracted Due Date: $RAW_DUE_DATE"
+
+          # Convert MM-DD to YYYY-MM-DD (Assume December 2024)
+          if [ -z "$RAW_DUE_DATE" ]; then
+            echo "Error: No valid due date found in the issue body."
+            exit 1
+          fi
+          DUE_DATE="2024-${RAW_DUE_DATE}"
+          echo "Converted Due Date: $DUE_DATE"
+
+          # Export to environment
+          echo "DUE_DATE=$DUE_DATE" >> $GITHUB_ENV
+
+      - name: Get Assignee for Jira
+        id: get-assignee
+        run: |
+          GITHUB_USERNAME="${{ github.event.issue.user.login }}"
+          echo "GitHub Username: $GITHUB_USERNAME"
+
+          ASSIGNEE=$(jq -r --arg USERNAME "$GITHUB_USERNAME" '.[$USERNAME]' mapping.json)
+          echo "Parsed Assignee: $ASSIGNEE"
+
+          if [ "$ASSIGNEE" == "null" ]; then
+            echo "Error: No Jira user mapping found for GitHub user: $GITHUB_USERNAME"
+            exit 1
+          fi
+
+          echo "ASSIGNEE=$ASSIGNEE" >> $GITHUB_ENV
+
+      - name: Create Jira Issue
+        id: create-jira
+        uses: atlassian/gajira-create@v3
+        with:
+          project: T3
+          issuetype: Task
+          summary: "${{ github.event.issue.title }}"
+          description: "${{ github.event.issue.body }}"
+          fields: |
+            {
+              "assignee": {
+                "accountId": "${{ env.ASSIGNEE }}"
+              },
+              "duedate": "${{ env.DUE_DATE }}"
+            }
+
+      - name: Transition Jira Issue to "In Progress"
+        uses: atlassian/gajira-transition@v3
+        with:
+          issue: ${{ steps.create-jira.outputs.issue }}
+          transition: 진행 중
+
+      - name: Add Jira Issue Key to GitHub Issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const jiraIssueKey = '${{ steps.create-jira.outputs.issue }}';
+            const issueNumber = context.payload.issue.number;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: `Jira Issue created: ${jiraIssueKey}`
+            });
