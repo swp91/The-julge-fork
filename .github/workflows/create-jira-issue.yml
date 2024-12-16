@@ -1,4 +1,4 @@
-name: Create Jira Issue with Assignee
+name: Create Jira Issue with Assignee and Due Date
 
 on:
   issues:
@@ -26,6 +26,24 @@ jobs:
             "swp91": "'${{ secrets.JIRA_ACCOUNTID_SEONGWOO }}'"
           }' > mapping.json
           echo "Mapping file created from secrets."
+
+      - name: Extract Due Date from Issue Body
+        id: extract-duedate
+        run: |
+          # Extract "12-17" from the issue body
+          RAW_DUE_DATE=$(echo "${{ github.event.issue.body }}" | grep -oP '(?<=작업 완료를 목표로 하는 날짜: )\d{2}-\d{2}')
+          echo "Extracted Due Date: $RAW_DUE_DATE"
+
+          # Convert MM-DD to YYYY-MM-DD (Assume December 2024)
+          if [ -z "$RAW_DUE_DATE" ]; then
+            echo "Error: No valid due date found in the issue body."
+            exit 1
+          fi
+          DUE_DATE="2024-${RAW_DUE_DATE}"
+          echo "Converted Due Date: $DUE_DATE"
+
+          # Export to environment
+          echo "DUE_DATE=$DUE_DATE" >> $GITHUB_ENV
 
       - name: Get Assignee for Jira
         id: get-assignee
@@ -55,7 +73,8 @@ jobs:
             {
               "assignee": {
                 "accountId": "${{ env.ASSIGNEE }}"
-              }
+              },
+              "duedate": "${{ env.DUE_DATE }}"
             }
 
       - name: Transition Jira Issue to "In Progress"
