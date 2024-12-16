@@ -33,6 +33,7 @@ export default {
           20: '#20A81E',
         },
         kakao: '#FEE500',
+        white: '#FFFFFF',
       },
       fontFamily: {
         spoqa: ['SpoqaHanSansNeo', 'sans-serif'],
