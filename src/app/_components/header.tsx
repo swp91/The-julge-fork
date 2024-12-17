@@ -1,67 +1,24 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import Logo from './Logo';
 import clsx from 'clsx';
-import axios from 'axios';
+import { useLoginStatus } from '../_hooks/useLogrinStatus';
+import { useWindowWidth } from '../_hooks/useWindowWidth';
+import { useNotifications } from '../_hooks/useNotifications';
 
 const Header = () => {
-  const [windowWidth, setWindowWidth] = useState(0);
-  const [isLogin, setIsLogin] = useState(false);
-  const [isNotification, setIsNotification] = useState(false);
+  const { isLogin, setIsLogin } = useLoginStatus();
+  const windowWidth = useWindowWidth();
+  const isNotification = useNotifications();
 
-  // 로그인 여부 확인
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    setIsLogin(!!token);
-  }, []);
-
-  // 화면 넓이 확인
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  // 알람 유무 확인
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-
-    if (token) {
-      axios
-        .get(`/users/{user_id}/alerts`, {
-          headers: { Authorization: `Bearer ${token}` },
-          params: { offset: 0, limit: 1 }, // 내용은 필요 없으므로 1개만 요청
-        })
-        .then((response) => {
-          const { count } = response.data; // 응답의 count 확인
-          setIsNotification(count > 0); // count가 0보다 크면 알림 있음
-        })
-        .catch((error) => {
-          console.error('알림 정보를 가져오는데 실패했습니다.', error);
-        });
-    }
-  }, []);
-
-  // 로고 부분
-  const Logo = () => (
-    <Link href={'/'}>
-      <Image
-        src={'/image/logo.svg'}
-        alt='the-julge로고'
-        width={108}
-        height={20}
-      />
-    </Link>
-  );
+  // 로그아웃 함수
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    setIsLogin(false);
+  };
 
   // 검색 Input 부분
   const Search = () => (
@@ -85,46 +42,37 @@ const Header = () => {
   );
 
   // 우측 메뉴 부분
-  const Menu = () => {
-    // 로그아웃 함수
-    const handleLogout = () => {
-      localStorage.removeItem('authToken');
-      setIsLogin(false);
-      setIsNotification(false);
-    };
-
-    return (
-      <div>
-        {isLogin ? (
-          <div className='flex gap-4 lg:gap-10'>
-            <Link href={'/mystore'}>내 가게</Link>
-            <button onClick={handleLogout}>로그아웃</button>
-            <button>
-              <Image
-                src={'/image/notification-active.svg'}
-                alt='알람 활성화'
-                width={24}
-                height={24}
-                className={`${clsx({ hidden: !isNotification })}`}
-              />
-              <Image
-                src={'/image/notification-inactive.svg'}
-                alt='알람 비활성화'
-                width={24}
-                height={24}
-                className={`${clsx({ hidden: isNotification })}`}
-              />
-            </button>
-          </div>
-        ) : (
-          <div className='flex gap-7 lg:gap-10'>
-            <Link href={'/login'}>로그인</Link>
-            <Link href={'/register'}>회원가입</Link>
-          </div>
-        )}
-      </div>
-    );
-  };
+  const Menu = () => (
+    <div>
+      {isLogin ? (
+        <div className='flex gap-4 lg:gap-10'>
+          <Link href={'/mystore'}>내 가게</Link>
+          <button onClick={handleLogout}>로그아웃</button>
+          <button>
+            <Image
+              src={'/image/notification-active.svg'}
+              alt='알람 활성화'
+              width={24}
+              height={24}
+              className={`${clsx({ hidden: !isNotification })}`}
+            />
+            <Image
+              src={'/image/notification-inactive.svg'}
+              alt='알람 비활성화'
+              width={24}
+              height={24}
+              className={`${clsx({ hidden: isNotification })}`}
+            />
+          </button>
+        </div>
+      ) : (
+        <div className='flex gap-7 lg:gap-10'>
+          <Link href={'/login'}>로그인</Link>
+          <Link href={'/register'}>회원가입</Link>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div>
