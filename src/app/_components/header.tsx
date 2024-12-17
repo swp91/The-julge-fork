@@ -6,7 +6,7 @@ import Image from 'next/image';
 import clsx from 'clsx';
 import axios from 'axios';
 
-export default function Header() {
+const Header = () => {
   const [windowWidth, setWindowWidth] = useState(0);
   const [isLogin, setIsLogin] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
@@ -56,7 +56,7 @@ export default function Header() {
     <Link href={'/'}>
       <Image
         src={'/image/logo.svg'}
-        alt="the-julge로고"
+        alt='the-julge로고'
         width={108}
         height={20}
       />
@@ -71,15 +71,15 @@ export default function Header() {
       }`}>
       <Image
         src={'/image/search.svg'}
-        alt="검색"
+        alt='검색'
         width={20}
         height={20}
-        className="ml-2"
+        className='ml-2'
       />
       <input
-        type="text"
-        className="min-w-[300px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1"
-        placeholder="가게 이름으로 찾아보세요."
+        type='text'
+        className='min-w-[300px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1'
+        placeholder='가게 이름으로 찾아보세요.'
       />
     </div>
   );
@@ -96,20 +96,20 @@ export default function Header() {
     return (
       <div>
         {isLogin ? (
-          <div className="flex gap-4 lg:gap-10">
+          <div className='flex gap-4 lg:gap-10'>
             <Link href={'/mystore'}>내 가게</Link>
             <button onClick={handleLogout}>로그아웃</button>
             <button>
               <Image
                 src={'/image/notification-active.svg'}
-                alt="알람 활성화"
+                alt='알람 활성화'
                 width={24}
                 height={24}
                 className={`${clsx({ hidden: !isNotification })}`}
               />
               <Image
                 src={'/image/notification-inactive.svg'}
-                alt="알람 비활성화"
+                alt='알람 비활성화'
                 width={24}
                 height={24}
                 className={`${clsx({ hidden: isNotification })}`}
@@ -117,7 +117,7 @@ export default function Header() {
             </button>
           </div>
         ) : (
-          <div className="flex gap-7 lg:gap-10">
+          <div className='flex gap-7 lg:gap-10'>
             <Link href={'/login'}>로그인</Link>
             <Link href={'/register'}>회원가입</Link>
           </div>
@@ -129,16 +129,16 @@ export default function Header() {
   return (
     <div>
       {windowWidth >= 744 ? (
-        <div className="h-[102px] md:h-[70px] flex items-center justify-around">
-          <div className="flex items-center gap-9 lg:gap-20">
+        <div className='h-[102px] md:h-[70px] flex items-center justify-around'>
+          <div className='flex items-center gap-9 lg:gap-20'>
             <Logo />
             <Search />
           </div>
           <Menu />
         </div>
       ) : (
-        <div className="h-[102px] md:h-[70px] flex flex-col justify-center">
-          <div className="flex items-center gap-5 justify-around mt-2 mb-5">
+        <div className='h-[102px] md:h-[70px] flex flex-col justify-center'>
+          <div className='flex items-center gap-5 justify-around mt-2 mb-5'>
             <Logo />
             <Menu />
           </div>
@@ -147,4 +147,6 @@ export default function Header() {
       )}
     </div>
   );
-}
+};
+
+export default Header;

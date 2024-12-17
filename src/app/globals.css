@@ -48,3 +48,10 @@
   background: #7d7986;
   border-radius: 40px;
 }
+
+/* CSS 파일이나 Global Styles에 추가 */
+input[type='number'].no-spinner::-webkit-outer-spin-button,
+input[type='number'].no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
