@@ -1,3 +1,9 @@
+import Table from './_components/Table';
+
 export default function Home() {
-  return <div>123123</div>;
+  return (
+    <div>
+      <Table />
+    </div>
+  );
 }
