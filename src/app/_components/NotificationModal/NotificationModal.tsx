@@ -1,4 +1,5 @@
 // NotificationModal.tsx
+'use client';
 import React, {useEffect, useState} from 'react';
 import clsx from 'clsx';
 import { Notification,NotificationStatus } from './types';
@@ -19,7 +20,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ userId, isOpen, o
     if (isOpen) {
         fetchNotifications(userId);
     }
-}, [isOpen, userId]);
+}, [isOpen]);
 
 const fetchNotifications = async (userId: string) => {
     setLoading(true);
