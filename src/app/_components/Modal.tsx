@@ -10,7 +10,7 @@ interface ModalProps {
   content: React.ReactNode;
   onClose: () => void;
   onConfirm?: () => void;
-  questionVariant?: 'cancel' | 'approve' | 'reject';
+  questionType?: 'cancel' | 'approve' | 'reject';
 }
 
 export const Modal = ({
@@ -19,7 +19,7 @@ export const Modal = ({
   content,
   onClose,
   onConfirm,
-  questionVariant = 'cancel',
+  questionType = 'cancel',
 }: ModalProps) => {
   // 모달창이 켜져있을 경우 스크롤 방지
   useEffect(() => {
@@ -37,7 +37,7 @@ export const Modal = ({
 
   const config =
     type === 'question'
-      ? modalConfig.question(questionVariant)
+      ? modalConfig.question(questionType)
       : modalConfig[type];
 
   const { icon, responsiveClass, contentStyle, buttonPosition, buttons } =
