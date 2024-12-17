@@ -3,38 +3,11 @@
 import { useState } from 'react';
 import { Input } from './Input';
 import Image from 'next/image';
-
-const options = [
-  '서울시 강남구',
-  '서울시 강동구',
-  '서울시 강북구',
-  '서울시 강서구',
-  '서울시 관악구',
-  '서울시 광진구',
-  '서울시 구로구',
-  '서울시 금천구',
-  '서울시 노원구',
-  '서울시 도봉구',
-  '서울시 동대문구',
-  '서울시 동작구',
-  '서울시 마포구',
-  '서울시 서대문구',
-  '서울시 서초구',
-  '서울시 성동구',
-  '서울시 성북구',
-  '서울시 송파구',
-  '서울시 양천구',
-  '서울시 영등포구',
-  '서울시 용산구',
-  '서울시 은평구',
-  '서울시 종로구',
-  '서울시 중구',
-  '서울시 중랑구',
-];
+import LOCATIONS from '../_constants/Location';
 
 interface DetailFilterProps {
   isVisible: boolean; // 폼 표시 제어
-  onClose: () => void; // 상세 검색 폼 닫기 함수
+  onClose?: () => void; // 상세 검색 폼 닫기 함수
 }
 
 const DetailFilter: React.FC<DetailFilterProps> = ({ isVisible, onClose }) => {
@@ -74,7 +47,7 @@ const DetailFilter: React.FC<DetailFilterProps> = ({ isVisible, onClose }) => {
           위치
         </label>
         <div className='custom-scrollbar grid grid-cols-2 gap-2 p-2 border rounded-md h-[258px] overflow-y-auto'>
-          {options.map((option) => (
+          {LOCATIONS.map((option) => (
             <button
               key={option}
               type='button'
