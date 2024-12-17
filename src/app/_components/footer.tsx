@@ -1,23 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
+import { useWindowWidth } from '../_hooks/useWindowWidth';
 
 const Footer = () => {
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const windowWidth = useWindowWidth();
 
   return (
     <div className='bg-gray-100 text-base'>
