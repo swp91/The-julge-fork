@@ -55,7 +55,7 @@ export const Dropdown = ({
         <div className={clsx('transform', { 'rotate-180': isOpen })}>
           <Image
             src={'/image/dropdown-triangle.svg'}
-            alt="드롭다운 화살표"
+            alt='드롭다운 화살표'
             width={16}
             height={16}
             priority
@@ -66,7 +66,7 @@ export const Dropdown = ({
       {isOpen && (
         <ul
           className={clsx(
-            'custom-scrollbar absolute z-2 w-full bg-white border rounded mt-2 max-h-[230px] overflow-auto',
+            'custom-scrollbar absolute z-20 w-full bg-white border rounded mt-1 max-h-[230px] overflow-auto',
           )}>
           {options.map((option) => (
             <li
