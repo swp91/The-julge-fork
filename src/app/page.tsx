@@ -1,4 +1,16 @@
-export default function Home() {
+'use client';
 
-  return <div></div>;
+import Pagination from './_components/Pagination';
+
+export default function Home() {
+  return (
+    <div>
+      <Pagination
+        totalPages={50}
+        onPageChange={(page) => {
+          console.log(page);
+        }}
+      />
+    </div>
+  );
 }
