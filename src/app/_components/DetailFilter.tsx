@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Input } from './Input';
 import Image from 'next/image';
-import LOCATIONS from '../_constants/Location';
+import { LOCATIONS } from '../_constants/constants';
 
 interface DetailFilterProps {
   isVisible: boolean; // 폼 표시 제어
