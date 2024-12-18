@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface DropdownProps {
   options: string[];
+  label?: string;
   value?: string;
   onChange?: (value: string) => void;
   className?: string;
@@ -12,6 +13,7 @@ interface DropdownProps {
 
 export const Dropdown = ({
   options,
+  label,
   value,
   onChange,
   className,
@@ -44,11 +46,14 @@ export const Dropdown = ({
   };
 
   return (
-    <div className={clsx('relative', className)} ref={dropdownRef}>
+    <div
+      className={clsx('relative flex flex-col gap-2 w-full', className)}
+      ref={dropdownRef}>
+      {label && <label className='text-16 text-black'>{label}</label>}
       <button
         onClick={toggleDropdown}
         className={clsx(
-          'w-full flex items-center justify-between bg-white border border-gray-300 rounded py-4 px-5 text-left',
+          'w-full flex items-center justify-between bg-white border border-gray-300 rounded-md py-4 px-5 text-left',
           value ? 'text-black' : 'text-gray-400',
         )}>
         {value || placeholder}
@@ -66,7 +71,7 @@ export const Dropdown = ({
       {isOpen && (
         <ul
           className={clsx(
-            'custom-scrollbar absolute z-20 w-full bg-white border rounded mt-1 max-h-[230px] overflow-auto',
+            'w-full custom-scrollbar absolute top-full z-20 w-full bg-white border rounded-md mt-1 max-h-[230px] overflow-auto',
           )}>
           {options.map((option) => (
             <li

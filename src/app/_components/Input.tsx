@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 interface InputProps {
-  type: string;
+  type?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
@@ -24,7 +24,7 @@ export const Input = ({
   error,
 }: InputProps) => {
   return (
-    <div className={clsx('flex flex-col gap-2', className)}>
+    <div className={clsx('flex flex-col gap-2 w-full', className)}>
       {label && <label className='text-16 text-black'>{label}</label>}
       <input
         className={clsx(
