@@ -25,6 +25,7 @@ const Button: React.FC<ButtonProps> = ({
   const buttonClass = clsx(
     'rounded-lg font-medium inline-flex items-center justify-center ',
     {
+
       'bg-red-40 text-white hover:bg-red-30': style === 'default' && !disabled,
       'border border-red-40 text-red-40 ':
         style === 'bordered' && !disabled && !approval,
