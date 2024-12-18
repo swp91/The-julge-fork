@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 interface DropdownProps<T = string> {
   options: T[];
+  label: string;
   value?: T;
   onChange?: (value: T) => void;
   className?: string;
@@ -13,6 +14,7 @@ interface DropdownProps<T = string> {
 export const Dropdown = <T,>({
   options,
   value,
+  label,
   onChange,
   className,
   placeholder = '선택',
@@ -44,15 +46,18 @@ export const Dropdown = <T,>({
   };
 
   return (
-    <div className={clsx('relative', className)} ref={dropdownRef}>
+    <div
+      className={clsx('relative flex flex-col gap-2', className)}
+      ref={dropdownRef}>
+      {label && <label className='text-16 text-black'>{label}</label>}
       <button
         onClick={toggleDropdown}
         className={clsx(
-          'w-full flex items-center justify-between bg-white border border-gray-300 rounded py-4 px-5 text-left',
+          'h-[58px] w-full flex items-center justify-between bg-white border border-gray-300 rounded-md px-5 text-left',
           value ? 'text-black' : 'text-gray-400',
         )}>
-        {value !== undefined ? String(value) : placeholder}
-        <div className={clsx('transform', { 'rotate-180': isOpen })}>
+        <span>{value ? String(value) : placeholder}</span>
+        <span className={clsx('ml-2 transform', { 'rotate-180': isOpen })}>
           <Image
             src={'/image/dropdown-triangle.svg'}
             alt='드롭다운 화살표'
@@ -60,19 +65,20 @@ export const Dropdown = <T,>({
             height={16}
             priority
           />
-        </div>
+        </span>
       </button>
 
-      {isOpen && (
+      {isOpen && options.length > 0 && (
         <ul
           className={clsx(
-            'custom-scrollbar absolute z-2 w-full bg-white border rounded mt-2 max-h-[230px] overflow-auto',
+            'absolute top-full z-50 w-full bg-white border rounded mt-1 max-h-[230px] overflow-auto',
+            'custom-scrollbar',
           )}>
           {options.map((option, index) => (
             <li
               key={index}
               className={clsx(
-                'py-3 text-14 text-black text-center cursor-pointer border-b',
+                'py-3 px-4 text-14 text-black text-center cursor-pointer border-b',
                 'hover:bg-blue-10 border-gray-200',
               )}
               onClick={() => handleOptionClick(option)}>
