@@ -1,27 +1,22 @@
 import clsx from 'clsx';
 
-interface InputProps {
-  type?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   inputClassName?: string;
   label?: string;
-  placeholder?: string;
   rightAddon?: string;
   error?: string;
 }
 
 export const Input = ({
-  type = 'text',
-  value,
-  onChange,
   className,
-  rightAddon,
-  label,
   inputClassName,
-  placeholder = '입력',
+  label,
+  rightAddon,
   error,
+  type = 'text',
+  placeholder = '입력',
+  ...rest
 }: InputProps) => {
   return (
     <div className={clsx('flex flex-col gap-2 w-full', className)}>
@@ -33,9 +28,8 @@ export const Input = ({
           error ? 'border-red-40' : 'border-gray-300',
         )}
         type={type}
-        value={value}
-        onChange={onChange}
         placeholder={placeholder}
+        {...rest}
       />
       {rightAddon && (
         <div className='absolute right-3 top-[61px] transform -translate-y-1/2 text-black'>

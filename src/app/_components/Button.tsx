@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 type ButtonProps = {
   style?: 'default' | 'bordered';
-  size?: 'full' | 'xl' | 'lg' | 'md' | 'sm' | 'xs';
+  size?: 'full' | 'xl' | 'lg' | 'md' | 'sm' | 'xs' | 'xxs';
   children: React.ReactNode;
   onClick?: () => void;
   type?: 'button' | 'submit' | 'reset';
@@ -20,11 +20,17 @@ const Button: React.FC<ButtonProps> = ({
   className,
   disabled = false,
 }) => {
+  const approval = children === '승인하기';
+
   const buttonClass = clsx(
     'rounded-lg font-medium inline-flex items-center justify-center ',
     {
+
       'bg-red-40 text-white hover:bg-red-30': style === 'default' && !disabled,
-      'border border-red-40 text-red-40 ': style === 'bordered' && !disabled,
+      'border border-red-40 text-red-40 ':
+        style === 'bordered' && !disabled && !approval,
+      'border border-blue-20 text-blue-20 ':
+        style === 'bordered' && !disabled && approval,
       'bg-gray-400 text-white cursor-not-allowed': disabled,
     },
     {
@@ -45,6 +51,9 @@ const Button: React.FC<ButtonProps> = ({
         size === 'sm',
       // XS
       'w-[80px] h-[38px] text-14b': size === 'xs',
+      // XXS
+      'w-[69px] h-[32px] text-12 md:w-[92px] md:h-[38px] lg:w-[92px] lg:h-[38px] md:text-14b lg:text-14b':
+        size === 'xxs',
     },
     className,
   );
