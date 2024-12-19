@@ -71,7 +71,7 @@ export const Dropdown = <T,>({
       {isOpen && options.length > 0 && (
         <ul
           className={clsx(
-            'absolute top-full z-50 w-full bg-white border rounded mt-1 max-h-[230px] overflow-auto',
+            'absolute top-full z-50 w-full bg-white border rounded-md mt-1 max-h-[230px] overflow-auto',
             'custom-scrollbar',
           )}>
           {options.map((option, index) => (
