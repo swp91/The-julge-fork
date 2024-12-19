@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './Logo';
 import clsx from 'clsx';
-import { useLoginStatus } from '../_hooks/useLogrinStatus';
+import { useLoginStatus } from '../_hooks/useLoginStatus';
 import { useWindowWidth } from '../_hooks/useWindowWidth';
 import { useNotifications } from '../_hooks/useNotifications';
 
