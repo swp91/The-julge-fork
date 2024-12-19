@@ -3,9 +3,8 @@
 import { useState } from 'react';
 import { Input } from './Input';
 import Image from 'next/image';
-import LOCATIONS from '../_constants/Location';
+import { LOCATIONS } from '../_constants/constants';
 import Button from './Button';
-
 interface DetailFilterProps {
   isVisible: boolean; // 폼 표시 제어
   onClose?: () => void; // 상세 검색 폼 닫기 함수
