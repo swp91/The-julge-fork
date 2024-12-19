@@ -38,7 +38,7 @@ export const Input = ({
           {rightAddon}
         </div>
       )}
-      {error && <p className='px-2 text-12 text-red-40'>{error}</p>}
+      {error && <p className='relative px-2 text-14 text-red-40'>{error}</p>}
     </div>
   );
 };

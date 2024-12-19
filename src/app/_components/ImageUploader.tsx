@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 interface ImageUploaderProps {
   image: string;
+  label?: string;
   onImageChange: (image: string) => void;
   onImageDelete: () => void;
   mode?: 'add' | 'edit';
@@ -12,6 +13,7 @@ interface ImageUploaderProps {
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
   image,
+  label,
   onImageChange,
   onImageDelete,
   mode = 'add',
@@ -25,9 +27,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   return (
     <div
       className={clsx(
-        'relative w-full col-span-1 h-[200px] rounded-xl',
+        'relative w-full col-span-1 flex flex-col gap-2 h-[200px] rounded-xl',
         'md:col-span-2 md:h-[276px] md:max-w-[483px]',
       )}>
+      {label && <label className='text-16 text-black'>{label}</label>}
       {image ? (
         <>
           <div className='relative w-full h-full'>
