@@ -46,7 +46,7 @@ const Header = () => {
     <div>
       {isLogin ? (
         <div className='flex gap-4 lg:gap-10'>
-          <Link href={'/mystore'}>내 가게</Link>
+          <Link href={'/store'}>내 가게</Link>
           <button onClick={handleLogout}>로그아웃</button>
           <button>
             <Image
@@ -68,7 +68,7 @@ const Header = () => {
       ) : (
         <div className='flex gap-7 lg:gap-10'>
           <Link href={'/login'}>로그인</Link>
-          <Link href={'/register'}>회원가입</Link>
+          <Link href={'/signup'}>회원가입</Link>
         </div>
       )}
     </div>
