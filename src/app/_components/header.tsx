@@ -30,7 +30,7 @@ const Header = () => {
   // 검색 Input 부분
   const Search = () => (
     <div
-      className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[450px] ${
+      className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[400px] lg:w-[450px] ${
         windowWidth >= 744 ? 'ml-5' : 'mx-auto justify-center'
       }`}>
       <Image
