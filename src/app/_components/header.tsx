@@ -20,6 +20,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsLogin(false);
+    setIsModalOpen(false);
   };
 
   // 알람 버튼 클릭 핸들러
