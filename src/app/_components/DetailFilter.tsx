@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Input } from './Input';
 import Image from 'next/image';
 import { LOCATIONS } from '../_constants/constants';
-
+import Button from './Button';
 interface DetailFilterProps {
   isVisible: boolean; // 폼 표시 제어
   onClose?: () => void; // 상세 검색 폼 닫기 함수
@@ -113,21 +113,20 @@ const DetailFilter: React.FC<DetailFilterProps> = ({ isVisible, onClose }) => {
       </div>
 
       <div className='flex gap-4'>
-        <button
+        <Button
           type='reset'
+          style='bordered'
+          size='sm'
           onClick={() => {
             setSelectedOptions([]);
             setAmount('');
             setStartDate('');
-          }}
-          className='py-2 px-4 bg-gray-200 text-gray-700 rounded-md w-1/2'>
+          }}>
           초기화
-        </button>
-        <button
-          type='submit'
-          className='py-2 px-4 bg-red-500 text-white rounded-md w-1/2'>
+        </Button>
+        <Button type='submit' size='lg'>
           적용하기
-        </button>
+        </Button>
       </div>
     </form>
   );
