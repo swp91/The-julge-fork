@@ -28,29 +28,26 @@ const PostStore = () => {
   } = useForm({
     mode: 'all',
     defaultValues: {
-      id: '',
       name: '',
       category: '',
-      address: '',
-      detailAddress: '',
-      wage: '',
+      address1: '',
+      address2: '',
+      originalHourlyPay: '',
       description: '',
-      image: '',
+      imageUrl: '',
     },
   });
 
-  const image: string = watch('image');
+  const imageUrl: string = watch('imageUrl');
 
-  const onImageChange = (image: string) => setValue('image', image);
+  const onImageChange = (image: string) => setValue('imageUrl', image);
 
   const onImageDelete = () => {
-    if (image) URL.revokeObjectURL(image);
-    setValue('image', '');
+    if (imageUrl) URL.revokeObjectURL(imageUrl);
+    setValue('imageUrl', '');
   };
 
   const onSubmit = (data: Record<string, any>) => {
-    const mockId = '12345'; // 가상 id
-    setValue('id', mockId);
     openModal();
   };
 
@@ -58,7 +55,7 @@ const PostStore = () => {
     required: '분류를 선택해 주세요.',
   });
 
-  register('address', {
+  register('address1', {
     required: '주소를 선택해 주세요.',
   });
 
@@ -114,21 +111,21 @@ const PostStore = () => {
                   label='주소*'
                   options={LOCATIONS}
                   placeholder='선택'
-                  value={watch('address')}
+                  value={watch('address1')}
                   onChange={(value) => {
-                    setValue('address', value);
-                    trigger('address');
+                    setValue('address1', value);
+                    trigger('address1');
                   }}
-                  onBlur={() => trigger('address')}
-                  error={errors.address?.message}
+                  onBlur={() => trigger('address1')}
+                  error={errors.address1?.message}
                   className='relative'
                 />
               </div>
               <Input
                 label='상세 주소*'
                 placeholder='입력'
-                error={errors.detailAddress?.message}
-                {...register('detailAddress', {
+                error={errors.address2?.message}
+                {...register('address2', {
                   required: '상세 주소를 입력해 주세요.',
                 })}
               />
@@ -137,8 +134,8 @@ const PostStore = () => {
                 placeholder='입력'
                 rightAddon='원'
                 className='relative'
-                error={errors.wage?.message}
-                {...register('wage', {
+                error={errors.originalHourlyPay?.message}
+                {...register('originalHourlyPay', {
                   required: '기본 시급을 입력해 주세요.',
                   pattern: {
                     value: /^\d+$/,
@@ -147,7 +144,7 @@ const PostStore = () => {
                 })}
               />
               <ImageUploader
-                image={image}
+                image={imageUrl}
                 label='가게 이미지'
                 onImageChange={onImageChange}
                 onImageDelete={onImageDelete}
@@ -181,7 +178,7 @@ const PostStore = () => {
               content='등록이 완료되었습니다.'
               onClose={() => {
                 closeModal();
-                router.push(`/store/detail/${watch('id') || 'default-id'}`);
+                router.push('/store/detail/123');
               }}
             />
           </div>
