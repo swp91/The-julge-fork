@@ -17,6 +17,7 @@ import ImageUploader from '@/app/_components/ImageUploader';
 const PostStore = () => {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    id: '',
     name: '',
     category: '',
     address: '',
@@ -41,9 +42,12 @@ const PostStore = () => {
     setFormData((prev) => ({ ...prev, image: '' }));
   };
 
-  const handleSubmit = () => {
-    console.log('등록 데이터:', formData);
-    openModal();
+  const handleSubmit = async () => {
+    setTimeout(() => {
+      const mockId = '12345'; // 가상 id
+      setFormData((prev) => ({ ...prev, id: mockId }));
+      openModal();
+    }, 1000);
   };
 
   return (
@@ -137,7 +141,7 @@ const PostStore = () => {
               content='등록이 완료되었습니다.'
               onClose={() => {
                 closeModal();
-                router.push('/');
+                router.push(`/store/detail/${formData.id || 'default-id'}`);
               }}
             />
           </div>
