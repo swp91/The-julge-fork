@@ -46,7 +46,7 @@ const Table = <T extends Record<string, any>>({
                   <div className='line-clamp-2'>
                     {col.render
                       ? col.render(row[col.accessor])
-                      : (row[col.accessor] as React.ReactNode)}
+                      : row[col.accessor]}
                   </div>
                 </td>
               ))}
