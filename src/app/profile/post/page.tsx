@@ -8,6 +8,8 @@ import Button from '@/app/_components/Button';
 import { Dropdown } from '@/app/_components/Dropdown';
 import LOCATIONS from '@/app/_constants/Location';
 import { useState } from 'react';
+import { Modal } from '@/app/_components/Modal';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
   name: string;
@@ -17,12 +19,15 @@ interface FormData {
 }
 
 const ProfilePost = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     contact: '',
-    location: '', // 초기값을 빈 문자열로 설정
+    location: '',
     introduction: '',
   });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChange = (key: keyof FormData, value: string) => {
     setFormData({
@@ -33,7 +38,19 @@ const ProfilePost = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsModalOpen(true);
     console.log('Form Submitted:', formData);
+  };
+
+  const closeModal = () => {
+    console.log('Modal closed');
+    setIsModalOpen(false);
+  };
+
+  const handleConfirm = () => {
+    console.log('Navigating to /profile'); // 디버깅 로그 추가
+    setIsModalOpen(false);
+    router.push('/profile');
   };
 
   return (
@@ -56,7 +73,7 @@ const ProfilePost = () => {
             </button>
           </div>
 
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-6 '>
+          <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-6'>
             <Input
               label='이름*'
               placeholder='이름을 입력해주세요'
@@ -73,7 +90,7 @@ const ProfilePost = () => {
             />
             <Dropdown
               options={LOCATIONS}
-              value={formData.location || undefined} // 선택 전에는 빈 값 유지
+              value={formData.location || undefined}
               onChange={(value) => handleChange('location', value)}
               className='w-full h-[92px] mt-2'
             />
@@ -103,6 +120,17 @@ const ProfilePost = () => {
         </form>
       </div>
       <Footer />
+
+      {/* 모달 */}
+      {isModalOpen && (
+        <Modal
+          isOpen={isModalOpen}
+          type='success'
+          content={<p>프로필이 성공적으로 등록되었습니다!</p>}
+          onClose={closeModal}
+          onConfirm={handleConfirm} // 확인 버튼에 핸들러 추가
+        />
+      )}
     </div>
   );
 };
