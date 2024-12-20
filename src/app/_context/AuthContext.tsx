@@ -1,22 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-
-interface DecodedToken extends JwtPayload {
-  userId: string;
-  email: string;
-  role: 'employer' | 'employee';
-}
-
-interface User {
-  id: string;
-  email: string;
-  type: 'employer' | 'employee';
-  name?: string;
-  phone?: string;
-  address?: string;
-  bio?: string;
-}
-
+import { jwtDecode } from 'jwt-decode';
 interface AuthContextProps {
   token: string | null;
   user: User | null;

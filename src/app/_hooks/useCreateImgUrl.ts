@@ -16,7 +16,7 @@ export const useCreateImgUrl = () => {
     setIsLoading(true);
     setError(null);
 
-    //우선 이미지 압축작업
+    //우선 이미지 압축작업 먼저합니다.
     try {
       await compressFile(file);
       if (!compressedFile) {
