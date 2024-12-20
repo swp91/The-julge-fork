@@ -23,9 +23,11 @@ export const Input = ({
       {label && <label className='text-16 text-black'>{label}</label>}
       <input
         className={clsx(
-          'py-4 px-5 border rounded-md focus:border-black focus:outline-none',
+          'py-4 px-5 border rounded-md focus:outline-none',
           inputClassName,
-          error ? 'border-red-40' : 'border-gray-300',
+          error
+            ? 'border-red-40 focus:border-red-40'
+            : 'border-gray-300 focus:border-black',
         )}
         type={type}
         placeholder={placeholder}
@@ -36,7 +38,7 @@ export const Input = ({
           {rightAddon}
         </div>
       )}
-      {error && <p className='px-2 text-12 text-red-40'>{error}</p>}
+      {error && <p className='relative px-2 text-14 text-red-40'>{error}</p>}
     </div>
   );
 };

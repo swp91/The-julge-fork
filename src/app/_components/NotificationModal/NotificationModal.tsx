@@ -1,32 +1,35 @@
 // NotificationModal.tsx
 'use client';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Notification,NotificationStatus } from './types';
 import axios from 'axios';
 
 interface NotificationModalProps {
-  userId: string;                    //알림 조회할 유저 ID
-  isOpen: boolean;                   //모달의 열림 상태
-  onClose: () => void;               //모달 닫는 함수
+  userId: string; // 알림 조회할 유저 ID
+  isOpen: boolean; // 모달의 열림 상태
+  onClose: () => void; // 모달 닫는 함수
 }
 
-const NotificationModal: React.FC<NotificationModalProps> = ({ userId, isOpen, onClose }) => {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
+const NotificationModal: React.FC<NotificationModalProps> = ({
+  userId,
+  isOpen,
+  onClose,
+}) => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-   // 알림 목록 조회
-    useEffect(() => {
+  // 알림 목록 조회
+  useEffect(() => {
     if (isOpen) {
-        fetchNotifications(userId);
+      fetchNotifications(userId);
     }
-}, [isOpen]);
+  }, [isOpen]);
 
-const fetchNotifications = async (userId: string) => {
+  const fetchNotifications = async (userId: string) => {
     setLoading(true);
     setError(null);
-
     try {
         const token = localStorage.getItem('authToken');
             const response = await axios.get(`/users/${userId}/alerts`, {
@@ -74,7 +77,7 @@ const fetchNotifications = async (userId: string) => {
     return (
 
 <div className={clsx({ hidden: !isOpen })}>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-10 shadow-lg p-4 w-80">
+            <div className="absolute top-[80px] w-[375px] md:w-80 lg:left-12 transform -translate-x-1/2 -translate-y-1/2 bg-red-10 shadow-lg p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-family text-20b">알림 {notifications.length}개</h2>
                     <button onClick={onClose} className="text-black hover:text-black">×</button>
@@ -84,8 +87,8 @@ const fetchNotifications = async (userId: string) => {
                     {error && <p className="text-red-500">{error}</p>}
                     {notifications.map(renderNotification)}
                 </div>
+              </div>
             </div>
-        </div>
     );
 };
 
