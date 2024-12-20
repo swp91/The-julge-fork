@@ -10,6 +10,7 @@ import LOCATIONS from '@/app/_constants/Location';
 import { useState } from 'react';
 import { Modal } from '@/app/_components/Modal';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 interface FormData {
   name: string;
@@ -36,19 +37,29 @@ const ProfilePost = () => {
     });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsModalOpen(true);
-    console.log('Form Submitted:', formData);
+    try {
+      const response = await axios.put(`/user/user_id`, {
+        item: {
+          name: formData.name,
+          phone: formData.contact,
+          address: formData.location,
+          bio: formData.introduction,
+        },
+      });
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('프로필 등록 중 문제가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const closeModal = () => {
-    console.log('Modal closed');
     setIsModalOpen(false);
   };
 
   const handleConfirm = () => {
-    console.log('Navigating to /profile'); // 디버깅 로그 추가
     setIsModalOpen(false);
     router.push('/profile');
   };
@@ -121,14 +132,13 @@ const ProfilePost = () => {
       </div>
       <Footer />
 
-      {/* 모달 */}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
           type='success'
           content={<p>프로필이 성공적으로 등록되었습니다!</p>}
           onClose={closeModal}
-          onConfirm={handleConfirm} // 확인 버튼에 핸들러 추가
+          onConfirm={handleConfirm}
         />
       )}
     </div>
