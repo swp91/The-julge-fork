@@ -1,4 +1,4 @@
-interface AlertItem {
+interface AlarmItem {
   id: string;
   createdAt: string;
   result: 'accepted' | 'rejected';
@@ -37,7 +37,7 @@ interface AlertItem {
   links: any[];
 }
 
-interface AlertsResponse {
+interface AlarmsResponse {
   offset: number;
   limit: number;
   count: number;
