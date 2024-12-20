@@ -13,3 +13,15 @@ export const updateUserInfo = (userId: string, data: UserInfoUpdateRequest) => {
     headers: { requiresToken: true },
   });
 };
+
+// 유저의 지원 목록 조회
+export const getUserApplications = (
+  userId: string,
+  offset?: number,
+  limit?: number,
+) => {
+  return instance.get<ApplicationsResponse>(`/users/${userId}/applications`, {
+    params: { offset, limit },
+    headers: { requiresToken: true },
+  });
+};
