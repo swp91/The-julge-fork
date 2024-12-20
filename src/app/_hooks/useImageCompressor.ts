@@ -15,7 +15,7 @@ const useImageCompressor = (): UseImageCompressorReturn => {
   const compressFile = async (file: File): Promise<void> => {
     try {
       const options = {
-        maxSizeMB: 0.5, // 압축할 사이즈 용량이에요.
+        maxSizeMB: 0.5, // 압축할 사이즈 용량이에요. 1이면 1mb 입니당
         maxWidthOrHeight: 1024, // 이건 크기 정하는거에요.
         useWebWorker: true, // Web Worker를 사용하여 성능 향상한다고 합니다.
       };
