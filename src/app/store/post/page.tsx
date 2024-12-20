@@ -1,54 +1,63 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import clsx from 'clsx';
+
 import Footer from '@/app/_components/footer';
 import Header from '@/app/_components/header';
 import Button from '@/app/_components/Button';
 import { Input } from '@/app/_components/Input';
 import { Dropdown } from '@/app/_components/Dropdown';
 import { Modal } from '@/app/_components/Modal';
-import { useModal } from '@/app/_hooks/useModal';
-import { useState } from 'react';
-import clsx from 'clsx';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
 import ImageUploader from '@/app/_components/ImageUploader';
+import { useModal } from '@/app/_hooks/useModal';
+import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
+import Image from 'next/image';
 
 const PostStore = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState({
-    id: '',
-    name: '',
-    category: '',
-    address: '',
-    detailAddress: '',
-    wage: '',
-    description: '',
-    image: '',
+  const { isOpen, openModal, closeModal } = useModal();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    trigger,
+    formState: { errors },
+  } = useForm({
+    mode: 'all',
+    defaultValues: {
+      name: '',
+      category: '',
+      address1: '',
+      address2: '',
+      originalHourlyPay: '',
+      description: '',
+      imageUrl: '',
+    },
   });
 
-  const { isOpen, openModal, closeModal } = useModal();
+  const imageUrl: string = watch('imageUrl');
 
-  const handleChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+  const onImageChange = (image: string) => setValue('imageUrl', image);
+
+  const onImageDelete = () => {
+    if (imageUrl) URL.revokeObjectURL(imageUrl);
+    setValue('imageUrl', '');
   };
 
-  const handleImageChange = (image: string) => {
-    setFormData((prev) => ({ ...prev, image }));
+  const onSubmit = (data: Record<string, any>) => {
+    openModal();
   };
 
-  const handleImageDelete = () => {
-    if (formData.image) URL.revokeObjectURL(formData.image);
-    setFormData((prev) => ({ ...prev, image: '' }));
-  };
+  register('category', {
+    required: '분류를 선택해 주세요.',
+  });
 
-  const handleSubmit = async () => {
-    setTimeout(() => {
-      const mockId = '12345'; // 가상 id
-      setFormData((prev) => ({ ...prev, id: mockId }));
-      openModal();
-    }, 1000);
-  };
+  register('address1', {
+    required: '주소를 선택해 주세요.',
+  });
 
   return (
     <>
@@ -73,62 +82,90 @@ const PostStore = () => {
               />
             </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-y-6'>
+            <div className='relative z-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-y-5'>
               <Input
                 label='가게 이름*'
-                value={formData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
                 placeholder='입력'
+                error={errors.name?.message}
+                {...register('name', {
+                  required: '가게 이름을 입력해 주세요.',
+                })}
               />
-              <Dropdown
-                label='분류*'
-                options={CATEGORIES}
-                value={formData.category}
-                onChange={(value) => handleChange('category', value)}
-                placeholder='선택'
-              />
-              <Dropdown
-                label='주소*'
-                options={LOCATIONS}
-                value={formData.address}
-                onChange={(value) => handleChange('address', value)}
-                placeholder='선택'
-              />
+              <div className='relative'>
+                <Dropdown
+                  label='분류*'
+                  options={CATEGORIES}
+                  placeholder='선택'
+                  value={watch('category')}
+                  onChange={(value) => {
+                    setValue('category', value);
+                    trigger('category');
+                  }}
+                  onBlur={() => trigger('category')}
+                  error={errors.category?.message}
+                  className='relative'
+                />
+              </div>
+              <div className='relative'>
+                <Dropdown
+                  label='주소*'
+                  options={LOCATIONS}
+                  placeholder='선택'
+                  value={watch('address1')}
+                  onChange={(value) => {
+                    setValue('address1', value);
+                    trigger('address1');
+                  }}
+                  onBlur={() => trigger('address1')}
+                  error={errors.address1?.message}
+                  className='relative'
+                />
+              </div>
               <Input
                 label='상세 주소*'
-                value={formData.detailAddress}
-                onChange={(e) => handleChange('detailAddress', e.target.value)}
+                placeholder='입력'
+                error={errors.address2?.message}
+                {...register('address2', {
+                  required: '상세 주소를 입력해 주세요.',
+                })}
               />
               <Input
                 label='기본 시급*'
-                value={formData.wage}
-                onChange={(e) => handleChange('wage', e.target.value)}
+                placeholder='입력'
                 rightAddon='원'
                 className='relative'
+                error={errors.originalHourlyPay?.message}
+                {...register('originalHourlyPay', {
+                  required: '기본 시급을 입력해 주세요.',
+                  pattern: {
+                    value: /^\d+$/,
+                    message: '시급은 숫자만 입력할 수 있어요.',
+                  },
+                })}
               />
               <ImageUploader
-                image={formData.image}
-                onImageChange={handleImageChange}
-                onImageDelete={handleImageDelete}
+                image={imageUrl}
+                label='가게 이미지'
+                onImageChange={onImageChange}
+                onImageDelete={onImageDelete}
                 mode='add'
               />
               <div className='col-span-1 md:col-span-2 flex flex-col gap-2'>
                 <div>가게 설명</div>
                 <textarea
-                  value={formData.description}
-                  onChange={(e) => handleChange('description', e.target.value)}
                   className={clsx(
                     'h-[153px] w-full border rounded-md pt-4 pl-5 resize-none',
                     'focus:border-black focus:outline-none',
                   )}
                   placeholder='입력'
+                  {...register('description')}
                 />
               </div>
               <div className='col-span-1 md:col-span-2 flex justify-center'>
                 <Button
                   size='md'
                   type='button'
-                  onClick={handleSubmit}
+                  onClick={handleSubmit(onSubmit)}
                   className='mt-4'>
                   등록하기
                 </Button>
@@ -141,7 +178,7 @@ const PostStore = () => {
               content='등록이 완료되었습니다.'
               onClose={() => {
                 closeModal();
-                router.push(`/store/detail/${formData.id || 'default-id'}`);
+                router.push('/store/detail/123');
               }}
             />
           </div>
