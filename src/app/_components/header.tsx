@@ -1,29 +1,37 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './Logo';
 import clsx from 'clsx';
-import { useLoginStatus } from '../_hooks/useLogrinStatus';
+import { useLoginStatus } from '../_hooks/useLoginStatus';
 import { useWindowWidth } from '../_hooks/useWindowWidth';
 import { useNotifications } from '../_hooks/useNotifications';
+import NotificationModal from './NotificationModal/NotificationModal';
 
 const Header = () => {
   const { isLogin, setIsLogin } = useLoginStatus();
   const windowWidth = useWindowWidth();
   const isNotification = useNotifications();
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
 
   // 로그아웃 함수
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsLogin(false);
+    setIsModalOpen(false);
+  };
+
+  // 알람 버튼 클릭 핸들러
+  const toggleModal = () => {
+    setIsModalOpen((prev) => !prev);
   };
 
   // 검색 Input 부분
   const Search = () => (
     <div
-      className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[450px] ${
+      className={`flex bg-gray-100 rounded-[10px] w-[335px] md:w-[400px] lg:w-[450px] ${
         windowWidth >= 744 ? 'ml-5' : 'mx-auto justify-center'
       }`}>
       <Image
@@ -43,12 +51,12 @@ const Header = () => {
 
   // 우측 메뉴 부분
   const Menu = () => (
-    <div>
+    <div className='relative'>
       {isLogin ? (
         <div className='flex gap-4 lg:gap-10'>
           <Link href={'/store'}>내 가게</Link>
           <button onClick={handleLogout}>로그아웃</button>
-          <button>
+          <button onClick={toggleModal}>
             <Image
               src={'/image/notification-active.svg'}
               alt='알람 활성화'
@@ -70,6 +78,13 @@ const Header = () => {
           <Link href={'/login'}>로그인</Link>
           <Link href={'/signup'}>회원가입</Link>
         </div>
+      )}
+      {isModalOpen && (
+        <NotificationModal
+          onClose={toggleModal}
+          userId={''}
+          isOpen={isModalOpen}
+        />
       )}
     </div>
   );
