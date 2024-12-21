@@ -174,7 +174,7 @@ const EditStore = () => {
               content='수정이 완료되었습니다.'
               onClose={() => {
                 closeModal();
-                router.push('/store/detail/123');
+                router.replace('/store/detail/123');
               }}
             />
           </div>
