@@ -37,7 +37,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
             <div
               className={clsx(
                 'rounded-lg w-full h-full',
-                mode === 'edit' && 'bg-[#000000B2] opacity-50',
+                mode === 'edit' && 'bg-[#000000B2] opacity-70',
                 mode === 'add' && 'bg-transparent',
               )}>
               <Image
