@@ -1,28 +1,11 @@
 'use client';
 
 import React, { createContext, useState } from 'react';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-
-interface DecodedToken extends JwtPayload {
-  userId: string;
-  email: string;
-  role: 'employer' | 'employee';
-}
-
-interface User {
-  id: string;
-  email: string;
-  type: 'employer' | 'employee';
-  name?: string;
-  phone?: string;
-  address?: string;
-  bio?: string;
-}
-
+import { jwtDecode } from 'jwt-decode';
 interface AuthContextProps {
   token: string | null;
   user: User | null;
-  login: (data: { token: string; user: User }) => void;
+  loginSave: (data: { token: string; user: User }) => void;
   logout: () => void;
 }
 
@@ -36,7 +19,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (data: { token: string; user: User }) => {
+  const loginSave = (data: { token: string; user: User }) => {
     const decoded = jwtDecode<DecodedToken>(data.token);
 
     setToken(data.token);
@@ -56,7 +39,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={{ token, user, loginSave, logout }}>
       {children}
     </AuthContext.Provider>
   );
