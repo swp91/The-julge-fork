@@ -13,7 +13,6 @@ import { Modal } from '@/app/_components/Modal';
 import ImageUploader from '@/app/_components/ImageUploader';
 import { useModal } from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
-import Image from 'next/image';
 
 const PostStore = () => {
   const router = useRouter();
@@ -72,14 +71,11 @@ const PostStore = () => {
             )}>
             <div className='flex justify-between mb-6'>
               <div className='text-20b'>가게 정보</div>
-              <Image
-                src='/image/cancel-icon.svg'
-                alt='닫기'
-                width={18}
-                height={18}
-                className='cursor-pointer'
-                onClick={() => console.log('폼 닫기')}
-              />
+              <p
+                className='cursor-pointer text-18m hover:text-red-40'
+                onClick={() => window.history.back()}>
+                ✖
+              </p>
             </div>
 
             <div className='relative z-10 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-y-5'>

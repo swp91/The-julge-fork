@@ -14,7 +14,7 @@ import ImageUploader from '@/app/_components/ImageUploader';
 import { useModal } from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
 
-const PostStore = () => {
+const EditStore = () => {
   const router = useRouter();
   const { isOpen, openModal, closeModal } = useModal();
   const {
@@ -185,4 +185,4 @@ const PostStore = () => {
   );
 };
 
-export default PostStore;
+export default EditStore;
