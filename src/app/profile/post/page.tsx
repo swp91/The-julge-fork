@@ -7,10 +7,11 @@ import { Input } from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
 import { Dropdown } from '@/app/_components/Dropdown';
 import { LOCATIONS } from '@/app/_constants/constants';
-import { useState } from 'react';
 import { Modal } from '@/app/_components/Modal';
 import { useRouter } from 'next/navigation';
+import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
+import { useState } from 'react';
 
 interface FormData {
   name: string;
@@ -21,33 +22,34 @@ interface FormData {
 
 const ProfilePost = () => {
   const router = useRouter();
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    contact: '',
-    location: '',
-    introduction: '',
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      contact: '',
+      location: '',
+      introduction: '',
+    },
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleChange = (key: keyof FormData, value: string) => {
-    setFormData({
-      ...formData,
-      [key]: value,
-    });
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = async (data: FormData) => {
+    console.log('폼 데이터:', data); // 폼 데이터 확인
     try {
       const response = await axios.put(`/user/user_id`, {
         item: {
-          name: formData.name,
-          phone: formData.contact,
-          address: formData.location,
-          bio: formData.introduction,
+          name: data.name,
+          phone: data.contact,
+          address: data.location,
+          bio: data.introduction,
         },
       });
+      console.log('응답 데이터:', response.data); // 응답 확인
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -70,7 +72,7 @@ const ProfilePost = () => {
       <div className='max-w-full md:pt-[100px] h-[753px]'>
         <form
           className='max-w-screen-lg mx-auto p-6'
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           style={{ width: '100%', maxWidth: '964px' }}>
           <div className='flex justify-between items-center mb-6'>
             <h1 className='text-[20px] font-bold'>내 프로필</h1>
@@ -88,23 +90,40 @@ const ProfilePost = () => {
             <Input
               label='이름*'
               placeholder='이름을 입력해주세요'
-              value={formData.name}
-              onChange={(e) => handleChange('name', e.target.value)}
+              error={errors.name?.message}
+              {...register('name', { required: '이름은 필수 항목입니다.' })}
               className='w-full h-[92px] mt-2'
             />
+
             <Input
               label='연락처*'
               placeholder='연락처를 입력해주세요'
-              value={formData.contact}
-              onChange={(e) => handleChange('contact', e.target.value)}
+              error={errors.contact?.message}
+              {...register('contact', {
+                required: '연락처는 필수 항목입니다.',
+                pattern: {
+                  value: /^[0-9-]+$/,
+                  message: '올바른 연락처를 입력해주세요.',
+                },
+              })}
               className='w-full h-[92px] mt-2'
             />
-            <Dropdown
-              options={LOCATIONS}
-              value={formData.location || undefined}
-              onChange={(value) => handleChange('location', value)}
-              className='w-full h-[92px] mt-2'
-              label={'선호 지역'}
+
+            <Controller
+              name='location'
+              control={control}
+              rules={{ required: '선호 지역을 선택해주세요.' }}
+              render={({ field }) => (
+                <Dropdown
+                  label='선호 지역'
+                  options={LOCATIONS}
+                  value={field.value}
+                  onChange={(value) => {
+                    field.onChange(value);
+                  }}
+                  className='w-full mt-2'
+                />
+              )}
             />
           </div>
 
@@ -118,8 +137,7 @@ const ProfilePost = () => {
               <textarea
                 id='introduction'
                 placeholder='자기소개를 입력해주세요'
-                value={formData.introduction}
-                onChange={(e) => handleChange('introduction', e.target.value)}
+                {...register('introduction')}
                 className='w-full h-[187px] border rounded p-2'></textarea>
             </div>
           </div>
