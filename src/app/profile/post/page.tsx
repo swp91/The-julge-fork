@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Input } from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
 import { Dropdown } from '@/app/_components/Dropdown';
-import LOCATIONS from '@/app/_constants/Location';
+import { LOCATIONS } from '@/app/_constants/constants';
 import { useState } from 'react';
 import { Modal } from '@/app/_components/Modal';
 import { useRouter } from 'next/navigation';
@@ -104,6 +104,7 @@ const ProfilePost = () => {
               value={formData.location || undefined}
               onChange={(value) => handleChange('location', value)}
               className='w-full h-[92px] mt-2'
+              label={'선호 지역'}
             />
           </div>
 
