@@ -13,6 +13,10 @@ import { Modal } from '@/app/_components/Modal';
 import ImageUploader from '@/app/_components/ImageUploader';
 import { useModal } from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
+import { register as registerApi, login } from '@/app/_api/auth_api';
+import { AuthContext } from '@/app/_context/AuthContext';
+import { useContext } from 'react';
+import { getGlobalToken } from '@/app/_api/globaltoken';
 
 const PostStore = () => {
   const router = useRouter();
@@ -46,6 +50,8 @@ const PostStore = () => {
     setValue('imageUrl', '');
   };
 
+  console.log(imageUrl);
+
   const onSubmit = (data: Record<string, any>) => {
     openModal();
   };
@@ -57,6 +63,61 @@ const PostStore = () => {
   register('address1', {
     required: '주소를 선택해 주세요.',
   });
+
+  const testRegister = async () => {
+    const testData = {
+      email: 'test@123.com',
+      password: '123123123',
+      type: 'employer' as 'employee' | 'employer',
+    };
+
+    try {
+      const response = await registerApi(testData);
+      console.log('성공:', response);
+    } catch (error: any) {
+      console.error('회원가입 실패:', error);
+      if (error.status === 400) {
+        alert(`요청 오류: ${error.data?.message || '요청오류'}`);
+      } else if (error.status === 409) {
+        alert(`중복 오류: ${error.data?.message || '중복이래'}`);
+      } else {
+        alert('알수없지만 일단 에러야');
+      }
+    }
+  };
+  const { loginSave } = useContext(AuthContext);
+  const token = getGlobalToken();
+
+  console.log(token);
+
+  const testLogin = async () => {
+    const testData = {
+      email: 'test@123.com',
+      password: '123123123',
+    };
+
+    try {
+      const response = await login(testData);
+      console.log('로그인 성공:', response);
+
+      const { token, user } = response.item;
+
+      loginSave({ token, user: user.item });
+
+      alert('로그인 성공');
+    } catch (error: any) {
+      console.error('로그인 실패:', error);
+
+      if (error.status === 404) {
+        alert(
+          error.data?.message ||
+            '존재하지 않거나 비밀번호가 일치하지 않습니다.',
+        );
+      } else {
+        alert('뭔진 모르겠지만 에러가떳어');
+      }
+    }
+  };
 
   return (
     <>
@@ -177,6 +238,14 @@ const PostStore = () => {
                 router.replace('/store/detail/123');
               }}
             />
+
+            <Button className='mt-5' onClick={testRegister}>
+              회원가입 테스트용
+            </Button>
+
+            <Button className='mt-5' onClick={testLogin}>
+              로그인 테스트용
+            </Button>
           </div>
         </div>
       </div>

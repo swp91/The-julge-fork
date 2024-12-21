@@ -1,7 +1,9 @@
 'use client';
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { setGlobalToken } from '../_api/globaltoken';
+
 interface AuthContextProps {
   token: string | null;
   user: User | null;
@@ -19,6 +21,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
 
+  useEffect(() => {
+    setGlobalToken(token); // 전역 토큰 값 업데이트
+  }, [token]);
+
   const loginSave = (data: { token: string; user: User }) => {
     const decoded = jwtDecode<DecodedToken>(data.token);
 
@@ -27,9 +33,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser({
       ...data.user,
       id: decoded.userId,
-      email: decoded.email,
-      type: decoded.role,
+      iat: decoded.iat,
     });
+    console.log('디코딩정보', decoded);
   };
 
   //로그아웃 로직도 추후 변경될수있습니다 일단 임시입니다.

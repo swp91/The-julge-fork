@@ -3,7 +3,7 @@ import imageCompression from 'browser-image-compression';
 
 type UseImageCompressorReturn = {
   compressedImage: string | null;
-  compressFile: (file: File) => Promise<void>;
+  compressFile: (file: File) => Promise<File>;
   compressedFile: File | null;
   reset: () => void;
 };
@@ -12,23 +12,30 @@ const useImageCompressor = (): UseImageCompressorReturn => {
   const [compressedImage, setCompressedImage] = useState<string | null>(null);
   const [compressedFile, setCompressedFile] = useState<File | null>(null);
 
-  const compressFile = async (file: File): Promise<void> => {
+  const compressFile = async (file: File): Promise<File> => {
     try {
       const options = {
-        maxSizeMB: 0.5, // 압축할 사이즈 용량이에요. 1이면 1mb 입니당
-        maxWidthOrHeight: 1024, // 이건 크기 정하는거에요.
-        useWebWorker: true, // Web Worker를 사용하여 성능 향상한다고 합니다.
+        maxSizeMB: 0.5, // 최대 파일 크기 (MB)
+        maxWidthOrHeight: 1024, // 최대 가로/세로 길이 (픽셀)
+        useWebWorker: true, // Web Worker 사용
       };
 
-      // 파일 압축작업입니다.
-      const compressed = await imageCompression(file, options);
-      setCompressedFile(compressed);
+      console.log(file);
 
-      // 압축된 파일로 미리보기 URL 생성
-      const previewUrl = URL.createObjectURL(compressed);
-      setCompressedImage(previewUrl);
+      // 이미지 압축
+      const compressed = await imageCompression(file, options);
+
+      // 디버깅용 로그
+      console.log('압축된 파일:', compressed);
+
+      // 상태 업데이트
+      setCompressedFile(compressed);
+      setCompressedImage(URL.createObjectURL(compressed));
+
+      return compressed; // 압축된 파일 반환
     } catch (error) {
       console.error('이미지 압축 중 에러 발생:', error);
+      throw new Error('이미지 압축 실패');
     }
   };
 
