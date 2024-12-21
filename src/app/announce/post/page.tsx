@@ -4,11 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useModal } from '@/app/_hooks/useModal';
 import { useForm } from 'react-hook-form';
 import Button from '@/app/_components/Button';
-import Header from '@/app/_components/header';
+import Header from '@/app/_components/Header';
 import { Input } from '@/app/_components/Input';
 import { Modal } from '@/app/_components/Modal';
 import clsx from 'clsx';
-import Footer from '@/app/_components/footer';
+import Footer from '@/app/_components/Footer';
 
 const PostAnnounce = () => {
   const router = useRouter();
