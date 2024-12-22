@@ -28,6 +28,7 @@ interface LoginResponse {
 interface RegisterRequest {
   email: string;
   password: string;
+  confirmPassword?: string;
   type: 'employee' | 'employer';
 }
 

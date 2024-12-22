@@ -22,7 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    setGlobalToken(token); // 전역 토큰 값 업데이트
+    setGlobalToken(token);
   }, [token]);
 
   const loginSave = (data: { token: string; user: User }) => {

@@ -13,7 +13,7 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = getGlobalToken();
-    console.log('전역 토큰 확인:', token);
+
     if (token && config.headers?.requiresToken) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -22,7 +22,7 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('요청 인터셉터 에러:', error);
+    console.error(error);
     return Promise.reject(error);
   },
 );
@@ -30,7 +30,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    console.error('API Error:', error.response || error.message);
+    console.error(error.response || error.message);
     return Promise.reject(error.response || error.message);
   },
 );

@@ -9,6 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        primary: '#EA3C12',
         gray: {
           50: '#FAFAFA',
           100: '#F2F2F3',
