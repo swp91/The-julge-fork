@@ -13,9 +13,11 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const token = getGlobalToken();
+
     if (token && config.headers?.requiresToken) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log('요청 헤더 확인:', config.headers);
     delete config.headers?.requiresToken;
     return config;
   },

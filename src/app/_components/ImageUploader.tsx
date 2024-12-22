@@ -2,9 +2,11 @@
 
 import Image from 'next/image';
 import clsx from 'clsx';
+import { useCreateImgUrl } from '../_hooks/useCreateImgUrl';
+import { useState } from 'react';
 
 interface ImageUploaderProps {
-  image: string;
+  image?: string;
   label?: string;
   onImageChange: (image: string) => void;
   onImageDelete: () => void;
@@ -12,16 +14,34 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({
-  image,
+  image = '',
   label,
   onImageChange,
   onImageDelete,
   mode = 'add',
 }) => {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { createImgUrl } = useCreateImgUrl();
+  const [localImage, setLocalImage] = useState<string | null>(image);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (image) URL.revokeObjectURL(image);
-    if (file) onImageChange(URL.createObjectURL(file));
+    if (!file) return;
+
+    try {
+      const uploadedUrl = await createImgUrl(file);
+      if (uploadedUrl) {
+        setLocalImage(URL.createObjectURL(file));
+        onImageChange(uploadedUrl);
+      }
+    } catch (err) {
+      console.error('이미지를 업로드 하는데 실패했어요:', err);
+    }
+  };
+
+  const handleDelete = () => {
+    if (localImage) URL.revokeObjectURL(localImage);
+    setLocalImage(null);
+    onImageDelete();
   };
 
   return (
@@ -55,10 +75,10 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
               width={24}
               height={24}
               className={clsx(
-                'absolute top-2 right-2 cursor-pointer',
+                'absolute top-10 right-2 cursor-pointer',
                 'bg-white border rounded-full p-1',
               )}
-              onClick={onImageDelete}
+              onClick={handleDelete}
             />
           ) : (
             <label

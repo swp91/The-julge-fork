@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 
-import Footer from '@/app/_components/footer';
-import Header from '@/app/_components/header';
+import Footer from '@/app/_components/Footer';
+import Header from '@/app/_components/Header';
 import Button from '@/app/_components/Button';
 import { Input } from '@/app/_components/Input';
 import { Dropdown } from '@/app/_components/Dropdown';
@@ -14,7 +14,7 @@ import ImageUploader from '@/app/_components/ImageUploader';
 import { useModal } from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
 
-const PostStore = () => {
+const EditStore = () => {
   const router = useRouter();
   const { isOpen, openModal, closeModal } = useModal();
   const {
@@ -174,7 +174,7 @@ const PostStore = () => {
               content='수정이 완료되었습니다.'
               onClose={() => {
                 closeModal();
-                router.push('/store/detail/123');
+                router.replace('/store/detail/123');
               }}
             />
           </div>
@@ -185,4 +185,4 @@ const PostStore = () => {
   );
 };
 
-export default PostStore;
+export default EditStore;
