@@ -18,10 +18,10 @@ const ProfileCard = (profiledata: ProfileData) => {
       <div
         className='
           flex flex-col lg:flex-row justify-between
-          w-full h-auto
-          lg:px-[245px] md:px-auto md:py-[60px]
+          w-[343px] md:w-[665px] lg:w-[957px] h-auto
+          md:py-[60px]
         '>
-        <h1 className='text-black text-[28px] font-bold mb-6 text-left md:ml-6'>
+        <h1 className='text-black text-[28px] font-bold mb-6 text-left '>
           내 프로필
         </h1>
         <div
