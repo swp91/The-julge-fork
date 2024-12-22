@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 interface ProfileData {
-  name: string;
-  contact: string;
-  location: string;
-  introduction: string;
+  name?: string;
+  contact?: string;
+  location?: string;
+  introduction?: string;
 }
 
 const ProfileCard = (profiledata: ProfileData) => {
