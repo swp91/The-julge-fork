@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
 
-import Footer from '@/app/_components/footer';
+import Footer from '@/app/_components/Footer';
 import Header from '@/app/_components/Header';
 import Button from '@/app/_components/Button';
 import { Input } from '@/app/_components/Input';
