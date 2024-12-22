@@ -1,5 +1,7 @@
+'use client';
 import Button from '@/app/_components/Button';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface ProfileData {
   name: string;
@@ -9,20 +11,29 @@ interface ProfileData {
 }
 
 const ProfileCard = (profiledata: ProfileData) => {
+  const router = useRouter();
+
   return (
-    <div className='px-[245px] py-[60px]'>
+    <div className='flex justify-center px-4 py-6'>
       <div
-        className='flex
-        sm:w-[375px] sm:h-[316px]
-        md:w-[744px] md:h-[434px]
-        lg:w-[1440px] lg:h-[376px]'>
-        <h1 className='text-black text-lg font-bold mb-6 sm:mb-4'>내 프로필</h1>
+        className='
+          flex flex-col lg:flex-row justify-between
+          w-full h-auto
+          lg:px-[245px] md:px-auto md:py-[60px]
+        '>
+        <h1 className='text-black text-[28px] font-bold mb-6 text-left md:ml-6'>
+          내 프로필
+        </h1>
         <div
           className='
-        bg-red-100 rounded-lg p-6
-        flex flex-col justify-between
-        shadow-md
-      '>
+            bg-red-100 rounded-lg p-6
+            flex flex-col justify-between
+            shadow-md
+            w-full max-w-[665px]
+            h-auto
+            lg:h-[256px] md:h-[256px] sm:h-[196px]
+            md:mx-auto lg:mx-0
+          '>
           <div className='flex justify-between items-center mb-4'>
             <div>
               <div className='text-red-500 text-sm font-medium mb-1'>이름</div>
@@ -30,7 +41,11 @@ const ProfileCard = (profiledata: ProfileData) => {
                 {profiledata.name}
               </div>
             </div>
-            <Button style='bordered' size='sm' className='ml-4'>
+            <Button
+              style='bordered'
+              size='sm'
+              className='ml-4'
+              onClick={() => router.push('/profile/post')}>
               편집하기
             </Button>
           </div>
