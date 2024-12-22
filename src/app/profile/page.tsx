@@ -106,7 +106,7 @@ const ProfilePage = () => {
                 introduction={profileData.bio || 'N/A'}
               />
             )}
-            {applicationStatus && (
+            {applicationStatus ? (
               <div className='w-[351px] lg:w-[957px] md:w-[680px] mx-auto mb-10'>
                 <div className='text-black text-[28px] font-bold mb-6 text-left'>
                   신청 내역
@@ -120,6 +120,8 @@ const ProfilePage = () => {
                   onPageChange={(page) => setCurrentPage(page)}
                 />
               </div>
+            ) : (
+              <PostProfile isExist={applicationStatus} type={'application'} />
             )}
           </div>
         ) : (
