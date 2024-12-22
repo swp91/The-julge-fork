@@ -12,7 +12,7 @@ import { register as registerApi } from '../_api/auth_api';
 import { Modal } from '../_components/Modal';
 import { useRouter } from 'next/navigation';
 
-const SignUpForm = () => {
+const SignUp = () => {
   const {
     register,
     handleSubmit,
@@ -167,7 +167,7 @@ const SignUpForm = () => {
           </Button>
         </form>
 
-        <div className='mt-4 text-16'>
+        <div className='mt-5 text-16'>
           이미 가입하셨나요?
           <Link href='/login' className='text-[#5534DA] underline ml-2'>
             로그인하기
@@ -184,4 +184,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default SignUp;

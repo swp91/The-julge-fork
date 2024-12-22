@@ -28,7 +28,7 @@ instance.interceptors.request.use(
 );
 
 instance.interceptors.response.use(
-  (response) => response.data,
+  (response) => response,
   (error) => {
     console.error(error.response || error.message);
     return Promise.reject(error.response || error.message);
