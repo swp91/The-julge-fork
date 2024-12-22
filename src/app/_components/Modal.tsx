@@ -13,7 +13,7 @@ interface ModalProps {
   questionType?: 'cancel' | 'approve' | 'reject';
 }
 
-export const Modal = ({
+const Modal = ({
   isOpen,
   type,
   content,
@@ -94,3 +94,5 @@ export const Modal = ({
     </div>
   );
 };
+
+export default Modal;

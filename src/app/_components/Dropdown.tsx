@@ -14,7 +14,7 @@ interface DropdownProps<T = string> {
   error?: string;
 }
 
-export const Dropdown = <T,>({
+const Dropdown = <T,>({
   options,
   value,
   label,
@@ -113,3 +113,5 @@ export const Dropdown = <T,>({
     </div>
   );
 };
+
+export default Dropdown;
