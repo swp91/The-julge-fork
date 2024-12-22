@@ -50,7 +50,7 @@ const EditStore = () => {
     };
 
     fetchShopInfo();
-  }, [shopId, reset]);
+  }, [reset]);
 
   const onImageChange = (image: string) => {
     setValue('imageUrl', image, { shouldValidate: true });
