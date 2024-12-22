@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
 import clsx from 'clsx';
-import { Input } from '../_components/Input';
+import Input from '../_components/Input';
 import Logo from '../_components/Logo';
 import Image from 'next/image';
 import Button from '../_components/Button';
 import { register as registerApi } from '../_api/auth_api';
-import { Modal } from '../_components/Modal';
+import Modal from '../_components/Modal';
 import { useRouter } from 'next/navigation';
 
 const SignUp = () => {
