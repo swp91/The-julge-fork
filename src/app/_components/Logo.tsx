@@ -14,6 +14,7 @@ const Logo = ({ width = 108, height = 20 }: LogoProps) => (
       alt='the-julge로고'
       width={width}
       height={height}
+      priority
     />
   </Link>
 );

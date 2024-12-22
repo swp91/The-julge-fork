@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { useAuth } from '../_hooks/useAuth';
+import { getGlobalToken } from './globaltoken';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -12,8 +12,7 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const { token } = useAuth();
-
+    const token = getGlobalToken();
     if (token && config.headers?.requiresToken) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -21,6 +20,7 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.error(error);
     return Promise.reject(error);
   },
 );
@@ -28,7 +28,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    console.error('API Error:', error.response || error.message);
+    console.error(error.response || error.message);
     return Promise.reject(error.response || error.message);
   },
 );

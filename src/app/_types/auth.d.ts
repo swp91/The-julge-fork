@@ -6,6 +6,7 @@ interface User {
   phone?: string;
   address?: string;
   bio?: string;
+  iat?: number;
 }
 
 interface LoginRequest {
@@ -27,6 +28,7 @@ interface LoginResponse {
 interface RegisterRequest {
   email: string;
   password: string;
+  confirmPassword?: string;
   type: 'employee' | 'employer';
 }
 
@@ -41,6 +43,5 @@ interface RegisterResponse {
 
 interface DecodedToken {
   userId: string;
-  email: string;
-  role: 'employer' | 'employee';
+  iat: number;
 }
