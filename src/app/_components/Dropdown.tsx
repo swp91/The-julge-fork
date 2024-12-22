@@ -62,6 +62,7 @@ export const Dropdown = <T,>({
       ref={dropdownRef}>
       {label && <label className='text-16 text-black'>{label}</label>}
       <button
+        type='button'
         onClick={toggleDropdown}
         onBlur={handleBlur}
         className={clsx(
