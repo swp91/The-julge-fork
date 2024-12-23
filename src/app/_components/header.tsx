@@ -1,29 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useContext, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './Logo';
-import clsx from 'clsx';
-import { useLoginStatus } from '../_hooks/useLoginStatus';
+import { AuthContext } from '../_context/AuthContext';
 import { useWindowWidth } from '../_hooks/useWindowWidth';
-import { useNotifications } from '../_hooks/useNotifications';
 import NotificationModal from './NotificationModal/NotificationModal';
+import { useNotifications } from '../_hooks/useNotifications'; // 알림 상태 가져오는 훅
 
 const Header = () => {
-  const { isLogin, setIsLogin } = useLoginStatus();
+  const authContext = useContext(AuthContext);
   const windowWidth = useWindowWidth();
-  const isNotification = useNotifications();
-  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 로그아웃 함수
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    setIsLogin(false);
-    setIsModalOpen(false);
-  };
+  // 사용자 상태와 로그아웃 함수
+  const user = authContext?.user || null;
+  const logout = authContext?.logout || (() => {});
 
-  // 알람 버튼 클릭 핸들러
+  // 알림 상태 가져오기
+  const isNotificationActive = useNotifications();
+
+  // 알림 모달 토글
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
   };
@@ -52,25 +50,26 @@ const Header = () => {
   // 우측 메뉴 부분
   const Menu = () => (
     <div className='relative'>
-      {isLogin ? (
+      {user ? (
         <div className='flex gap-4 lg:gap-10'>
           <Link href={'/store'}>내 가게</Link>
-          <button onClick={handleLogout}>로그아웃</button>
+          <button onClick={logout}>로그아웃</button>
           <button onClick={toggleModal}>
-            <Image
-              src={'/image/notification-active.svg'}
-              alt='알람 활성화'
-              width={24}
-              height={24}
-              className={`${clsx({ hidden: !isNotification })}`}
-            />
-            <Image
-              src={'/image/notification-inactive.svg'}
-              alt='알람 비활성화'
-              width={24}
-              height={24}
-              className={`${clsx({ hidden: isNotification })}`}
-            />
+            {isNotificationActive ? (
+              <Image
+                src={'/image/notification-active.svg'}
+                alt='알림 활성화'
+                width={24}
+                height={24}
+              />
+            ) : (
+              <Image
+                src={'/image/notification-inactive.svg'}
+                alt='알림 비활성화'
+                width={24}
+                height={24}
+              />
+            )}
           </button>
         </div>
       ) : (
@@ -82,7 +81,7 @@ const Header = () => {
       {isModalOpen && (
         <NotificationModal
           onClose={toggleModal}
-          userId={''}
+          userId={user?.id || ''}
           isOpen={isModalOpen}
         />
       )}
