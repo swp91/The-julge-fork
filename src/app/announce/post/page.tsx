@@ -1,51 +1,56 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useModal } from '@/app/_hooks/useModal';
-import { useForm } from 'react-hook-form';
-import Button from '@/app/_components/Button';
-import Header from '@/app/_components/Header';
-import { Input } from '@/app/_components/Input';
-import { Modal } from '@/app/_components/Modal';
 import clsx from 'clsx';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+
+import Header from '@/app/_components/Header';
 import Footer from '@/app/_components/Footer';
+import Input from '@/app/_components/Input';
+import Button from '@/app/_components/Button';
+import Modal from '@/app/_components/Modal';
+
+import useModal from '@/app/_hooks/useModal';
+import { createShopNotice } from '@/app/_api/owner_api';
 
 const PostAnnounce = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const shopId = searchParams.get('shopId');
   const { isOpen, openModal, closeModal } = useModal();
-  const now = new Date();
-  const localDateTime = new Date(
-    now.getTime() - now.getTimezoneOffset() * 60000,
-  )
-    .toISOString()
-    .slice(0, 16);
+  const [noticeId, setNoticeId] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
-
     formState: { errors },
-  } = useForm({
+  } = useForm<ownerNoticeRequest>({
     mode: 'all',
-    defaultValues: {
-      hourlyPay: '',
-      startsAt: localDateTime,
-      workhour: '',
-      description: '',
-    },
   });
 
-  const onSubmit = (data: Record<string, any>) => {
-    const localDate = new Date(data.startsAt);
-    const utcDate = localDate.toISOString();
+  const onSubmit = async (data: ownerNoticeRequest) => {
+    if (!shopId) {
+      alert('가게 정보를 찾을 수 없어요.');
+      return;
+    }
 
-    const payload = {
-      ...data,
-      startsAt: utcDate,
-    };
+    try {
+      const localDate = new Date(data.startsAt);
+      const utcDate = localDate.toISOString();
 
-    console.log('Payload to submit:', payload);
+      const postData = {
+        ...data,
+        startsAt: utcDate,
+      };
 
-    openModal();
+      const response = await createShopNotice(shopId, postData);
+      setNoticeId(response.data.item.id);
+
+      openModal();
+    } catch (err) {
+      console.log('공고를 등록하는데 오류가 발생했어요:, err');
+    }
   };
 
   return (
@@ -60,11 +65,15 @@ const PostAnnounce = () => {
               'max-w-[90%] sm:max-w-[680px] lg:max-w-[964px]',
               'pb-[80px] md:pb-[60px]',
             )}>
-            <div className='flex justify-between mb-6'>
+            <div className='flex justify-between mb-8'>
               <div className='text-20b'>공고 등록</div>
               <p
                 className='cursor-pointer text-18m hover:text-red-40'
-                onClick={() => window.history.back()}>
+                onClick={() =>
+                  window.confirm(
+                    '공고 등록을 취소하시겠습니까?\n\n작성된 데이터가 사라질 수 있습니다.',
+                  ) && router.back()
+                }>
                 ✖
               </p>
             </div>
@@ -79,11 +88,12 @@ const PostAnnounce = () => {
                 label='시급*'
                 rightAddon='원'
                 className='relative'
+                type='number'
                 error={errors.hourlyPay?.message}
                 {...register('hourlyPay', {
                   required: '기본 시급을 입력해 주세요.',
                   validate: (value) =>
-                    parseInt(value, 10) >= 10030 ||
+                    value >= 10030 ||
                     '시급은 10,030원 이상만 입력할 수 있어요.',
                   pattern: {
                     value: /^\d+$/,
@@ -91,6 +101,7 @@ const PostAnnounce = () => {
                   },
                 })}
               />
+
               <Input
                 label='시작 일시*'
                 type='datetime-local'
@@ -99,6 +110,7 @@ const PostAnnounce = () => {
                   required: '시작 일시를 입력해 주세요.',
                 })}
               />
+
               <Input
                 label='업무 시간*'
                 rightAddon='시간'
@@ -112,6 +124,7 @@ const PostAnnounce = () => {
                   },
                 })}
               />
+
               <div className='col-span-1 md:col-span-2 flex flex-col gap-2 w-full lg:col-[span_3]'>
                 <div>공고 설명</div>
                 <textarea
@@ -123,6 +136,7 @@ const PostAnnounce = () => {
                   {...register('description')}
                 />
               </div>
+
               <div className='col-span-1 md:col-span-2 lg:col-span-3 flex justify-center lg:justify-center'>
                 <Button
                   size='md'
@@ -140,7 +154,9 @@ const PostAnnounce = () => {
               content='등록이 완료되었습니다.'
               onClose={() => {
                 closeModal();
-                router.replace('/announce/detail/123');
+                if (noticeId) {
+                  router.replace(`/announce/detail/${noticeId}`);
+                }
               }}
             />
           </div>
