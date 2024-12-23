@@ -1,22 +1,19 @@
 'use client';
 
-import { useContext, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Logo from './Logo';
-import { AuthContext } from '../_context/AuthContext';
-import { useWindowWidth } from '../_hooks/useWindowWidth';
 import NotificationModal from './NotificationModal/NotificationModal';
-import { useNotifications } from '../_hooks/useNotifications'; // 알림 상태 가져오는 훅
+
+import { useState } from 'react';
+import { useAuth } from '../_hooks/useAuth';
+import { useWindowWidth } from '../_hooks/useWindowWidth';
+import { useNotifications } from '../_hooks/useNotifications';
 
 const Header = () => {
-  const authContext = useContext(AuthContext);
+  const { user, logout } = useAuth();
   const windowWidth = useWindowWidth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // 사용자 상태와 로그아웃 함수
-  const user = authContext?.user || null;
-  const logout = authContext?.logout || (() => {});
 
   // 알림 상태 가져오기
   const isNotificationActive = useNotifications();
