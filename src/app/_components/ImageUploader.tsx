@@ -64,7 +64,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
                 src={image}
                 alt='가게 이미지'
                 className='rounded-lg object-cover w-full h-full'
-                layout='fill'
+                fill
               />
             </div>
           </div>
