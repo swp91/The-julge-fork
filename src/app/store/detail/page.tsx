@@ -1,3 +1,4 @@
+'use client';
 import Footer from '@/app/_components/footer';
 import Header from '@/app/_components/header';
 import PostProfile from '@/app/_components/PostProfile';
@@ -20,7 +21,10 @@ const storeDetailPage = () => {
             )}
           </div>
         ) : (
-          <PostProfile isExist={storeStatus} type={'myStore'} />
+          <div>
+            <PostProfile isExist={storeStatus} type={'myStore'} />
+            <div className='h-[358px]'></div>
+          </div>
         )}
       </div>
       <Footer />
