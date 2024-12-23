@@ -3,11 +3,11 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Link from 'next/link';
-import { Input } from '../_components/Input';
+import Input from '../_components/Input';
 import Logo from '../_components/Logo';
 import Button from '../_components/Button';
 import { login } from '../_api/auth_api';
-import { Modal } from '../_components/Modal';
+import Modal from '../_components/Modal';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../_hooks/useAuth';
 
