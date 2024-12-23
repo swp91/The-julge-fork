@@ -1,7 +1,7 @@
 'use client';
 import Button from '@/app/_components/Button';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ProfileData {
   name?: string;
@@ -11,8 +11,6 @@ interface ProfileData {
 }
 
 const ProfileCard = (profiledata: ProfileData) => {
-  const router = useRouter();
-
   return (
     <div className='flex justify-center px-4 py-6'>
       <div
@@ -41,13 +39,11 @@ const ProfileCard = (profiledata: ProfileData) => {
                 {profiledata.name}
               </div>
             </div>
-            <Button
-              style='bordered'
-              size='sm'
-              className='ml-4'
-              onClick={() => router.push('/profile/post')}>
-              편집하기
-            </Button>
+            <Link href={'/profile/post'}>
+              <Button style='bordered' size='sm' className='ml-4'>
+                편집하기
+              </Button>
+            </Link>
           </div>
           <div className='flex flex-col gap-4 mb-4'>
             <div className='flex items-center gap-2'>
