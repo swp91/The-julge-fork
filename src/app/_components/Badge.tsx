@@ -11,14 +11,13 @@ export default function Badge({ status, percent, isPast }: BadgeProps) {
   const badgeClass = clsx(
     'inline-flex items-center justify-center w-fit px-2.5 py-1.5 rounded-full text-14b',
     {
-      'bg-gray-200 text-white' : isPast,
       'bg-blue-10 text-blue-20': status === '승인',
       'bg-red-10 text-red-40': status === '거절',
       'bg-green-10 text-green-20': status === '대기',
-      
+      'bg-red-40 text-white': percent !== undefined && percent >= 50 && !isPast,
+      'bg-red-20 text-white': percent !== undefined && percent < 50 && !isPast,
+      'bg-gray-300 text-white': percent !== undefined && isPast,
     },
-    percent !== undefined &&
-      (percent >= 50 ? 'bg-red-40 text-white' : 'bg-red-20 text-white'),
   );
 
   return (
