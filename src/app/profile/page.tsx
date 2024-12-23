@@ -12,14 +12,17 @@ import { tableConfig } from '../_config/tableConfig';
 import { ProfileData, Application } from './_type/type';
 
 const ProfilePage = () => {
+  //상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(false);
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // 한 페이지에 표시할 항목 수
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  // 데이터 관리
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [applications, setApplications] = useState<Application[]>([]);
+  // 페이지 네이션
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // 한 페이지에 표시할 항목 수
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -47,9 +50,9 @@ const ProfilePage = () => {
           applicationItems.map((app: any) => ({
             id: app.item.id,
             status: app.item.status,
-            date: app.item.createdAt, // createdAt 제거
+            date: app.item.createdAt,
             shopName: app.item.shop?.item?.name || 'N/A',
-            hourlyPay: app.item.wage || '10,030원', // wage 제거
+            hourlyPay: app.item.wage || '10,030원',
           })),
         );
       } catch (err: any) {
