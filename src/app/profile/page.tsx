@@ -28,8 +28,8 @@ interface Application {
 }
 
 const ProfilePage = () => {
-  const [profileStatus, setProfileStatus] = useState(true);
-  const [applicationStatus, setApplicationStatus] = useState(true);
+  const [profileStatus, setProfileStatus] = useState(false);
+  const [applicationStatus, setApplicationStatus] = useState(false);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [applications, setApplications] = useState<Application[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -45,7 +45,7 @@ const ProfilePage = () => {
         // 프로필 데이터 가져오기
         const userInfoResponse = await getUserInfo('user_Id');
         const userInfo = userInfoResponse.data.item;
-
+        if (userInfo) setProfileStatus(true);
         setProfileData({
           name: userInfo.name,
           email: userInfo.email,
@@ -58,7 +58,7 @@ const ProfilePage = () => {
         // 신청 내역 데이터 가져오기
         const applicationsResponse = await getUserApplications('user_Id');
         const applicationItems = applicationsResponse.data.items;
-
+        if (applicationItems) setApplicationStatus(true);
         setApplications(
           applicationItems.map((app: any) => ({
             id: app.item.id,
