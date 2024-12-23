@@ -9,23 +9,7 @@ import Table from '../_components/Table';
 import Pagination from '../_components/Pagination';
 import { getUserInfo, getUserApplications } from '../_api/worker_api';
 import { tableConfig } from '../_config/tableConfig';
-
-interface ProfileData {
-  name?: string;
-  email: string;
-  type: string;
-  phone?: string;
-  address?: string;
-  bio?: string;
-}
-
-interface Application {
-  id: string;
-  status: string;
-  date: string | undefined;
-  shopName: string;
-  hourlyPay?: string;
-}
+import { ProfileData, Application } from './_type/type';
 
 const ProfilePage = () => {
   const [profileStatus, setProfileStatus] = useState(false);
