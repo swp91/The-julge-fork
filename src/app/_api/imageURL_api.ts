@@ -9,7 +9,7 @@ export const createPresignedUrl = async (imageName: string) => {
     { headers: { requiresToken: true } },
   );
 
-  const { item } = response;
+  const { item } = response.data;
   return item.url;
 };
 
