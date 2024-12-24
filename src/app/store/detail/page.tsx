@@ -1,6 +1,6 @@
 'use client';
-import Footer from '@/app/_components/footer';
-import Header from '@/app/_components/header';
+import Footer from '@/app/_components/Footer';
+import Header from '@/app/_components/Header';
 import PostProfile from '@/app/_components/PostProfile';
 import { useState } from 'react';
 
