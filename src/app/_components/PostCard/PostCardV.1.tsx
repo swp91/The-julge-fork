@@ -4,6 +4,9 @@ import clsx from 'clsx';
 import Button from '../Button';
 import Image from 'next/image';
 import { useWindowWidth } from '../../_hooks/useWindowWidth';
+import { useNavigate } from 'react-router-dom'; 
+
+
 interface PostCardProps {
   name: string; // 이름
   address1: string; // 주소1
@@ -21,6 +24,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
     const windowWidth = useWindowWidth(); // 현재 창 너비 가져오기
     const isDesktop = windowWidth >= 964; 
+    const navigate = useNavigate();
 
     if (isDesktop) {
       // 데스크톱 레이아웃
@@ -64,15 +68,14 @@ const PostCard: React.FC<PostCardProps> = ({
               style='bordered'
               size='full'
               className='text-16b bg-white'
-              onClick={() => console.log('편집하기 클릭')}
-            >
+              onClick={() => navigate('/edit')}> {/* 경로 수정 */}
               편집하기
             </Button>
             <Button 
             style="default" 
             size='full'
             className='text-16b'
-            onClick={() => console.log('공고 등록하기 클릭')}>
+            onClick={() => navigate('/register')}> {/* 경로 수정 */}
           공고 등록하기
         </Button>
             </div>
@@ -105,18 +108,21 @@ const PostCard: React.FC<PostCardProps> = ({
               </p>
             <p className="mt-2 text-14  text-black">{description}</p>
             <div className="flex justify-between mt-4">
-              <Button 
-              style="bordered" 
-              size="full" 
-              className='bg-white'
-              onClick={() => console.log('편집하기 클릭')}>
+
+            <Button
+                type='button'
+                style='bordered'
+                size='full'
+                className='text-16b bg-white'
+                onClick={() => navigate('/edit')}> {/* 경로 수정 */}
                 편집하기
               </Button>
               <Button 
-              style="default" 
-              size="full" 
-              className='ml-1'
-              onClick={() => console.log('공고 등록하기 클릭')}>
+                type='button'
+                style="default" 
+                size='full'
+                className='text-16b'
+                onClick={() => navigate('/register')}> {/* 경로 수정 */}
                 공고 등록하기
               </Button>
               </div>
