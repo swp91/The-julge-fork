@@ -80,15 +80,11 @@ const StoreDetailPage: React.FC = () => {
       alert('가게 ID가 없습니다. 이전 페이지로 이동합니다.');
       router.back();
       return;
-    }
+    } else if (!shopIdString || !noticeIdString) return;
 
     fetchShopInfo();
-  }, [shopIdString, router]);
-
-  useEffect(() => {
-    if (!shopIdString || !noticeIdString) return;
     fetchNotices();
-  }, [shopIdString, noticeIdString]);
+  }, [shopIdString, router, noticeIdString]);
 
   if (loading) {
     return <div>Loading...</div>;
