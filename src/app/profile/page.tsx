@@ -8,14 +8,10 @@ import ProfileCard from './_components/ProfileCard';
 import Table from '../_components/Table';
 import Pagination from '../_components/Pagination';
 import { getUserInfo, getUserApplications } from '../_api/worker_api';
-import { tableConfig } from '../_config/tableConfig';
-import { ProfileData, WorkerData } from './_type/type';
-import { useParams, useRouter } from 'next/navigation';
+import { tableConfig, WorkerData } from '../_config/tableConfig';
+import { ProfileData } from './_type/type';
 
 const ProfilePage = () => {
-  const router = useRouter();
-  const { id } = useParams();
-  const user_id = id as string;
   //상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(false);
