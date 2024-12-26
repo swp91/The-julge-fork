@@ -147,7 +147,7 @@ const ProfilePage = () => {
               <PostProfile
                 isExist={applicationStatus}
                 type='application'
-                navigateTo={''}
+                navigateTo={'/announce'}
               />
             )}
           </div>
