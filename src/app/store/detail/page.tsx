@@ -20,7 +20,7 @@ interface StoreData {
 const StoreDetailPage: React.FC = () => {
   const { shopId, noticeId } = useParams();
   const router = useRouter();
-  const shopIdString = Array.isArray(shopId) ? shopId[0] : shopId; // shopId의 타입이 string|string[]으로 되서 배열을 방지하기 위해 사용
+  const shopIdString = Array.isArray(shopId) ? shopId[0] : shopId;
   const noticeIdString = Array.isArray(noticeId) ? noticeId[0] : noticeId;
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -76,22 +76,12 @@ const StoreDetailPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!shopIdString) {
-      alert('가게 ID가 없습니다. 이전 페이지로 이동합니다.');
-      router.back();
-      return;
-    } else if (!shopIdString || !noticeIdString) return;
-
     fetchShopInfo();
     fetchNotices();
   }, [shopIdString, router, noticeIdString]);
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (!storeStatus) {
-    return <div>가게 정보를 불러올 수 없습니다. 다시 시도해 주세요.</div>;
   }
 
   return (
