@@ -141,12 +141,20 @@ const ProfilePage = () => {
                 />
               </div>
             ) : (
-              <PostProfile isExist={applicationStatus} type='application' />
+              <PostProfile
+                isExist={applicationStatus}
+                type='application'
+                navigateTo={''}
+              />
             )}
           </div>
         ) : (
           <div>
-            <PostProfile isExist={profileStatus} type='profile' />
+            <PostProfile
+              isExist={profileStatus}
+              type='profile'
+              navigateTo={`/profile/post/${user_id}`}
+            />
             <div className='h-[358px]'></div>
           </div>
         )}
