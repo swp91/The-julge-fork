@@ -9,9 +9,13 @@ import Table from '../_components/Table';
 import Pagination from '../_components/Pagination';
 import { getUserInfo, getUserApplications } from '../_api/worker_api';
 import { tableConfig } from '../_config/tableConfig';
-import { ProfileData, Application } from './_type/type';
+import { ProfileData, WorkerData } from './_type/type';
+import { useParams, useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
+  const router = useRouter();
+  const { id } = useParams();
+  const user_id = id as string;
   //상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(false);
@@ -19,7 +23,7 @@ const ProfilePage = () => {
   const [error, setError] = useState<string | null>(null);
   // 데이터 관리
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<WorkerData[]>([]);
   // 페이지 네이션
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5); // 한 페이지에 표시할 항목 수
