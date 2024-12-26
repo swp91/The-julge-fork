@@ -120,10 +120,13 @@ const ProfilePage = () => {
           <div>
             {profileData && (
               <ProfileCard
-                name={profileData.name}
-                contact={profileData.phone || 'N/A'}
-                location={profileData.address || 'N/A'}
-                introduction={profileData.bio || 'N/A'}
+                profiledata={{
+                  name: profileData.name,
+                  contact: profileData.phone || 'N/A',
+                  location: profileData.address || 'N/A',
+                  introduction: profileData.bio || 'N/A',
+                }}
+                user_id={user_id}
               />
             )}
             {applicationStatus ? (

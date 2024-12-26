@@ -2,8 +2,11 @@
 import Button from '@/app/_components/Button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
 
+interface ProfileCardProps {
+  profiledata: ProfileData;
+  user_id: string;
+}
 interface ProfileData {
   name?: string;
   contact?: string;
@@ -11,9 +14,7 @@ interface ProfileData {
   introduction?: string;
 }
 
-const ProfileCard = (profiledata: ProfileData) => {
-  const { id } = useParams();
-  const user_id = id as string;
+const ProfileCard = (props: ProfileCardProps) => {
   return (
     <div className='flex justify-center px-4 py-6'>
       <div
@@ -39,10 +40,10 @@ const ProfileCard = (profiledata: ProfileData) => {
             <div>
               <div className='text-red-500 text-sm font-medium mb-1'>이름</div>
               <div className='text-black text-xl font-bold'>
-                {profiledata.name}
+                {props.profiledata.name}
               </div>
             </div>
-            <Link href={`/profile/post/${user_id}`}>
+            <Link href={`/profile/post/${props.user_id}`}>
               <Button style='bordered' size='sm' className='ml-4'>
                 편집하기
               </Button>
@@ -56,7 +57,9 @@ const ProfileCard = (profiledata: ProfileData) => {
                 width={20}
                 height={20}
               />
-              <span className='text-black text-sm'>{profiledata.contact}</span>
+              <span className='text-black text-sm'>
+                {props.profiledata.contact}
+              </span>
             </div>
             <div className='flex items-center gap-2'>
               <Image
@@ -66,11 +69,13 @@ const ProfileCard = (profiledata: ProfileData) => {
                 height={20}
               />
               <span className='text-black text-sm'>
-                선호 지역: {profiledata.location}
+                선호 지역: {props.profiledata.location}
               </span>
             </div>
           </div>
-          <div className='text-black text-sm'>{profiledata.introduction}</div>
+          <div className='text-black text-sm'>
+            {props.profiledata.introduction}
+          </div>
         </div>
       </div>
     </div>
