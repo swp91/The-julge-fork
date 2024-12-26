@@ -22,11 +22,58 @@ const StoreDetailPage: React.FC = () => {
   const router = useRouter();
   const shopIdString = Array.isArray(shopId) ? shopId[0] : shopId; // shopId의 타입이 string|string[]으로 되서 배열을 방지하기 위해 사용
   const noticeIdString = Array.isArray(noticeId) ? noticeId[0] : noticeId;
+
   const [loading, setLoading] = useState<boolean>(true);
   const [storeStatus, setStoreStatus] = useState<boolean>(false);
   const [announcementStatus, setAnnouncementStatus] = useState<boolean>(false);
   const [storeData, setStoreData] = useState<StoreData | null>(null);
   const [notices, setNotices] = useState<StoreData[]>([]);
+
+  const fetchShopInfo = async () => {
+    try {
+      setLoading(true);
+      const response = await getShopInfo(shopIdString as string);
+      if (response?.data.item) {
+        setStoreData(response.data.item);
+        setStoreStatus(true);
+      } else {
+        setStoreStatus(false);
+      }
+    } catch (error) {
+      console.error('가게 정보를 가져오는 중 오류 발생:', error);
+      setStoreStatus(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchNotices = async () => {
+    try {
+      const response = await getApplicationsForNotice(
+        shopIdString as string,
+        noticeIdString as string,
+        0,
+        6,
+      );
+      if (response?.data.items) {
+        const sortedNotices = response.data.items
+          .map((item: any) => item.item)
+          .filter((item: any) => item && item.notice?.item?.startsAt)
+          .sort(
+            (a: any, b: any) =>
+              new Date(b.notice.item.startsAt).getTime() -
+              new Date(a.notice.item.startsAt).getTime(),
+          );
+        setNotices(sortedNotices);
+        setAnnouncementStatus(sortedNotices.length > 0);
+      } else {
+        setAnnouncementStatus(false);
+      }
+    } catch (error) {
+      console.error('공고 정보를 가져오는 중 오류 발생:', error);
+      setAnnouncementStatus(false);
+    }
+  };
 
   useEffect(() => {
     if (!shopIdString) {
@@ -35,58 +82,11 @@ const StoreDetailPage: React.FC = () => {
       return;
     }
 
-    const fetchShopInfo = async () => {
-      try {
-        setLoading(true);
-        const response = await getShopInfo(shopIdString);
-        if (response?.data.item) {
-          setStoreData(response.data.item);
-          setStoreStatus(true);
-        } else {
-          setStoreStatus(false);
-        }
-      } catch (error) {
-        console.error('가게 정보를 가져오는 중 오류 발생:', error);
-        setStoreStatus(false);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchShopInfo();
   }, [shopIdString, router]);
 
   useEffect(() => {
     if (!shopIdString || !noticeIdString) return;
-
-    const fetchNotices = async () => {
-      try {
-        const response = await getApplicationsForNotice(
-          shopIdString,
-          noticeIdString,
-          0,
-          6,
-        );
-        if (response?.data.items) {
-          const sortedNotices = response.data.items
-            .map((item: any) => item.item)
-            .filter((item: any) => item && item.notice?.item?.startsAt)
-            .sort(
-              (a: any, b: any) =>
-                new Date(b.notice.item.startsAt).getTime() -
-                new Date(a.notice.item.startsAt).getTime(),
-            );
-          setNotices(sortedNotices);
-          setAnnouncementStatus(sortedNotices.length > 0);
-        } else {
-          setAnnouncementStatus(false);
-        }
-      } catch (error) {
-        console.error('공고 정보를 가져오는 중 오류 발생:', error);
-        setAnnouncementStatus(false);
-      }
-    };
-
     fetchNotices();
   }, [shopIdString, noticeIdString]);
 
