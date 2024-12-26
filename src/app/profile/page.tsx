@@ -10,27 +10,55 @@ import Pagination from '../_components/Pagination';
 import { getUserInfo, getUserApplications } from '../_api/worker_api';
 import { tableConfig, WorkerData } from '../_config/tableConfig';
 import { ProfileData } from './_type/type';
+import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../_hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
-  //상태 관리
+  const { token } = useAuth();
+  const router = useRouter();
+  // 상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   // 데이터 관리
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [applications, setApplications] = useState<WorkerData[]>([]);
+
   // 페이지 네이션
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // 한 페이지에 표시할 항목 수
+  const itemsPerPage = 5;
 
+  // user_id 가져오기
+  const getUserid = () => {
+    if (!token) return null;
+    try {
+      const decoded = jwtDecode<{ id: string }>(token); // 토큰 디코드
+      return decoded.id;
+    } catch (error) {
+      console.error('토큰 decode에 실패하였습니다:', error);
+      return null;
+    }
+  };
+
+  const user_id = getUserid();
+
+  useEffect(() => {
+    if (!user_id) {
+      router.replace('/announce');
+    }
+  }, [user_id, router]);
+
+  // 데이터 로드
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         setIsLoading(true);
 
         // 프로필 데이터 가져오기
-        const userInfoResponse = await getUserInfo('user_Id');
+        const userInfoResponse = await getUserInfo(user_id!); // user_id는 null이 아님
         const userInfo = userInfoResponse.data.item;
         if (userInfo) setProfileStatus(true);
         setProfileData({
@@ -43,7 +71,7 @@ const ProfilePage = () => {
         });
 
         // 신청 내역 데이터 가져오기
-        const applicationsResponse = await getUserApplications('user_Id');
+        const applicationsResponse = await getUserApplications(user_id!); // user_id는 null이 아님
         const applicationItems = applicationsResponse.data.items;
         if (applicationItems) setApplicationStatus(true);
         setApplications(
@@ -62,16 +90,21 @@ const ProfilePage = () => {
       }
     };
 
-    fetchProfileData();
-  }, []);
+    if (user_id) {
+      fetchProfileData();
+    }
+  }, [user_id]);
 
   const totalPages = Math.ceil(applications.length / itemsPerPage);
 
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return applications.slice(startIndex, endIndex);
+    return applications.slice(startIndex, startIndex + itemsPerPage);
   };
+
+  if (!user_id) {
+    return null; // user_id가 없으면 컴포넌트 렌더링 차단
+  }
 
   return (
     <div>
@@ -108,12 +141,12 @@ const ProfilePage = () => {
                 />
               </div>
             ) : (
-              <PostProfile isExist={applicationStatus} type={'application'} />
+              <PostProfile isExist={applicationStatus} type='application' />
             )}
           </div>
         ) : (
           <div>
-            <PostProfile isExist={profileStatus} type={'profile'} />
+            <PostProfile isExist={profileStatus} type='profile' />
             <div className='h-[358px]'></div>
           </div>
         )}
