@@ -2,6 +2,7 @@
 import Button from '@/app/_components/Button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 interface ProfileData {
   name?: string;
@@ -11,6 +12,8 @@ interface ProfileData {
 }
 
 const ProfileCard = (profiledata: ProfileData) => {
+  const { id } = useParams();
+  const user_id = id as string;
   return (
     <div className='flex justify-center px-4 py-6'>
       <div
@@ -39,7 +42,7 @@ const ProfileCard = (profiledata: ProfileData) => {
                 {profiledata.name}
               </div>
             </div>
-            <Link href={'/profile/post'}>
+            <Link href={`/profile/post/${user_id}`}>
               <Button style='bordered' size='sm' className='ml-4'>
                 편집하기
               </Button>
