@@ -7,9 +7,9 @@ import PostCardV2 from '@/app/_components/PostCard/PostCardV2';
 import PostProfile from '@/app/_components/PostProfile';
 
 import { useEffect, useState } from 'react';
-import { getApplicationsForNotice } from '../../_api/owner_api';
 import { useAuth } from '@/app/_hooks/useAuth';
 import { getUserInfo } from '@/app/_api/worker_api';
+import { getShopNotices } from '@/app/_api/announce_api';
 
 interface StoreData {
   id: string;
@@ -28,90 +28,46 @@ const StoreDetailPage: React.FC = () => {
   const [announcementStatus, setAnnouncementStatus] = useState<boolean>(false);
   const [storeData, setStoreData] = useState<StoreData | null>(null);
   const [notices, setNotices] = useState<StoreData[]>([]);
+  const [shopId, setShopId] = useState<string>();
 
   const userId = user?.id;
-  let shopId;
 
   useEffect(() => {
     if (userId) {
       const fetchData = async () => {
         try {
           const response = await getUserInfo(userId as string);
-          console.log('API Response:', response.data.item.shop?.item);
           setStoreData(response.data.item.shop?.item as StoreData | null);
+          setShopId(response.data.item.shop?.item.id);
         } catch (error) {
-          console.error('Error fetching user info:', error);
+          console.error('유저 정보를 불러오는데 실패하였습니다.:', error);
         }
       };
+      if (shopId) {
+        const fetchNotices = async () => {
+          try {
+            const response = await getShopNotices(shopId, 0, 6);
+            const noticeItems =
+              response?.data?.items?.map((item: any) => item.item) || [];
+            setNotices(noticeItems);
+          } catch (error) {
+            console.error('가게 정보를 불러오는데 실패하였습니다.:', error);
+          }
+        };
+        fetchNotices();
+      }
       fetchData();
     }
-  }, [userId]); // userId가 변경될 때만 실행
+  }, [userId]);
 
   useEffect(() => {
     if (storeData) {
-      console.log('Updated storeData:', storeData); // storeData 변경 시 실행
-      setStoreStatus(true); // storeData가 존재하면 true
+      setStoreStatus(true);
     } else {
-      setStoreStatus(false); // storeData가 없으면 false
+      setStoreStatus(false);
     }
-  }, [storeData]); // storeData 변경 감지
+  }, [storeData]);
 
-  // useEffect(() => {
-  //   const fetchShopInfo = async () => {
-  //     try {
-  //       const response = await getUserInfo(userId as string);
-  //       console.log(response);
-  //       if (response?.data?.item.shop) {
-  //         setStoreData(response.data.item.shop?.item);
-  //         setStoreStatus(true);
-  //       } else {
-  //         setStoreStatus(false);
-  //       }
-  //     } catch (error) {
-  //       console.error('가게 정보를 가져오는 중 오류 발생:', error);
-  //       setStoreStatus(false);
-  //     }
-  //   };
-
-  //   const fetchNotices = async () => {
-  //     try {
-  //       const response = await getApplicationsForNotice(
-  //         shopId as string,
-  //         '',
-  //         0,
-  //         6,
-  //       );
-  //       if (response?.data?.items) {
-  //         const sortedNotices = response.data.items
-  //           .map((item: any) => item.item)
-  //           .filter((item: any) => item && item.notice?.item?.startsAt)
-  //           .sort(
-  //             (a: any, b: any) =>
-  //               new Date(b.notice.item.startsAt).getTime() -
-  //               new Date(a.notice.item.startsAt).getTime(),
-  //           );
-  //         setNotices(sortedNotices);
-  //         setAnnouncementStatus(sortedNotices.length > 0);
-  //       } else {
-  //         setAnnouncementStatus(false);
-  //       }
-  //     } catch (error) {
-  //       console.error('공고 정보를 가져오는 중 오류 발생:', error);
-  //       setAnnouncementStatus(false);
-  //     }
-  //   };
-  //   const fetchData = async () => {
-  //     if (userId) {
-  //       await fetchShopInfo();
-  //       await fetchNotices();
-  //     }
-  //   };
-  //   fetchData();
-  //   console.log(user);
-  //   console.log('userid: ' + userId);
-  //   console.log('shopid: ' + shopId);
-  //   console.log('shopdata: ' + storeData);
-  // }, []);
   return (
     <>
       <Header />
@@ -141,7 +97,7 @@ const StoreDetailPage: React.FC = () => {
                 <PostProfile
                   isExist={announcementStatus}
                   type={'announcement'}
-                  navigateTo={`/announce/post`}
+                  navigateTo={`/announce/post?shopId=${shopId}`}
                 />
               )}
             </div>
