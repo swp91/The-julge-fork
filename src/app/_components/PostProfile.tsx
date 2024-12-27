@@ -1,44 +1,41 @@
 'use client';
 
 import Button from '@/app/_components/Button';
+import Link from 'next/link';
 
 interface PostProps {
   isExist: boolean;
   type: keyof typeof POST_TYPE_CONFIG;
+  navigateTo: string;
 }
 
 const POST_TYPE_CONFIG = {
   myStore: {
     title: '내 가게',
-    navigateTo: '',
     buttonLabel: '가게 등록하기',
     description: '내 가게를 소개하고 공고도 등록해 보세요.',
   },
   announcement: {
     title: '등록된 공고',
-    navigateTo: '',
     buttonLabel: '공고 등록하기',
     description: '공고를 등록해 보세요.',
   },
   profile: {
     title: '내 프로필',
-    navigateTo: '',
     buttonLabel: '내 프로필 등록하기',
     description: '내 프로필을 등록하고 원하는 가게에 지원해 보세요.',
   },
   application: {
     title: '신청 내역',
-    navigateTo: '',
     buttonLabel: '공고 보러가기',
     description: '아직 신청 내역이 없어요.',
   },
 } as const;
 
-const PostProfile = ({ isExist, type }: PostProps) => {
+const PostProfile = ({ isExist, type, navigateTo }: PostProps) => {
   if (isExist) return null;
 
-  const { title, navigateTo, buttonLabel, description } =
-    POST_TYPE_CONFIG[type];
+  const { title, buttonLabel, description } = POST_TYPE_CONFIG[type];
 
   return (
     <div className='flex justify-center items-center'>
@@ -55,13 +52,9 @@ const PostProfile = ({ isExist, type }: PostProps) => {
           <p className='text-gray-500 mb-6 text-sm md:text-base text-center'>
             {description}
           </p>
-          <Button
-            size='lg'
-            onClick={() => {
-              window.location.href = navigateTo;
-            }}>
-            {buttonLabel}
-          </Button>
+          <Link href={`${navigateTo}`}>
+            <Button size='lg'>{buttonLabel}</Button>
+          </Link>
         </div>
       </div>
     </div>
