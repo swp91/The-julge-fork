@@ -58,16 +58,21 @@ const StoreDetailPage: React.FC = () => {
       }
       fetchData();
     }
-  }, [userId]);
+  }, [userId, shopId]);
 
   useEffect(() => {
     if (storeData) {
       setStoreStatus(true);
+      if (notices) {
+        setAnnouncementStatus(true);
+        console.log(notices);
+      } else {
+        setAnnouncementStatus(false);
+      }
     } else {
       setStoreStatus(false);
     }
-  }, [storeData]);
-
+  }, [storeData, notices]);
   return (
     <>
       <Header />
@@ -88,7 +93,7 @@ const StoreDetailPage: React.FC = () => {
                       key={index}
                       name={notice.name || ''}
                       address1={notice.address1 || ''}
-                      imageUrl={notice.imageUrl || ''}
+                      imageUrl={storeData?.imageUrl || ''}
                       description={notice.description || ''}
                     />
                   ))}
