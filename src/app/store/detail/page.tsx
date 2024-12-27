@@ -1,7 +1,7 @@
 'use client';
 
-import Footer from '@/app/_components/footer';
-import Header from '@/app/_components/header';
+import Footer from '@/app/_components/Footer';
+import Header from '@/app/_components/Header';
 import PostCard from '@/app/_components/PostCard/PostCardV.1';
 import PostCardV2 from '@/app/_components/PostCard/PostCardV2';
 import PostProfile from '@/app/_components/PostProfile';

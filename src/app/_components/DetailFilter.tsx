@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Input } from './Input';
+import Input from './Input';
 import Image from 'next/image';
 import { LOCATIONS } from '../_constants/constants';
 import Button from './Button';
