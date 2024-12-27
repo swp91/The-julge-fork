@@ -79,7 +79,8 @@ const StoreDetailPage: React.FC = () => {
       <div className='bg-gray-50'>
         <div className='mx-auto pt-10 px-4 sm:px-6 lg:px-8 max-w-[90%] sm:max-w-[680px] lg:max-w-[964px] pb-[80px] md:pb-[60px]'>
           {storeStatus ? (
-            <div>
+            <div className=' mb-[60px]'>
+              <h2 className='text-28b mb-6'>내 가게</h2>
               <PostCard
                 name={storeData?.name || ''}
                 address1={storeData?.address1 || ''}
@@ -87,7 +88,8 @@ const StoreDetailPage: React.FC = () => {
                 description={storeData?.description || ''}
               />
               {announcementStatus ? (
-                <div>
+                <div className='mt-[60px]'>
+                  <h2 className='text-28b mb-6'>내가 등록한 공고</h2>
                   {notices.map((notice, index) => (
                     <PostCardV2
                       key={index}
