@@ -49,7 +49,7 @@ const Header = () => {
     <div className='relative'>
       {user ? (
         <div className='flex gap-4 lg:gap-10'>
-          <Link href={'/store'}>내 가게</Link>
+          <Link href={'/store/detail'}>내 가게</Link>
           <button onClick={logout}>로그아웃</button>
           <button onClick={toggleModal}>
             {isNotificationActive ? (
