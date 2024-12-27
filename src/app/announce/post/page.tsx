@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-import Header from '@/app/_components/header';
-import Footer from '@/app/_components/footer';
+import Header from '@/app/_components/Header';
+import Footer from '@/app/_components/Footer';
 import Input from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
 import Modal from '@/app/_components/Modal';
