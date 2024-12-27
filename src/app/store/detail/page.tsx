@@ -6,11 +6,15 @@ import PostCard from '@/app/_components/PostCard/PostCardV.1';
 import PostCardV2 from '@/app/_components/PostCard/PostCardV2';
 import PostProfile from '@/app/_components/PostProfile';
 
-import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { getShopInfo, getApplicationsForNotice } from '../../_api/owner_api';
+import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '@/app/_hooks/useAuth';
+import axios from 'axios';
+import { getUserInfo } from '@/app/_api/worker_api';
 
 interface StoreData {
+  id: string;
   name: string;
   address1: string;
   imageUrl: string;
@@ -18,23 +22,20 @@ interface StoreData {
 }
 
 const StoreDetailPage: React.FC = () => {
-  const { shopId, noticeId } = useParams();
-  const router = useRouter();
-  const shopIdString = Array.isArray(shopId) ? shopId[0] : shopId;
-  const noticeIdString = Array.isArray(noticeId) ? noticeId[0] : noticeId;
-
-  const [loading, setLoading] = useState<boolean>(true);
+  const { user } = useAuth();
   const [storeStatus, setStoreStatus] = useState<boolean>(false);
   const [announcementStatus, setAnnouncementStatus] = useState<boolean>(false);
   const [storeData, setStoreData] = useState<StoreData | null>(null);
   const [notices, setNotices] = useState<StoreData[]>([]);
 
+  const userId = user?.id;
+  const shopId = user?.shop?.item.id;
+
   const fetchShopInfo = async () => {
     try {
-      setLoading(true);
-      const response = await getShopInfo(shopIdString as string);
-      if (response?.data.item) {
-        setStoreData(response.data.item);
+      const response = await getUserInfo(userId as string);
+      if (response?.data?.item.shop) {
+        setStoreData(response.data.item.shop?.item);
         setStoreStatus(true);
       } else {
         setStoreStatus(false);
@@ -42,20 +43,18 @@ const StoreDetailPage: React.FC = () => {
     } catch (error) {
       console.error('가게 정보를 가져오는 중 오류 발생:', error);
       setStoreStatus(false);
-    } finally {
-      setLoading(false);
     }
   };
 
   const fetchNotices = async () => {
     try {
       const response = await getApplicationsForNotice(
-        shopIdString as string,
-        noticeIdString as string,
+        shopId as string,
+        '',
         0,
         6,
       );
-      if (response?.data.items) {
+      if (response?.data?.items) {
         const sortedNotices = response.data.items
           .map((item: any) => item.item)
           .filter((item: any) => item && item.notice?.item?.startsAt)
@@ -76,14 +75,16 @@ const StoreDetailPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchShopInfo();
-    fetchNotices();
-  }, [shopIdString, router, noticeIdString]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+    const fetchData = async () => {
+      if (shopId) {
+        await fetchShopInfo();
+        await fetchNotices();
+      }
+    };
+    fetchData();
+  }, [shopId]);
+  console.log('userid' + userId);
+  console.log(shopId);
   return (
     <>
       <Header />
@@ -113,12 +114,17 @@ const StoreDetailPage: React.FC = () => {
                 <PostProfile
                   isExist={announcementStatus}
                   type={'announcement'}
+                  navigateTo={`/announce/post`}
                 />
               )}
             </div>
           ) : (
             <div>
-              <PostProfile isExist={storeStatus} type={'myStore'} />
+              <PostProfile
+                isExist={storeStatus}
+                type={'myStore'}
+                navigateTo={'/store/post'}
+              />
               <div className='h-[358px]'></div>
             </div>
           )}
