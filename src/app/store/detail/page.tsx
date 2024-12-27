@@ -63,7 +63,7 @@ const StoreDetailPage: React.FC = () => {
   useEffect(() => {
     if (storeData) {
       setStoreStatus(true);
-      if (notices) {
+      if (notices.length > 0) {
         setAnnouncementStatus(true);
         console.log(notices);
       } else {
