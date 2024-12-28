@@ -6,7 +6,6 @@ import Logo from './Logo';
 import NotificationModal from './NotificationModal/NotificationModal';
 
 import { useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; // 토큰 디코드 라이브러리
 import { useAuth } from '../_hooks/useAuth';
 import { useWindowWidth } from '../_hooks/useWindowWidth';
 import { useNotifications } from '../_hooks/useNotifications';
