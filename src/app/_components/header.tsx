@@ -40,7 +40,7 @@ const Header = () => {
       />
       <input
         type='text'
-        className='min-w-[300px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1'
+        className='min-w-[280px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1'
         placeholder='가게 이름으로 찾아보세요.'
       />
     </div>
