@@ -14,23 +14,13 @@ export const useCreateImgUrl = () => {
     setError(null);
 
     try {
-      // 파일 압축
       const compressed = await compressFile(file);
-      console.log('발급전', compressed);
-      // Presigned URL 발급
       const presignedUrl = await createPresignedUrl(compressed.name);
-      console.log('발급후', compressed);
-      console.log(presignedUrl);
 
-      // S3에 업로드
       await uploadToS3(presignedUrl, compressed);
 
-      //쿼리마라미터 떼버리기
       const cleanUrl = presignedUrl.split('?')[0];
-      console.log('안뗸거', presignedUrl);
-      console.log('뗀거', cleanUrl);
 
-      // 업로드된 URL 저장
       setUploadedUrl(cleanUrl);
 
       return cleanUrl;

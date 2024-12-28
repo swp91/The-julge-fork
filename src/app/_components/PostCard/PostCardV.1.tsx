@@ -4,8 +4,7 @@ import clsx from 'clsx';
 import Button from '../Button';
 import Image from 'next/image';
 import { useWindowWidth } from '../../_hooks/useWindowWidth';
-import { useNavigate } from 'react-router-dom'; 
-
+import { useNavigate } from 'react-router-dom';
 
 interface PostCardProps {
   name: string; // 이름
@@ -19,117 +18,115 @@ const PostCard: React.FC<PostCardProps> = ({
   address1,
   imageUrl,
   description,
-
 }) => {
+  const windowWidth = useWindowWidth(); // 현재 창 너비 가져오기
+  const isDesktop = windowWidth >= 964;
+  const navigate = useNavigate();
 
-    const windowWidth = useWindowWidth(); // 현재 창 너비 가져오기
-    const isDesktop = windowWidth >= 964; 
-    const navigate = useNavigate();
+  if (isDesktop) {
+    // 데스크톱 레이아웃
+    return (
+      <div
+        className={clsx(
+          'w-full max-w-[964px] p-6 bg-red-10 border rounded-xl shadow-md flex flex-row gap-6',
+        )}>
+        {/* 이미지 */}
+        <div className='relative w-[539px] h-[308px] flex-shrink-0 rounded-xl overflow-hidden'>
+          <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
+        </div>
 
-    if (isDesktop) {
-      // 데스크톱 레이아웃
-      return (
-        <div
-          className={clsx(
-            'w-full max-w-[964px] p-6 bg-red-10 border rounded-xl shadow-md flex flex-row gap-6'
-          )}>
-
-          {/* 이미지 */}
-          <div className='relative w-[539px] h-[308px] flex-shrink-0 rounded-xl overflow-hidden'>
-            <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
-          </div>
-  
-          {/* 텍스트 */}
-          <div className='flex-1 flex flex-col justify-between mt-6'>
-            <div>
-              <p className='text-16b text-primary'>식당</p>
-              <h2 className="mt-2 text-28b text-black">{name}</h2>
-                {/* 주소 */}
-              {address1 && (
-                <p className='flex items-center mt-2 text-16 text-gray-500'>
-                  <Image
-                    src='./image/path11.svg'
-                    alt='주소 아이콘'
-                    width={20}
-                    height={20}
-                    className='mr-1'
-                  />
-                  {address1}
-                </p>
-              )}
-              {/* 상세 설명 */}
-              <p className='mt-4 line-clamp-4 text-black text-16 leading-relaxed'>
-                {description}
+        {/* 텍스트 */}
+        <div className='flex-1 flex flex-col justify-between mt-6'>
+          <div>
+            <p className='text-16b text-primary'>식당</p>
+            <h2 className='mt-2 text-28b text-black'>{name}</h2>
+            {/* 주소 */}
+            {address1 && (
+              <p className='flex items-center mt-2 text-16 text-gray-500'>
+                <Image
+                  src='./image/path11.svg'
+                  alt='주소 아이콘'
+                  width={20}
+                  height={20}
+                  className='mr-1'
+                />
+                {address1}
               </p>
-            </div>
-            <div className ='flex justify-end gap-4 '>
+            )}
+            {/* 상세 설명 */}
+            <p className='mt-4 line-clamp-4 text-black text-16 leading-relaxed'>
+              {description}
+            </p>
+          </div>
+          <div className='flex justify-end gap-4 '>
             {/* 버튼 */}
             <Button
               style='bordered'
               size='full'
               className='text-16b bg-white'
-              onClick={() => navigate('/edit')}> {/* 경로 수정 */}
+              onClick={() => navigate('/edit')}>
+              {' '}
+              {/* 경로 수정 */}
               편집하기
             </Button>
-            <Button 
-            style="default" 
+            <Button
+              style='default'
+              size='full'
+              className='text-16b'
+              onClick={() => navigate('/register')}>
+              {' '}
+              {/* 경로 수정 */}
+              공고 등록하기
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className='w-[351px] h-auto md:w-[680px] md:h-[677px] p-3 md:p-4 bg-red-10 border border-gray-200 rounded-xl shadow-md'>
+      <div className='relative w-full h-[200px]  md:h-[360px] rounded-xl overflow-hidden'>
+        <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
+      </div>
+      <div>
+        <h1 className='text-14b text-primary md:text-16b mt-2'>식당</h1>
+        <h2 className='mt-2 text-24b text-black md:text-28b'>{name}</h2>
+        <p className='flex items-center mt-2 text-14 text-gray-500'>
+          <Image
+            src='./image/path11.svg'
+            alt='주소 아이콘'
+            width={16}
+            height={16}
+            className='mr-1'
+          />
+          {address1}
+        </p>
+        <p className='mt-2 text-14  text-black'>{description}</p>
+        <div className='flex justify-between mt-4'>
+          <Button
+            type='button'
+            style='bordered'
+            size='full'
+            className='text-16b bg-white'
+            onClick={() => navigate('/edit')}>
+            {' '}
+            {/* 경로 수정 */}
+            편집하기
+          </Button>
+          <Button
+            type='button'
+            style='default'
             size='full'
             className='text-16b'
-            onClick={() => navigate('/register')}> {/* 경로 수정 */}
-          공고 등록하기
-        </Button>
-            </div>
-          </div>
-              </div>
-          );
-        };
-        return (
-          <div className="w-[351px] h-auto md:w-[680px] md:h-[677px] p-3 md:p-4 bg-red-10 border border-gray-200 rounded-xl shadow-md">
-            <div className='relative w-full h-[200px]  md:h-[360px] rounded-xl overflow-hidden'>
-              <Image
-                src={imageUrl}
-                alt={name}
-                layout='fill'
-                objectFit='cover'
-                />
-            </div>
-            <div>
-            <h1 className='text-14b text-primary md:text-16b mt-2'>식당</h1>
-            <h2 className="mt-2 text-24b text-black md:text-28b">{name}</h2>
-            <p className= 'flex items-center mt-2 text-14 text-gray-500'>
-                <Image
-                  src='./image/path11.svg'
-                  alt='주소 아이콘'
-                  width={16}
-                  height={16}
-                  className='mr-1'
-                />
-                {address1}
-              </p>
-            <p className="mt-2 text-14  text-black">{description}</p>
-            <div className="flex justify-between mt-4">
+            onClick={() => navigate('/register')}>
+            {' '}
+            {/* 경로 수정 */}
+            공고 등록하기
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-            <Button
-                type='button'
-                style='bordered'
-                size='full'
-                className='text-16b bg-white'
-                onClick={() => navigate('/edit')}> {/* 경로 수정 */}
-                편집하기
-              </Button>
-              <Button 
-                type='button'
-                style="default" 
-                size='full'
-                className='text-16b'
-                onClick={() => navigate('/register')}> {/* 경로 수정 */}
-                공고 등록하기
-              </Button>
-              </div>
-            </div>
-          </div>
-        );
-      };
-            
-
-export default PostCard
+export default PostCard;

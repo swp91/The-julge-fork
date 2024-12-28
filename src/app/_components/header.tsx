@@ -16,6 +16,8 @@ const Header = () => {
   const windowWidth = useWindowWidth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  console.log(user);
+
   // 알림 상태 가져오기
   const isNotificationActive = useNotifications();
 
