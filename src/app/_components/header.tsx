@@ -12,26 +12,14 @@ import { useWindowWidth } from '../_hooks/useWindowWidth';
 import { useNotifications } from '../_hooks/useNotifications';
 
 const Header = () => {
-  const { user, token, logout } = useAuth();
+  const { user, logout } = useAuth();
   const windowWidth = useWindowWidth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 알림 상태 가져오기
   const isNotificationActive = useNotifications();
 
-  // 토큰에서 유저 타입 가져오기
-  const getUserType = () => {
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode<{ type: string }>(token); // 토큰 디코드
-      return decoded.type;
-    } catch (error) {
-      console.error('토큰 decode에 실패하였습니다:', error);
-      return null;
-    }
-  };
-
-  const userType = getUserType();
+  const userType = user?.type;
 
   // 알림 모달 토글
   const toggleModal = () => {
