@@ -42,6 +42,7 @@ const Login = () => {
         token: response.data.item.token,
         user: response.data.item.user.item,
       });
+
       router.push('/');
     } catch (error: any) {
       let errorMessage = '로그인에 실패했습니다 잠시 후 다시 시도해주세요.';
