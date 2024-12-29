@@ -181,7 +181,7 @@ const PostStore = () => {
             onClose={() => {
               closeModal();
               if (shopId) {
-                router.replace(`/store/detail/${shopId}`);
+                router.replace(`/store/detail/`);
               }
             }}
           />
