@@ -65,9 +65,7 @@ const Header = () => {
     <div className='relative'>
       {user ? (
         <div className='flex gap-4 lg:gap-10'>
-          {userType === 'employer' && (
-            <Link href={'/store/detail'}>내 가게</Link>
-          )}
+          {userType === 'employer' && <Link href={'/store/detail'}>내 가게</Link>}
           {userType === 'employee' && <Link href={'/profile'}>내 프로필</Link>}
           <button onClick={logout}>로그아웃</button>
           <button onClick={toggleModal}>

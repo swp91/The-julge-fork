@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/app/_components/Button';
+import Link from 'next/link';
 
 interface PostProps {
   isExist: boolean;
@@ -51,13 +52,9 @@ const PostProfile = ({ isExist, type, navigateTo }: PostProps) => {
           <p className='text-gray-500 mb-6 text-sm md:text-base text-center'>
             {description}
           </p>
-          <Button
-            size='lg'
-            onClick={() => {
-              window.location.href = navigateTo;
-            }}>
-            {buttonLabel}
-          </Button>
+          <Link href={`${navigateTo}`}>
+            <Button size='lg'>{buttonLabel}</Button>
+          </Link>
         </div>
       </div>
     </div>
