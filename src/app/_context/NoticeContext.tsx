@@ -5,28 +5,6 @@ import { usePathname } from 'next/navigation';
 import { getNotices } from '../_api/announce_api';
 import { encryptData, decryptData } from './util/authEncryption';
 
-interface Notice {
-  id: string;
-  hourlyPay: number;
-  startsAt: string;
-  workhour: number;
-  description: string;
-  closed: boolean;
-  shop: {
-    item: {
-      id: string;
-      name: string;
-      category: string;
-      address1: string;
-      address2: string;
-      description: string;
-      imageUrl: string;
-      originalHourlyPay: number;
-    };
-    href: string;
-  };
-}
-
 interface NoticeContextProps {
   notices: Notice[];
   totalCount: number;
