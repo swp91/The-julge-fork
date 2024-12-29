@@ -4,6 +4,7 @@ import React from 'react';
 import useMouseDrag from '@/app/_hooks/useMouseDrag';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import { useFilteredNotices } from '@/app/_hooks/useFilteredNotices';
+import Link from 'next/link';
 
 const UserNotice = () => {
   const { scrollRef, handleMouseDown, handleMouseMove, handleMouseUpOrLeave } =
@@ -35,16 +36,17 @@ const UserNotice = () => {
           onMouseLeave={handleMouseUpOrLeave}>
           <div className='flex gap-1 md:gap-[14px]'>
             {displayNotices.map((notice) => (
-              <PostCard
-                key={notice.id}
-                name={notice.shop.item.name}
-                address1={notice.shop.item.address1}
-                startsAt={notice.startsAt}
-                imageUrl={notice.shop.item.imageUrl}
-                originalHourlyPay={notice.shop.item.originalHourlyPay}
-                hourlyPay={notice.hourlyPay}
-                workhour={notice.workhour.toString()}
-              />
+              <Link href={`/announce/detail/${notice.id}`} key={notice.id}>
+                <PostCard
+                  name={notice.shop.item.name}
+                  address1={notice.shop.item.address1}
+                  startsAt={notice.startsAt}
+                  imageUrl={notice.shop.item.imageUrl}
+                  originalHourlyPay={notice.shop.item.originalHourlyPay}
+                  hourlyPay={notice.hourlyPay}
+                  workhour={notice.workhour.toString()}
+                />
+              </Link>
             ))}
           </div>
         </div>

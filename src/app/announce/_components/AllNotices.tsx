@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import Pagination from '@/app/_components/Pagination';
-import { NoticeContext } from '@/app/_context/NoticeContext';
 import Dropdown from '@/app/_components/Dropdown';
 import DetailFilter from '@/app/_components/DetailFilter';
 import { useFilteredNotices } from '@/app/_hooks/useFilteredNotices';
+import Link from 'next/link';
 
 const options = [
   '마감임박순',
@@ -17,7 +17,6 @@ const options = [
 ];
 
 const AllNotices = () => {
-  const context = useContext(NoticeContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | undefined>();
   const [filterVisible, setFilterVisible] = useState(false);
@@ -97,17 +96,18 @@ const AllNotices = () => {
 
         <div className='grid grid-cols-2 lg:grid-cols-3 w-full gap-1 md:gap-[14px]'>
           {currentPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              name={post.shop.item.name}
-              startsAt={post.startsAt}
-              workhour={post.workhour.toString()}
-              address1={post.shop.item.address1}
-              imageUrl={post.shop.item.imageUrl}
-              hourlyPay={post.hourlyPay}
-              originalHourlyPay={post.shop.item.originalHourlyPay}
-              isPast={post.closed}
-            />
+            <Link href={`/announce/detail/${post.id}`} key={post.id}>
+              <PostCard
+                name={post.shop.item.name}
+                startsAt={post.startsAt}
+                workhour={post.workhour.toString()}
+                address1={post.shop.item.address1}
+                imageUrl={post.shop.item.imageUrl}
+                hourlyPay={post.hourlyPay}
+                originalHourlyPay={post.shop.item.originalHourlyPay}
+                isPast={post.closed}
+              />
+            </Link>
           ))}
         </div>
 

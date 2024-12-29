@@ -3,6 +3,7 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { getNotices } from '../_api/announce_api';
+import { encryptData, decryptData } from './util/authEncryption';
 
 interface Notice {
   id: string;
@@ -29,6 +30,7 @@ interface Notice {
 interface NoticeContextProps {
   notices: Notice[];
   totalCount: number;
+  refreshNotices: () => Promise<void>;
 }
 
 export const NoticeContext = createContext<NoticeContextProps | undefined>(
@@ -41,8 +43,6 @@ export const NoticeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [notices, setNotices] = useState<Notice[]>([]);
   const [totalCount, setTotalCount] = useState<number>(0);
   const pathname = usePathname();
-
-  console.log(notices);
 
   const fetchAllNotices = useCallback(async () => {
     let allNotices: Notice[] = [];
@@ -67,18 +67,47 @@ export const NoticeProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
 
-    setNotices(allNotices);
-    setTotalCount(allNotices.length);
+    return allNotices;
   }, []);
 
-  useEffect(() => {
-    if (pathname === '/') {
-      fetchAllNotices();
+  const refreshNotices = useCallback(async () => {
+    try {
+      const latestNotices = await fetchAllNotices();
+
+      const encryptedData = await encryptData({
+        notices: latestNotices,
+        totalCount: latestNotices.length,
+      });
+      localStorage.setItem('notices', encryptedData);
+
+      setNotices(latestNotices);
+      setTotalCount(latestNotices.length);
+    } catch (error) {
+      console.error('동기화 실패:', error);
     }
-  }, [pathname, fetchAllNotices]);
+  }, [fetchAllNotices]);
+
+  useEffect(() => {
+    const encryptedData = localStorage.getItem('notices');
+
+    if (encryptedData) {
+      decryptData(encryptedData).then((decrypted) => {
+        const { notices, totalCount } = decrypted as {
+          notices: Notice[];
+          totalCount: number;
+        };
+        setNotices(notices);
+        setTotalCount(totalCount);
+      });
+
+      refreshNotices();
+    } else if (pathname === '/') {
+      refreshNotices();
+    }
+  }, [pathname, refreshNotices]);
 
   return (
-    <NoticeContext.Provider value={{ notices, totalCount }}>
+    <NoticeContext.Provider value={{ notices, totalCount, refreshNotices }}>
       {children}
     </NoticeContext.Provider>
   );

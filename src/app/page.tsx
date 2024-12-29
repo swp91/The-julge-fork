@@ -9,9 +9,7 @@ export default function Home() {
   return (
     <div>
       <Header />
-      {/* 맞춤공고 */}
       <UserNotice />
-      {/* 전체공고 */}
       <AllNotices />
       <Footer />
     </div>
