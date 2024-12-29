@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import Header from './_components/header';
-import DetailPostCard from './_components/PostCard/DetailPostCard';
+import Header from './_components/Header';
 import { useAuth } from './_hooks/useAuth';
 import { getUserInfo } from './_api/worker_api';
 import { getNotices } from './_api/announce_api';
+import Footer from './_components/Footer';
+import UserNotice from './announce/_components/UserNotice';
+import AllNotices from './announce/_components/AllNotices';
 
 export default function Home() {
   const { user } = useAuth();
@@ -24,7 +26,7 @@ export default function Home() {
     };
     const getTEst = async () => {
       try {
-        const response2 = await getNotices();
+        const response2 = await getNotices(0, 100);
         console.log('공고전체', response2.data);
       } catch (error) {
         console.log(error);
@@ -37,7 +39,9 @@ export default function Home() {
   return (
     <div>
       <Header />
-      <DetailPostCard />
+      <UserNotice />
+      <AllNotices />
+      <Footer />
     </div>
   );
 }

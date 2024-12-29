@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Badge from '../Badge';
 import Button from '../Button';
+import clsx from 'clsx';
 
 interface DetailPostCard {
   type?: 'store' | 'notice';
@@ -46,7 +47,11 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
           <h2 className='text-20b md:text-28b'>내 가게</h2>
         )}
         {/* 카드 부분 */}
-        <div className='w-[345px] h-auto md:w-[680px] md:h-auto lg:w-[964px] lg:h-[356px] rounded-xl border p-5 md:p-6 flex flex-col lg:flex-row justify-between mt-4 md:mt-6'>
+        <div
+          className={clsx(
+            'w-[345px] h-auto md:w-[680px] md:h-auto lg:w-[964px] lg:h-[356px] rounded-xl border p-5 md:p-6 flex flex-col lg:flex-row justify-between mt-4 md:mt-6',
+            { 'bg-red-10': type === 'store' },
+          )}>
           <div className='w-[311px] h-[177px] md:w-[632px] md:h-[361px] lg:w-[539px] lg:h-[308px] relative flex-shrink-0 rounded-xl overflow-hidden'>
             <Image
               src={imageUrl}

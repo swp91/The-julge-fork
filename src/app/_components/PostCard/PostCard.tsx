@@ -28,7 +28,7 @@ const PostCard: React.FC<PostCardProps> = ({
   return (
     <div
       className={clsx(
-        'w-[171px] h-[261px] md:w-[332px] md:h-[360px] lg:w-[312px] lg:h-[349px] gap-3 p-3 border border-gray-200 rounded-xl',
+        'w-[171px] h-[261px] md:w-[332px] md:h-[360px] lg:w-[312px] lg:h-[349px] gap-3 p-3 border border-gray-200 rounded-xl bg-white',
       )}>
       <div className='relative w-[147px] h-[84px] md:w-[300px] md:h-[171px] lg:w-[280px] lg:h-[160px] rounded-xl overflow-hidden'>
         <Image src={imageUrl} alt={name} fill className='object-cover' />
