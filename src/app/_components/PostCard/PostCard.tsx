@@ -3,16 +3,17 @@ import React from 'react';
 import clsx from 'clsx';
 import Badge from '../Badge'; // Badge 컴포넌트 가져오기
 import Image from 'next/image';
+import useAlbaTimeFormat from '@/app/_hooks/useAlbaTimeFormat';
 
 interface PostCardProps {
-  name: string; // 이름
-  startsAt?: string; // 시작하는 날짜
-  workhour?: string; // 근무 시간
-  address1: string; // 주소1
-  imageUrl: string; // 이미지 URL
-  hourlyPay: number; // 시급
-  originalHourlyPay?: number; //예전시급
-  isPast?: boolean; //지난 공고 여부
+  name: string;
+  startsAt?: string;
+  workhour?: string;
+  address1: string;
+  imageUrl: string;
+  hourlyPay: number;
+  originalHourlyPay?: number;
+  isPast?: boolean;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -25,6 +26,7 @@ const PostCard: React.FC<PostCardProps> = ({
   originalHourlyPay,
   isPast,
 }) => {
+  const TimeFormat = useAlbaTimeFormat(startsAt, workhour);
   const percent =
     originalHourlyPay !== undefined
       ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
@@ -68,7 +70,7 @@ const PostCard: React.FC<PostCardProps> = ({
               height={20}
               className='mr-1'
             />
-            {startsAt} ({workhour}시간)
+            {TimeFormat} ({workhour}시간)
           </p>
         )}
         {address1 && (
