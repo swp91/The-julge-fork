@@ -5,6 +5,7 @@ import PostCard from '@/app/_components/PostCard/PostCard';
 import Pagination from '@/app/_components/Pagination';
 import { NoticeContext } from '@/app/_context/NoticeContext';
 import Dropdown from '@/app/_components/Dropdown';
+import DetailFilter from '@/app/_components/DetailFilter';
 
 const options = ['마감임박순', '시급많은순', '시간적은순', '가나다순'];
 
@@ -12,10 +13,35 @@ const AllNotices = () => {
   const context = useContext(NoticeContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | undefined>();
+  const [filterVisible, setFilterVisible] = useState(false);
+  const [filters, setFilters] = useState({
+    selectedOptions: [] as string[],
+    amount: '',
+    startDate: '',
+  });
+
+  console.log(filters);
 
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
     setCurrentPage(1);
+  };
+
+  const handleApplyFilters = (appliedFilters: {
+    selectedOptions: string[];
+    amount: string;
+    startDate: string;
+  }) => {
+    setFilters(appliedFilters);
+
+    const isReset =
+      appliedFilters.selectedOptions.length === 0 &&
+      !appliedFilters.amount &&
+      !appliedFilters.startDate;
+
+    if (!isReset) {
+      setFilterVisible(false);
+    }
   };
 
   if (!context) {
@@ -25,24 +51,48 @@ const AllNotices = () => {
   const { notices } = context;
 
   const filteredNotices = useMemo(() => {
+    let result = [...notices];
+
+    if (filters.selectedOptions.length > 0) {
+      result = result.filter((notice) =>
+        filters.selectedOptions.some((option) =>
+          notice.shop.item.address1.includes(option),
+        ),
+      );
+    }
+
+    if (filters.amount) {
+      result = result.filter(
+        (notice) => notice.hourlyPay >= parseInt(filters.amount, 10),
+      );
+    }
+
+    if (filters.startDate) {
+      result = result.filter(
+        (notice) =>
+          new Date(notice.startsAt).getTime() >=
+          new Date(filters.startDate).getTime(),
+      );
+    }
+
     switch (selectedOption) {
       case '마감임박순':
-        return [...notices].sort(
+        return result.sort(
           (a, b) =>
             new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime(),
         );
       case '시급많은순':
-        return [...notices].sort((a, b) => b.hourlyPay - a.hourlyPay);
+        return result.sort((a, b) => b.hourlyPay - a.hourlyPay);
       case '시간적은순':
-        return [...notices].sort((a, b) => a.workhour - b.workhour);
+        return result.sort((a, b) => a.workhour - b.workhour);
       case '가나다순':
-        return [...notices].sort((a, b) =>
+        return result.sort((a, b) =>
           a.shop.item.name.localeCompare(b.shop.item.name),
         );
       default:
-        return notices;
+        return result;
     }
-  }, [notices, selectedOption]);
+  }, [notices, selectedOption, filters]);
 
   const postsPerPage = 6;
   const totalPages = Math.ceil(filteredNotices.length / postsPerPage);
@@ -59,7 +109,7 @@ const AllNotices = () => {
   return (
     <section className='w-full flex flex-col items-center py-10 md:py-[60px] px-3 md:px-8'>
       <div className='w-[351px] md:w-[679px] lg:w-[964px] max-w-screen-xl flex flex-col items-center'>
-        <div className='w-full flex flex-col md:flex-row justify-between mb-4'>
+        <div className='w-full flex flex-col md:flex-row justify-between mb-4 relative'>
           <h2 className='text-20b md:text-28b'>전체 공고</h2>
           <div className='flex gap-3 mt-3'>
             <div>
@@ -71,9 +121,17 @@ const AllNotices = () => {
                 className='w-auto min-w-[120px] h-[54px] md:h-[66px] text-14b border-none'
               />
             </div>
-            <div className='h-[34px] w-20 flex justify-center items-center cursor-pointer bg-red-30 text-white rounded-[5px]'>
+            <div
+              className='h-[34px] w-20 flex justify-center items-center cursor-pointer bg-red-30 text-white rounded-[5px]'
+              onClick={() => setFilterVisible(true)}>
               상세 필터
             </div>
+            <DetailFilter
+              isVisible={filterVisible}
+              onClose={() => setFilterVisible(false)}
+              onApply={handleApplyFilters}
+              className='absolute z-50 right-0 top-16'
+            />
           </div>
         </div>
 

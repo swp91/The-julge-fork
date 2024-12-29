@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { usePathname } from 'next/navigation'; // usePathname 사용
+import { usePathname } from 'next/navigation';
 import { getNotices } from '../_api/announce_api';
 
 interface Notice {
