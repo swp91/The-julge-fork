@@ -13,6 +13,7 @@ import Button from '@/app/_components/Button';
 import Dropdown from '@/app/_components/Dropdown';
 import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
+import { updateUserInfo } from '@/app/_api/worker_api';
 
 interface FormData {
   name: string;
@@ -44,13 +45,11 @@ const ProfilePost = (formData?: FormData) => {
   const onSubmit = async (data: FormData) => {
     console.log('폼 데이터:', data); // 폼 데이터 확인
     try {
-      const response = await axios.put(`/user/${user_id}`, {
-        item: {
-          name: data.name,
-          phone: data.phone,
-          address: data.address,
-          bio: data.bio,
-        },
+      const response = await updateUserInfo(user_id, {
+        name: data.name,
+        phone: data.phone,
+        address: data.address,
+        bio: data.bio,
       });
       console.log('응답 데이터:', response.data); // 응답 확인
       setIsModalOpen(true);
