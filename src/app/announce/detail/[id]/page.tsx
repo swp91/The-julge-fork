@@ -10,11 +10,13 @@ import {
   getRecentNotices,
 } from '@/app/_context/util/recentNotices';
 import Link from 'next/link';
+import { useAuth } from '@/app/_hooks/useAuth';
 
 const Page = () => {
   const { id } = useParams();
   const noticeContext = useContext(NoticeContext);
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]);
+  const { user } = useAuth() || {};
 
   if (!noticeContext) {
     return <p>로딩중...</p>;
@@ -48,6 +50,8 @@ const Page = () => {
             originalHourlyPay={currentNotice.shop.item.originalHourlyPay}
             startsAt={currentNotice.startsAt}
             workhour={currentNotice.workhour}
+            shopId={currentNotice.id}
+            userId={user ? user.id : undefined}
           />
         )}
       </div>
