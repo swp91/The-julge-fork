@@ -10,8 +10,8 @@ interface PostCardProps {
   workhour?: string; // 근무 시간
   address1: string; // 주소1
   imageUrl: string; // 이미지 URL
-  originalHourlyPay?: number; // 시급
-  percent?: number; // 시급 변화 비율
+  hourlyPay: number; // 시급
+  originalHourlyPay?: number; //예전시급
   isPast?: boolean; //지난 공고 여부
 }
 
@@ -21,14 +21,19 @@ const PostCard: React.FC<PostCardProps> = ({
   workhour,
   address1,
   imageUrl,
+  hourlyPay,
   originalHourlyPay,
-  percent,
   isPast,
 }) => {
+  const percent =
+    originalHourlyPay !== undefined
+      ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
+      : undefined;
+
   return (
     <div
       className={clsx(
-        'w-[171px] h-[261px] md:w-[332px] md:h-[360px] lg:w-[312px] lg:h-[349px] gap-3 p-3 border border-gray-200 rounded-xl bg-white',
+        'w-[171px] h-auto md:w-[332px] md:h-[360px] lg:w-[312px] lg:h-[349px] gap-3 p-3 border border-gray-200 rounded-xl bg-white',
       )}>
       <div className='relative w-[147px] h-[84px] md:w-[300px] md:h-[171px] lg:w-[280px] lg:h-[160px] rounded-xl overflow-hidden'>
         <Image src={imageUrl} alt={name} fill className='object-cover' />
@@ -84,17 +89,17 @@ const PostCard: React.FC<PostCardProps> = ({
           </p>
         )}
         <div className='flex flex-col md:flex-row justify-between mt-3 md:mt-4'>
-          {originalHourlyPay !== undefined && (
-            <>
-              <h2
-                className={clsx(
-                  ' text-18b md:text-24b lg:text-24b',
-                  isPast ? 'text-gray-300' : 'text-black',
-                )}>
-                {originalHourlyPay.toLocaleString()}원
-              </h2>
+          <>
+            <h2
+              className={clsx(
+                ' text-18b md:text-24b lg:text-24b',
+                isPast ? 'text-gray-300' : 'text-black',
+              )}>
+              {hourlyPay.toLocaleString()}원
+            </h2>
+            {percent !== undefined && percent > 0 && (
               <p className='flex md:hidden text-12 text-red-30'>
-                기존 시급보다 {percent}{' '}
+                기존 시급보다 {percent}
                 <Image
                   src='/image/arrow-up-bold-red.svg'
                   alt='화살표 아이콘'
@@ -103,9 +108,9 @@ const PostCard: React.FC<PostCardProps> = ({
                   priority
                 />
               </p>
-            </>
-          )}
-          {percent !== undefined && (
+            )}
+          </>
+          {percent !== undefined && percent > 0 && (
             <div className='hidden md:block'>
               <Badge percent={percent} isPast={isPast} />
             </div>
