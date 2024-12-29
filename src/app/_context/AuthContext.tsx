@@ -4,6 +4,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { setGlobalToken } from '../_api/globaltoken';
 import { encryptData, decryptData } from './util/authEncryption';
+import { useRouter } from 'next/navigation';
 
 interface AuthContextProps {
   token: string | null;
@@ -21,6 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const encryptedData = localStorage.getItem('julge');
@@ -60,6 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setToken(null);
     setUser(null);
     localStorage.removeItem('julge');
+    router.push('/');
   };
 
   return (

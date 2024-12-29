@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({
     'inline-flex items-center justify-center rounded-md',
     {
       'bg-primary text-white': style === 'default' && !disabled,
-      'border border-primary text-primary ':
+      'border bg-white border-primary text-primary ':
         style === 'bordered' && !disabled && !approval,
       'border border-blue-20 text-blue-20 ':
         style === 'bordered' && !disabled && approval,
