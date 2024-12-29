@@ -5,18 +5,26 @@ import Badge from '../Badge'; // Badge 컴포넌트 가져오기
 import Image from 'next/image';
 
 interface PostCardProps {
+  id: string; // 공고 ID (추가)
+  shopId: string; // 가게 ID (추가)
   name: string; // 이름
+  description?: string; // 공고 상세 설명 (추가)
+  requirements?: string[]; // 요구 조건 (추가)
   startsAt?: string; // 시작하는 날짜
   workhour?: string; // 근무 시간
   address1: string; // 주소1
   imageUrl: string; // 이미지 URL
   originalHourlyPay?: number; // 시급
   percent?: number; // 시급 변화 비율
-  isPast?: boolean; //지난 공고 여부
+  isPast?: boolean; // 지난 공고 여부
 }
 
 const PostCard: React.FC<PostCardProps> = ({
+  id, 
+  shopId, 
   name,
+  description, 
+  requirements, 
   startsAt,
   workhour,
   address1,
@@ -32,7 +40,7 @@ const PostCard: React.FC<PostCardProps> = ({
       )}>
       
       <div className='relative w-[147px] h-[84px] md:w-[300px] md:h-[171px] lg:w-[280px] lg:h-[160px] rounded-xl overflow-hidden'>
-       <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
+        <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
         {isPast && (
           <div className='absolute inset-0 flex justify-center items-center bg-opacity-70 bg-black'>
              <span className='text-gray-300 inset-0 text-20b md:text-28b'>
@@ -49,7 +57,28 @@ const PostCard: React.FC<PostCardProps> = ({
           )}>
           {name}
         </h2>
-         {startsAt && workhour && (
+
+        {description && ( // 공고 상세 설명 추가
+          <p
+            className={clsx(
+              'mt-2 text-12 md:text-14 line-clamp-2',
+              isPast ? 'text-gray-300' : 'text-gray-600',
+            )}>
+            {description}
+          </p>
+        )}
+
+        {requirements && requirements.length > 0 && ( // 요구 조건 추가
+          <ul className="mt-2 text-12 md:text-14 text-gray-500">
+            {requirements.map((req, index) => (
+              <li key={`${id}-req-${index}`}>
+                • {req}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {startsAt && workhour && (
           <p
             className={clsx(
               'flex items-center mt-2 text-12 md:text-14',
@@ -67,7 +96,8 @@ const PostCard: React.FC<PostCardProps> = ({
             {startsAt} ({workhour}시간)
           </p>
         )}
-          {address1 && (
+
+        {address1 && (
           <p
             className={clsx(
               'flex items-center mt-2 font-family text-12 md:text-14',
@@ -80,16 +110,16 @@ const PostCard: React.FC<PostCardProps> = ({
               height={20}
               className='mr-1'
             />
-
             {address1}
           </p>
         )}
-         <div className='flex flex-col md:flex-row justify-between mt-3 md:mt-4'>
+
+        <div className='flex flex-col md:flex-row justify-between mt-3 md:mt-4'>
           {originalHourlyPay !== undefined && (
             <>
               <h2
                 className={clsx(
-                  ' text-18b md:text-24b lg:text-24b',
+                  'text-18b md:text-24b lg:text-24b',
                   isPast ? 'text-gray-300' : 'text-black',
                 )}>
                 {originalHourlyPay.toLocaleString()}원
@@ -118,3 +148,4 @@ const PostCard: React.FC<PostCardProps> = ({
 };
 
 export default PostCard;
+
