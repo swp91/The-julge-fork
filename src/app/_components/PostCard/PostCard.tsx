@@ -86,7 +86,7 @@ const PostCard: React.FC<PostCardProps> = ({
             )}>
             <Image
               src={
-                isPast ? '/image/clock-icon-off.svg' : '/image/clock-icon.svg'
+                isPast ? '/public/image/clock-icon-off.svg' : '/public/image/clock-icon.svg'
               }
               alt='시계 아이콘'
               width={20}
@@ -104,7 +104,7 @@ const PostCard: React.FC<PostCardProps> = ({
               isPast ? 'text-gray-300' : 'text-gray-500',
             )}>
             <Image
-              src={isPast ? '/image/path11-off.svg' : '/image/path11.svg'}
+              src={isPast ? '/public/image/path11-off.svg' : '/public/image/path11.svg'}
               alt='주소 아이콘'
               width={16}
               height={20}
@@ -127,7 +127,7 @@ const PostCard: React.FC<PostCardProps> = ({
               <p className='flex md:hidden text-12 text-red-30'>
                 기존 시급보다 {percent}{' '}
                 <Image
-                  src='/image/arrow-up-bold-red.svg'
+                  src='/public/image/arrow-up-bold-red.svg'
                   alt='화살표 아이콘'
                   width={10}
                   height={10}

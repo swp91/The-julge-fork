@@ -63,7 +63,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {startsAt && workhour && (
               <p className='flex items-center mt-2 text-14 text-gray-500'>
                 <Image
-                  src='./image/clock-icon.svg'
+                  src='/public/image/clock-icon.svg'
                   alt='시계 아이콘'
                   width={16}
                   height={16}
@@ -77,7 +77,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {address1 && (
               <p className='flex items-center mt-2 text-14 text-gray-500'>
                 <Image
-                  src='./image/path11.svg'
+                  src='/public/image/clock-icon.svg'
                   alt='주소 아이콘'
                   width={16}
                   height={16}
@@ -139,7 +139,7 @@ const PostCard: React.FC<PostCardProps> = ({
           {startsAt && workhour && (
             <p className='flex items-center mt-2 text-14 text-gray-500'>
               <Image
-                src='./image/clock-icon.svg'
+                src='/public/image/clock-icon.svg'
                 alt='시계 아이콘'
                 width={16}
                 height={16}
@@ -153,7 +153,7 @@ const PostCard: React.FC<PostCardProps> = ({
           {address1 && (
             <p className='flex items-center mt-2 text-14 text-gray-500'>
               <Image
-                src='./image/path11.svg'
+                src='/public/image/path11.svg'
                 alt='주소 아이콘'
                 width={16}
                 height={16}

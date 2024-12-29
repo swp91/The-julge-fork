@@ -48,7 +48,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {address1 && (
               <p className="flex items-center mt-2 text-16 text-gray-500">
                 <Image
-                  src="/image/path11.svg"
+                  src="/public/image/path11.svg"
                   alt="주소 아이콘"
                   width={20}
                   height={20}
@@ -98,7 +98,7 @@ const PostCard: React.FC<PostCardProps> = ({
           <h2 className="mt-2 text-24b text-black md:text-28b">{name}</h2>
           <p className="flex items-center mt-2 text-14 text-gray-500">
             <Image
-              src="/image/path11.svg"
+              src="/public/image/path11.svg"
               alt="주소 아이콘"
               width={16}
               height={16}
