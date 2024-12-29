@@ -1,17 +1,18 @@
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
+import { useForm, Controller } from 'react-hook-form';
+import { useState } from 'react';
+import axios from 'axios';
+import Image from 'next/image';
+
 import Footer from '@/app/_components/Footer';
 import Header from '@/app/_components/Header';
-import Image from 'next/image';
-import { Input } from '@/app/_components/Input';
+import Input from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
-import { Dropdown } from '@/app/_components/Dropdown';
+import Dropdown from '@/app/_components/Dropdown';
+import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
-import { Modal } from '@/app/_components/Modal';
-import { useRouter } from 'next/navigation';
-import { useForm, Controller } from 'react-hook-form';
-import axios from 'axios';
-import { useState } from 'react';
 
 interface FormData {
   name: string;
@@ -22,6 +23,8 @@ interface FormData {
 
 const ProfilePost = () => {
   const router = useRouter();
+  const { id } = useParams();
+  const user_id = id as string;
   const {
     control,
     handleSubmit,
@@ -41,7 +44,7 @@ const ProfilePost = () => {
   const onSubmit = async (data: FormData) => {
     console.log('폼 데이터:', data); // 폼 데이터 확인
     try {
-      const response = await axios.put(`/user/user_id`, {
+      const response = await axios.put(`/user/${user_id}`, {
         item: {
           name: data.name,
           phone: data.contact,

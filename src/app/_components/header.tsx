@@ -6,17 +6,32 @@ import Logo from './Logo';
 import NotificationModal from './NotificationModal/NotificationModal';
 
 import { useState } from 'react';
+import { jwtDecode } from 'jwt-decode'; // 토큰 디코드 라이브러리
 import { useAuth } from '../_hooks/useAuth';
 import { useWindowWidth } from '../_hooks/useWindowWidth';
 import { useNotifications } from '../_hooks/useNotifications';
 
 const Header = () => {
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
   const windowWidth = useWindowWidth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // 알림 상태 가져오기
   const isNotificationActive = useNotifications();
+
+  // 토큰에서 유저 타입 가져오기
+  const getUserType = () => {
+    if (!token) return null;
+    try {
+      const decoded = jwtDecode<{ type: string }>(token); // 토큰 디코드
+      return decoded.type;
+    } catch (error) {
+      console.error('토큰 decode에 실패하였습니다:', error);
+      return null;
+    }
+  };
+
+  const userType = getUserType();
 
   // 알림 모달 토글
   const toggleModal = () => {
@@ -49,7 +64,8 @@ const Header = () => {
     <div className='relative'>
       {user ? (
         <div className='flex gap-4 lg:gap-10'>
-          <Link href={'/store/detail'}>내 가게</Link>
+          {userType === 'employer' && <Link href={'/store/detail'}>내 가게</Link>}
+          {userType === 'employee' && <Link href={'/profile'}>내 프로필</Link>}
           <button onClick={logout}>로그아웃</button>
           <button onClick={toggleModal}>
             {isNotificationActive ? (
