@@ -4,7 +4,8 @@ import clsx from 'clsx';
 import Button from '../Button';
 import Image from 'next/image';
 import { useWindowWidth } from '../../_hooks/useWindowWidth';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
+
 
 interface PostCardProps {
   name: string; // 이름
@@ -21,7 +22,8 @@ const PostCard: React.FC<PostCardProps> = ({
 }) => {
   const windowWidth = useWindowWidth(); // 현재 창 너비 가져오기
   const isDesktop = windowWidth >= 964;
-  const navigate = useNavigate();
+  const router = useRouter();
+
 
   if (isDesktop) {
     // 데스크톱 레이아웃
@@ -64,7 +66,8 @@ const PostCard: React.FC<PostCardProps> = ({
               style='bordered'
               size='full'
               className='text-16b bg-white'
-              onClick={() => navigate('/edit')}>
+              onClick={() => router.push('/edit')}>
+
               {' '}
               {/* 경로 수정 */}
               편집하기
@@ -73,7 +76,7 @@ const PostCard: React.FC<PostCardProps> = ({
               style='default'
               size='full'
               className='text-16b'
-              onClick={() => navigate('/register')}>
+              onClick={() => router.push('/register')}>
               {' '}
               {/* 경로 수정 */}
               공고 등록하기
@@ -108,7 +111,8 @@ const PostCard: React.FC<PostCardProps> = ({
             style='bordered'
             size='full'
             className='text-16b bg-white'
-            onClick={() => navigate('/edit')}>
+            onClick={() => router.push('/edit')}>
+
             {' '}
             {/* 경로 수정 */}
             편집하기
@@ -118,7 +122,8 @@ const PostCard: React.FC<PostCardProps> = ({
             style='default'
             size='full'
             className='text-16b'
-            onClick={() => navigate('/register')}>
+            onClick={() => router.push('/register')}>
+
             {' '}
             {/* 경로 수정 */}
             공고 등록하기

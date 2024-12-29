@@ -5,33 +5,34 @@ import Image from 'next/image';
 import Logo from './Logo';
 import NotificationModal from './NotificationModal/NotificationModal';
 
-import { useState } from 'react';
-import { jwtDecode } from 'jwt-decode'; // 토큰 디코드 라이브러리
+import { useEffect, useState } from 'react';
 import { useAuth } from '../_hooks/useAuth';
 import { useWindowWidth } from '../_hooks/useWindowWidth';
-import { useNotifications } from '../_hooks/useNotifications';
+import { getAlarms } from '../_api/alarm_api';
 
 const Header = () => {
-  const { user, token, logout } = useAuth();
+  const { user, logout } = useAuth();
   const windowWidth = useWindowWidth();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNoticeActive, setIsNoticeActive] = useState(false);
+  const userType = user?.type;
 
   // 알림 상태 가져오기
-  const isNotificationActive = useNotifications();
+  useEffect(() => {
+    const fetchAlarms = async () => {
+      if (user) {
+        try {
+          const response = await getAlarms(user.id);
+          // 알림이 있는지 확인 (items 배열에 값이 있는지만 확인)
+          setIsNoticeActive(response.data.items.length > 0);
+        } catch (error) {
+          console.error('알림 상태를 가져오는 중 오류 발생:', error);
+        }
+      }
+    };
 
-  // 토큰에서 유저 타입 가져오기
-  const getUserType = () => {
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode<{ type: string }>(token); // 토큰 디코드
-      return decoded.type;
-    } catch (error) {
-      console.error('토큰 decode에 실패하였습니다:', error);
-      return null;
-    }
-  };
-
-  const userType = getUserType();
+    fetchAlarms();
+  }, [user]);
 
   // 알림 모달 토글
   const toggleModal = () => {
@@ -53,7 +54,7 @@ const Header = () => {
       />
       <input
         type='text'
-        className='min-w-[300px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1'
+        className='min-w-[280px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1'
         placeholder='가게 이름으로 찾아보세요.'
       />
     </div>
@@ -64,11 +65,11 @@ const Header = () => {
     <div className='relative'>
       {user ? (
         <div className='flex gap-4 lg:gap-10'>
-          {userType === 'employer' && <Link href={'/store'}>내 가게</Link>}
+          {userType === 'employer' && <Link href={'/store/detail'}>내 가게</Link>}
           {userType === 'employee' && <Link href={'/profile'}>내 프로필</Link>}
           <button onClick={logout}>로그아웃</button>
           <button onClick={toggleModal}>
-            {isNotificationActive ? (
+            {isNoticeActive ? (
               <Image
                 src={'/image/notification-active.svg'}
                 alt='알림 활성화'
