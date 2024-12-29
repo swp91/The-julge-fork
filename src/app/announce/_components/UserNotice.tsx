@@ -31,7 +31,7 @@ const UserNotice = () => {
   );
 
   return (
-    <section className='w-full h-[381px] md:h-[535px] bg-red-10 flex justify-center items-center py-10 md:py-[60px] px-3'>
+    <section className='w-full h-[381px] md:h-[535px] bg-red-10 flex justify-center items-center py-10 md:py-[60px] px-3 md:px-8'>
       <div className='w-full max-w-screen-xl flex flex-col items-center'>
         <div className='w-full max-w-[521px] md:max-w-[964px] flex justify-start mb-4'>
           <h2 className='text-20b md:text-28b'>맞춤 공고</h2>
@@ -44,7 +44,7 @@ const UserNotice = () => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}>
-          <div className='flex space-x-4'>
+          <div className='flex gap-1 md:gap-[14px]'>
             {randomNotices.map((notice) => (
               <PostCard
                 key={notice.id}
