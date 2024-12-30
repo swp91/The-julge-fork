@@ -5,7 +5,7 @@ import PostCard from '@/app/_components/PostCard/PostCard';
 import Pagination from '@/app/_components/Pagination';
 import { NoticeContext } from '@/app/_context/NoticeContext';
 import Dropdown from '@/app/_components/Dropdown';
-import DetailFilter from '@/app/_components/DetailFilter';
+import DetailFilter from '@/app/_components/DetailFilter/DetailFilter';
 
 const options = ['마감임박순', '시급많은순', '시간적은순', '가나다순'];
 
