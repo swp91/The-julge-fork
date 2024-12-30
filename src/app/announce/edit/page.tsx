@@ -167,7 +167,7 @@ const EditAnnounce = () => {
                   type='button'
                   onClick={handleSubmit(onSubmit)}
                   className='mt-4'>
-                  등록하기
+                  수정하기
                 </Button>
               </div>
             </div>

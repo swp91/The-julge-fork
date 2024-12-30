@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import useAlbaTimeFormat from '@/app/_hooks/useAlbaTimeFormat';
 import { createApplicationForNotice } from '@/app/_api/owner_api';
 import Modal from '../Modal';
+import { useRouter } from 'next/navigation';
 
 interface DetailPostCard {
   type?: 'store' | 'notice';
@@ -48,6 +49,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const percent =
     hourlyPay !== undefined && originalHourlyPay !== undefined
@@ -68,6 +70,14 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
       setIsLoading(false);
       setIsModalOpen(false);
       setIsResultModalOpen(true);
+    }
+  };
+
+  const handleEditNotice = () => {
+    if (shopId && noticeId) {
+      router.push(`/announce/edit?shopId=${shopId}&noticeId=${noticeId}`);
+    } else {
+      alert('공고 정보를 찾을 수 없어요.');
     }
   };
 
@@ -150,7 +160,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
                   신청 불가
                 </Button>
               ) : userId === shopId ? (
-                <Button size='full' style='bordered'>
+                <Button size='full' style='bordered' onClick={handleEditNotice}>
                   공고 편집하기
                 </Button>
               ) : userType === 'employer' ? (
