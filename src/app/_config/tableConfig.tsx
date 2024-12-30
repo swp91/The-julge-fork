@@ -1,7 +1,7 @@
 import Button from '../_components/Button';
 import Badge from '../_components/Badge';
 
-interface OwnerData {
+export interface OwnerData {
   name: string;
   introduction: string;
   phone: string;

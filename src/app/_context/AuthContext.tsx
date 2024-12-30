@@ -62,6 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setToken(null);
     setUser(null);
     localStorage.removeItem('julge');
+    localStorage.removeItem('Recently-view');
     router.push('/');
   };
 

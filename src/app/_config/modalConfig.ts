@@ -29,4 +29,11 @@ export const modalConfig = {
       buttons: actions[type],
     };
   },
+  application: {
+    icon: '/image/modal-question.svg',
+    responsiveClass: 'w-[298px] h-[184px]',
+    contentStyle: 'mt-[24px] mb-[32px] text-center',
+    buttonPosition: 'absolute bottom-[20px] w-full flex justify-center gap-2',
+    buttons: ['취소', '네'],
+  },
 };
