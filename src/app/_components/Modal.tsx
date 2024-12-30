@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
-  type: 'success' | 'alert' | 'question';
+  type: 'success' | 'alert' | 'question' | 'application';
   content: React.ReactNode;
   onClose: () => void;
   onConfirm?: () => void;
@@ -52,6 +52,8 @@ const Modal = ({
         return 'bordered';
       case 'question':
         return index === 0 ? 'bordered' : 'default';
+      case 'application':
+        return index === 0 ? 'default' : 'bordered';
       default:
         return 'default';
     }

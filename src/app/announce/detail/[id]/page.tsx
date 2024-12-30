@@ -126,6 +126,8 @@ const Page = () => {
             workhour={currentNotice.workhour}
             shopId={currentNotice.shop.item.id}
             userId={userShopid}
+            noticeId={currentNotice.id}
+            userType={user?.type}
           />
         )}
       </div>

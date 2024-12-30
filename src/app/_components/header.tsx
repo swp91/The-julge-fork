@@ -34,8 +34,6 @@ const Header = () => {
     fetchAlarms();
   }, [user]);
 
-  console.log('헤더', user);
-
   // 알림 모달 토글
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);
