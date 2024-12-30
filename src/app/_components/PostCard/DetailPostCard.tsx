@@ -70,6 +70,12 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
       return;
     }
 
+    if (!user) {
+      setModalContent("로그인이 필요합니다.");
+      setIsResultModalOpen(true);
+      return;
+    }
+
     if (!user?.address) {
       setModalContent("프로필을 등록해주세요.");
       setIsResultModalOpen(true);
