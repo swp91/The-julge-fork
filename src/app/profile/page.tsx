@@ -15,7 +15,7 @@ import { useAuth } from '../_hooks/useAuth';
 import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const router = useRouter();
   // 상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
@@ -43,6 +43,7 @@ const ProfilePage = () => {
     }
   };
 
+  console.log(user);
   const user_id = getUserid();
 
   useEffect(() => {
