@@ -10,6 +10,7 @@ import DetailFilter from '../_components/DetailFilter/DetailFilter';
 import Pagination from '../_components/Pagination';
 import PostCard from '../_components/PostCard/PostCard';
 import Loading from '../_components/Loding';
+import Link from 'next/link';
 
 const options = [
   '마감임박순',
@@ -187,17 +188,19 @@ const SearchPage = () => {
               ))
             ) : (
               currentPosts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  name={post.shop.item.name}
-                  startsAt={post.startsAt}
-                  workhour={post.workhour}
-                  address1={post.shop.item.address1}
-                  imageUrl={post.shop.item.imageUrl}
-                  hourlyPay={post.hourlyPay}
-                  originalHourlyPay={post.shop.item.originalHourlyPay}
-                  isPast={post.closed}
-                />
+                <Link key={post.id} href={`/announce/detail/${post.id}`}>
+                  <PostCard
+                    key={post.id}
+                    name={post.shop.item.name}
+                    startsAt={post.startsAt}
+                    workhour={post.workhour}
+                    address1={post.shop.item.address1}
+                    imageUrl={post.shop.item.imageUrl}
+                    hourlyPay={post.hourlyPay}
+                    originalHourlyPay={post.shop.item.originalHourlyPay}
+                    isPast={post.closed}
+                  />
+                </Link>
               ))
             )}
           </div>
