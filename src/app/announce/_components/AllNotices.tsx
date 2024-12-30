@@ -1,16 +1,22 @@
 'use client';
 
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import Pagination from '@/app/_components/Pagination';
-import { NoticeContext } from '@/app/_context/NoticeContext';
 import Dropdown from '@/app/_components/Dropdown';
 import DetailFilter from '@/app/_components/DetailFilter';
+import { useFilteredNotices } from '@/app/_hooks/useFilteredNotices';
+import Link from 'next/link';
 
-const options = ['마감임박순', '시급많은순', '시간적은순', '가나다순'];
+const options = [
+  '마감임박순',
+  '시급많은순',
+  '시간적은순',
+  '가까운순',
+  '가나다순',
+];
 
 const AllNotices = () => {
-  const context = useContext(NoticeContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | undefined>();
   const [filterVisible, setFilterVisible] = useState(false);
@@ -20,7 +26,18 @@ const AllNotices = () => {
     startDate: '',
   });
 
-  console.log(filters);
+  const filteredNotices = useFilteredNotices({
+    ...filters,
+    sortOption: selectedOption,
+  });
+
+  const postsPerPage = 6;
+  const totalPages = Math.ceil(filteredNotices.length / postsPerPage);
+  const startIndex = (currentPage - 1) * postsPerPage;
+  const currentPosts = filteredNotices.slice(
+    startIndex,
+    startIndex + postsPerPage,
+  );
 
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
@@ -43,64 +60,6 @@ const AllNotices = () => {
       setFilterVisible(false);
     }
   };
-
-  if (!context) {
-    return <p>로딩바만들예정</p>;
-  }
-
-  const { notices } = context;
-
-  const filteredNotices = useMemo(() => {
-    let result = [...notices];
-
-    if (filters.selectedOptions.length > 0) {
-      result = result.filter((notice) =>
-        filters.selectedOptions.some((option) =>
-          notice.shop.item.address1.includes(option),
-        ),
-      );
-    }
-
-    if (filters.amount) {
-      result = result.filter(
-        (notice) => notice.hourlyPay >= parseInt(filters.amount, 10),
-      );
-    }
-
-    if (filters.startDate) {
-      result = result.filter(
-        (notice) =>
-          new Date(notice.startsAt).getTime() >=
-          new Date(filters.startDate).getTime(),
-      );
-    }
-
-    switch (selectedOption) {
-      case '마감임박순':
-        return result.sort(
-          (a, b) =>
-            new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime(),
-        );
-      case '시급많은순':
-        return result.sort((a, b) => b.hourlyPay - a.hourlyPay);
-      case '시간적은순':
-        return result.sort((a, b) => a.workhour - b.workhour);
-      case '가나다순':
-        return result.sort((a, b) =>
-          a.shop.item.name.localeCompare(b.shop.item.name),
-        );
-      default:
-        return result;
-    }
-  }, [notices, selectedOption, filters]);
-
-  const postsPerPage = 6;
-  const totalPages = Math.ceil(filteredNotices.length / postsPerPage);
-  const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = filteredNotices.slice(
-    startIndex,
-    startIndex + postsPerPage,
-  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -137,17 +96,18 @@ const AllNotices = () => {
 
         <div className='grid grid-cols-2 lg:grid-cols-3 w-full gap-1 md:gap-[14px]'>
           {currentPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              name={post.shop.item.name}
-              startsAt={post.startsAt}
-              workhour={post.workhour.toString()}
-              address1={post.shop.item.address1}
-              imageUrl={post.shop.item.imageUrl}
-              hourlyPay={post.hourlyPay}
-              originalHourlyPay={post.shop.item.originalHourlyPay}
-              isPast={post.closed}
-            />
+            <Link href={`/announce/detail/${post.id}`} key={post.id}>
+              <PostCard
+                name={post.shop.item.name}
+                startsAt={post.startsAt}
+                workhour={post.workhour.toString()}
+                address1={post.shop.item.address1}
+                imageUrl={post.shop.item.imageUrl}
+                hourlyPay={post.hourlyPay}
+                originalHourlyPay={post.shop.item.originalHourlyPay}
+                isPast={post.closed}
+              />
+            </Link>
           ))}
         </div>
 
