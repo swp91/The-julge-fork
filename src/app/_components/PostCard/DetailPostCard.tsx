@@ -106,8 +106,6 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
     }
   };
 
-  console.log(noticeId);
-
   return (
     <div>
       <div>

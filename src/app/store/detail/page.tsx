@@ -92,9 +92,6 @@ const StoreDetailPage: React.FC = () => {
     return <Loading />;
   }
 
-  console.log(notices);
-  console.log(storeStatus);
-
   return (
     <>
       <Header />
