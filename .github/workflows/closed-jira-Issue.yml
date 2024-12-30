@@ -8,7 +8,7 @@ jobs:
   update-jira-issue:
     name: Update Jira Issue
     runs-on: ubuntu-latest
-    steps:      
+    steps:
       - name: Login to Jira
         uses: atlassian/gajira-login@v3
         env:
@@ -16,7 +16,6 @@ jobs:
           JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
           JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
 
-      
       - name: Fetch Jira Issue Key from GitHub Issue Comments
         id: fetch-jira-key
         uses: actions/github-script@v6
@@ -41,7 +40,6 @@ jobs:
             const jiraIssueKey = jiraComment.body.split(': ')[1].trim();
             core.setOutput('jiraIssueKey', jiraIssueKey);
 
-      
       - name: Transition Jira Issue to Done
         uses: atlassian/gajira-transition@v3
         with:

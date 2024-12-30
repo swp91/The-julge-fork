@@ -12,9 +12,11 @@ import { tableConfig, WorkerData } from '../_config/tableConfig';
 import { ProfileData } from './_type/type';
 import { useAuth } from '../_hooks/useAuth';
 import Loading from '../_components/Loding';
+import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
   const { user } = useAuth();
+  const router = useRouter();
   // 상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(false);
@@ -28,7 +30,6 @@ const ProfilePage = () => {
   const itemsPerPage = 5;
 
   const user_id = user?.id || null;
-
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -36,7 +37,7 @@ const ProfilePage = () => {
 
         const userInfoResponse = await getUserInfo(user_id!); // user_id는 null이 아님
         const userInfo = userInfoResponse.data.item;
-
+        if (user?.type === 'employer') router.replace('/');
         if (userInfo) {
           const { name, email, type, phone, address, bio } = userInfo;
 

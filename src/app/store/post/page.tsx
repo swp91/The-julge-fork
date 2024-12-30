@@ -17,9 +17,11 @@ import useModal from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
 import { registerShop } from '@/app/_api/owner_api';
 import Loading from '@/app/_components/Loding';
+import { useAuth } from '@/app/_hooks/useAuth';
 
 const PostStore = () => {
   const router = useRouter();
+  const { user } = useAuth();
   const { isOpen, openModal, closeModal } = useModal();
   const [shopId, setShopId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +39,7 @@ const PostStore = () => {
   const imageUrl: string = watch('imageUrl');
 
   const onImageChange = (image: string) => setValue('imageUrl', image);
-
+  if (user?.type === 'employee') router.replace('/');
   const onImageDelete = () => {
     if (imageUrl) URL.revokeObjectURL(imageUrl);
     setValue('imageUrl', '');

@@ -44,7 +44,7 @@ const UserNotice = () => {
                   imageUrl={notice.shop.item.imageUrl}
                   originalHourlyPay={notice.shop.item.originalHourlyPay}
                   hourlyPay={notice.hourlyPay}
-                  workhour={notice.workhour.toString()}
+                  workhour={notice.workhour}
                 />
               </Link>
             ))}
