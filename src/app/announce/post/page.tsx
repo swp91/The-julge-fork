@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-import Header from '@/app/_components/Header';
+import Header from '@/app/_components/Header/Header';
 import Footer from '@/app/_components/Footer';
 import Input from '@/app/_components/Input';
 import Button from '@/app/_components/Button';

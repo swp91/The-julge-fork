@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Header from '@/app/_components/Header';
+import Header from '@/app/_components/Header/Header';
 import Footer from '@/app/_components/Footer';
 import { AuthProvider } from '@/app/_context/AuthContext';
 import PostCard from '@/app/_components/PostCard/PostCard';
