@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
 interface Column<T> {
   header: string;
   accessor: keyof T;
   render?: (value: T[keyof T], row: T) => React.ReactNode;
-  hiddenOn?: 'sm' | 'md' | 'lg';
+  hiddenOn?: "sm" | "md" | "lg";
 }
 
 interface TableProps<T extends Record<string, any>> {
@@ -17,37 +17,43 @@ const Table = <T extends Record<string, any>>({
   columns,
 }: TableProps<T>) => {
   return (
-    <div className='w-[351px] md:w-[680px] lg:w-[964px] rounded-t-[10px] overflow-hidden border-t border-l border-r border-gray-200 mb-3 mt-5'>
-      <table className='w-full table-fixed border-collapse'>
+    <div className="w-[351px] md:w-[680px] lg:w-[964px] rounded-t-[10px] overflow-hidden border-t border-l border-r border-gray-200 mb-3 mt-5">
+      <table className="w-full table-fixed border-collapse">
         <thead>
-          <tr className='bg-red-10 border-b border-gray-200'>
+          <tr className="bg-red-10 border-b border-gray-200">
             {columns.map((col, index) => (
               <th
                 key={index}
                 className={`p-3 text-left text-12 md:text-14 border-b border-gray-200 ${
-                  col.hiddenOn
-                    ? `hidden ${col.hiddenOn}:table-cell !important`
-                    : ''
-                }`}>
+                  col.hiddenOn === "sm"
+                    ? "hidden sm:table-cell"
+                    : col.hiddenOn === "md"
+                    ? "hidden md:table-cell"
+                    : col.hiddenOn === "lg"
+                    ? "hidden lg:table-cell"
+                    : ""
+                }`}
+              >
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className='text-14 md:text-16'>
+        <tbody className="text-14 md:text-16">
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex} className='border-b '>
+            <tr key={rowIndex} className="border-b ">
               {columns.map((col, colIndex) => (
                 <td
                   key={colIndex}
                   className={`p-3 ${
-                    col.hiddenOn ? `hidden ${col.hiddenOn}:table-cell` : ''
+                    col.hiddenOn ? `hidden ${col.hiddenOn}:table-cell` : ""
                   } ${
                     colIndex === columns.length - 1
-                      ? 'border-l lg:border-l-0'
-                      : ''
-                  }`}>
-                  <div className='line-clamp-2'>
+                      ? "border-l lg:border-l-0"
+                      : ""
+                  }`}
+                >
+                  <div className="line-clamp-2">
                     {col.render
                       ? col.render(row[col.accessor], row)
                       : row[col.accessor]}

@@ -25,7 +25,7 @@ interface FormData {
 }
 
 const ProfilePost = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const router = useRouter();
   const { id } = useParams();
   const user_id = id as string;
@@ -85,6 +85,14 @@ const ProfilePost = () => {
         address: data.address,
         bio: data.bio,
       });
+      const updatedUserData = response.data.item;
+      updateUser({
+        name: updatedUserData.name,
+        phone: updatedUserData.phone,
+        address: updatedUserData.address,
+        bio: updatedUserData.bio,
+      });
+
       setIsModalOpen(true);
     } catch (error) {
       console.error("Error submitting form:", error);

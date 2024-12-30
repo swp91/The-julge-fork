@@ -21,24 +21,18 @@ const Header = () => {
     if (!userId) return;
 
     const fetchAlarms = async () => {
-      console.log("Fetching alarms for userId:", userId); // 디버깅용
       try {
         const response = await getAlarms(userId, 0, 10);
         const alarms: Notification[] = response.data.items;
-
-        console.log("알림 데이터:", alarms); // 디버깅용
         // 읽지 않은 알림이 있는지 확인
         setIsNoticeActive(alarms.some((alarm) => !alarm.read));
       } catch (error) {
-        console.error("알림 상태를 가져오는 중 오류 발생:", error); // 디버깅용
+        console.error("알림 상태를 가져오는 중 오류 발생:", error);
       }
     };
 
     fetchAlarms();
   }, [userId]);
-
-  console.log("user:", user?.address);
-  console.log("token:", token);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);

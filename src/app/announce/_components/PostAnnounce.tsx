@@ -52,7 +52,7 @@ const PostAnnounce = () => {
 
       openModal();
     } catch (err) {
-      console.log("공고를 등록하는데 오류가 발생했어요:", err);
+      console.error("공고를 등록하는데 오류가 발생했어요:", err);
     } finally {
       setIsLoading(false);
     }
