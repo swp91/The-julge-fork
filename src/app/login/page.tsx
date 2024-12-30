@@ -39,7 +39,6 @@ const Login = () => {
         email: data.email,
         password: data.password,
       });
-      console.log(response);
       loginSave({
         token: response.data.item.token,
         user: response.data.item.user.item,
