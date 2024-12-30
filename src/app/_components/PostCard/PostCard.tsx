@@ -83,7 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({
               src={isPast ? '/image/path11-off.svg' : '/image/path11.svg'}
               alt='주소 아이콘'
               width={16}
-              height={20}
+              height={16}
               className='mr-1'
             />
 
@@ -97,7 +97,7 @@ const PostCard: React.FC<PostCardProps> = ({
                 ' text-18b md:text-24b lg:text-24b',
                 isPast ? 'text-gray-300' : 'text-black',
               )}>
-              {hourlyPay?.toLocaleString()}원
+              {hourlyPay ? `${hourlyPay.toLocaleString()}원` : '정보 없음'}
             </h2>
             {percent !== undefined && percent > 0 && (
               <p className='flex md:hidden text-12 text-red-30'>

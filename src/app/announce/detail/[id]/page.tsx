@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { NoticeContext } from '@/app/_context/NoticeContext';
 import DetailPostCard from '@/app/_components/PostCard/DetailPostCard';
 import PostCard from '@/app/_components/PostCard/PostCard';
-import Header from '@/app/_components/Header';
+import Header from '@/app/_components/Header/Header';
 import Footer from '@/app/_components/Footer';
 import { getUserInfo } from '@/app/_api/worker_api';
 import { useAuth } from '@/app/_hooks/useAuth';

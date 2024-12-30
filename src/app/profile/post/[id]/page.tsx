@@ -2,18 +2,19 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 import Footer from '@/app/_components/Footer';
-import Header from '@/app/_components/Header';
+import Header from '@/app/_components/Header/Header';
 import Input from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
 import Dropdown from '@/app/_components/Dropdown';
 import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
-import { updateUserInfo } from '@/app/_api/worker_api';
+import { getUserInfo, updateUserInfo } from '@/app/_api/worker_api';
+import Link from 'next/link';
+import Loading from '@/app/_components/Loding';
 
 interface FormData {
   name: string;
@@ -22,14 +23,16 @@ interface FormData {
   bio: string;
 }
 
-const ProfilePost = (formData?: FormData) => {
+const ProfilePost = () => {
   const router = useRouter();
   const { id } = useParams();
   const user_id = id as string;
+
   const {
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -40,10 +43,37 @@ const ProfilePost = (formData?: FormData) => {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // 초기 데이터 로드
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserInfo(user_id);
+        const userInfo = response.data.item;
+
+        if (userInfo) {
+          reset({
+            name: userInfo.name || '',
+            phone: userInfo.phone || '',
+            address: userInfo.address || '',
+            bio: userInfo.bio || '',
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        alert('사용자 정보를 불러오는 데 실패했습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user_id, reset]);
+
   const onSubmit = async (data: FormData) => {
-    console.log('폼 데이터:', data); // 폼 데이터 확인
+    setIsLoading(true); // 로딩 시작
     try {
       const response = await updateUserInfo(user_id, {
         name: data.name,
@@ -51,11 +81,12 @@ const ProfilePost = (formData?: FormData) => {
         address: data.address,
         bio: data.bio,
       });
-      console.log('응답 데이터:', response.data); // 응답 확인
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('프로필 등록 중 문제가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
@@ -68,6 +99,10 @@ const ProfilePost = (formData?: FormData) => {
     router.push('/profile');
   };
 
+  if (isLoading) {
+    return <Loading />; // 로딩 애니메이션 표시
+  }
+
   return (
     <div>
       <Header />
@@ -78,21 +113,22 @@ const ProfilePost = (formData?: FormData) => {
           style={{ width: '100%', maxWidth: '964px' }}>
           <div className='flex justify-between items-center mb-6'>
             <h1 className='text-[20px] font-bold'>내 프로필</h1>
-            <button type='button'>
-              <Image
-                src={'/image/closeBtn.svg'}
-                alt='닫기버튼'
-                width={24}
-                height={24}
-              />
-            </button>
+            <Link href={'/profile'}>
+              <button type='button'>
+                <Image
+                  src={'/image/closeBtn.svg'}
+                  alt='닫기버튼'
+                  width={24}
+                  height={24}
+                />
+              </button>
+            </Link>
           </div>
 
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-6'>
             <Input
               label='이름*'
               placeholder='이름을 입력해주세요'
-              value={formData?.name}
               error={errors.name?.message}
               {...register('name', { required: '이름은 필수 항목입니다.' })}
               className='w-full h-[92px] mt-2'
@@ -101,7 +137,6 @@ const ProfilePost = (formData?: FormData) => {
             <Input
               label='연락처*'
               placeholder='연락처를 입력해주세요'
-              value={formData?.phone}
               error={errors.phone?.message}
               {...register('phone', {
                 required: '연락처는 필수 항목입니다.',
@@ -116,15 +151,16 @@ const ProfilePost = (formData?: FormData) => {
             <Controller
               name='address'
               control={control}
-              rules={{ required: '선호 지역을 선택해주세요.' }}
+              rules={{ required: '선호 지역은 필수 항목입니다.' }}
               render={({ field }) => (
                 <Dropdown
-                  label='선호 지역'
+                  label='선호 지역*'
                   options={LOCATIONS}
-                  value={formData ? formData.address : field.value}
+                  value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
                   }}
+                  error={errors.address?.message}
                   className='w-full mt-2'
                 />
               )}
@@ -141,7 +177,6 @@ const ProfilePost = (formData?: FormData) => {
               <textarea
                 id='introduction'
                 placeholder='자기소개를 입력해주세요'
-                value={formData?.bio}
                 {...register('bio')}
                 className='w-full h-[187px] border rounded p-2'></textarea>
             </div>
