@@ -1,12 +1,12 @@
-import axios from 'axios';
-import instance from './instance';
+import axios from "axios";
+import instance from "./instance";
 
 // PresignedUrl(이미지URL로 사용할주소) 를 발급받는 api 입니다.
 export const createPresignedUrl = async (imageName: string) => {
   const response = await instance.post<{ item: { url: string } }>(
-    '/images',
+    "/images",
     { name: imageName },
-    { headers: { requiresToken: true } },
+    { headers: { requiresToken: true } }
   );
 
   const { item } = response.data;
@@ -18,13 +18,11 @@ export const uploadToS3 = async (presignedUrl: string, file: File) => {
   try {
     const response = await axios.put(presignedUrl, file, {
       headers: {
-        'Content-Type': file.type,
+        "Content-Type": file.type,
       },
     });
-
-    console.log('File uploaded successfully:', response.status);
   } catch (error) {
-    console.error('Error uploading file to S3:', error);
+    console.error("Error uploading file to S3:", error);
     throw error;
   }
 };

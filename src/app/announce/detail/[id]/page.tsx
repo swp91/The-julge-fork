@@ -151,8 +151,6 @@ const Page = () => {
     currentNotice?.shop.item.id &&
     userShopid === currentNotice.shop.item.id;
 
-  console.log(currentNotice);
-
   return (
     <>
       <Header />

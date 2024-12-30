@@ -174,16 +174,18 @@ const SearchPage = () => {
             ) : currentPosts.length < 3 ? (
               currentPosts.map((post) => (
                 <div key={post.id}>
-                  <PostCard
-                    name={post.shop.item.name}
-                    startsAt={post.startsAt}
-                    workhour={post.workhour}
-                    address1={post.shop.item.address1}
-                    imageUrl={post.shop.item.imageUrl}
-                    hourlyPay={post.hourlyPay}
-                    originalHourlyPay={post.shop.item.originalHourlyPay}
-                    isPast={post.closed}
-                  />
+                  <Link key={post.id} href={`/announce/detail/${post.id}`}>
+                    <PostCard
+                      name={post.shop.item.name}
+                      startsAt={post.startsAt}
+                      workhour={post.workhour}
+                      address1={post.shop.item.address1}
+                      imageUrl={post.shop.item.imageUrl}
+                      hourlyPay={post.hourlyPay}
+                      originalHourlyPay={post.shop.item.originalHourlyPay}
+                      isPast={post.closed}
+                    />
+                  </Link>
                   <div className="h-[128px]"></div>
                 </div>
               ))
