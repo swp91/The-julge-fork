@@ -13,6 +13,7 @@ import Modal from '@/app/_components/Modal';
 
 import useModal from '@/app/_hooks/useModal';
 import { createShopNotice } from '@/app/_api/owner_api';
+import Loading from '@/app/_components/Loding';
 
 const PostAnnounce = () => {
   const router = useRouter();
@@ -20,6 +21,7 @@ const PostAnnounce = () => {
   const shopId = searchParams.get('shopId');
   const { isOpen, openModal, closeModal } = useModal();
   const [noticeId, setNoticeId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
   const {
     register,
@@ -36,6 +38,7 @@ const PostAnnounce = () => {
     }
 
     try {
+      setIsLoading(true); // 로딩 시작
       const localDate = new Date(data.startsAt);
       const utcDate = localDate.toISOString();
 
@@ -49,9 +52,15 @@ const PostAnnounce = () => {
 
       openModal();
     } catch (err) {
-      console.log('공고를 등록하는데 오류가 발생했어요:, err');
+      console.log('공고를 등록하는데 오류가 발생했어요:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>

@@ -11,19 +11,23 @@ import {
 } from '@/app/_context/util/recentNotices';
 import Link from 'next/link';
 import { useAuth } from '@/app/_hooks/useAuth';
+import Loading from '@/app/_components/Loding';
 
 const Page = () => {
   const { id } = useParams();
   const noticeContext = useContext(NoticeContext);
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth() || {};
 
-  if (!noticeContext) {
-    return <p>로딩중...</p>;
-  }
+  useEffect(() => {
+    if (noticeContext) {
+      setIsLoading(false);
+    }
+  }, [noticeContext]);
 
-  const { notices } = noticeContext;
-  const currentNotice = notices.find((notice) => notice.id === id);
+  const { notices } = noticeContext || {};
+  const currentNotice = notices?.find((notice) => notice.id === id);
 
   useEffect(() => {
     const recentData = getRecentNotices();
@@ -35,6 +39,10 @@ const Page = () => {
       saveToRecentNotices(currentNotice);
     }
   }, [currentNotice]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>

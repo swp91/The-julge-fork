@@ -11,6 +11,7 @@ import { getUserInfo, getUserApplications } from '../_api/worker_api';
 import { tableConfig, WorkerData } from '../_config/tableConfig';
 import { ProfileData } from './_type/type';
 import { useAuth } from '../_hooks/useAuth';
+import Loading from '../_components/Loding';
 
 const ProfilePage = () => {
   const { user } = useAuth();
@@ -55,12 +56,9 @@ const ProfilePage = () => {
           });
         }
 
-        console.log(userInfo);
-
         // 신청 내역 데이터 가져오기
         const applicationsResponse = await getUserApplications(user_id!);
         const applicationItems = applicationsResponse.data.items;
-        console.log(applicationItems);
 
         if (applicationItems.length > 0) {
           setApplicationStatus(true);
@@ -102,7 +100,7 @@ const ProfilePage = () => {
       <Header />
       <div>
         {isLoading ? (
-          <div>로딩 중...</div>
+          <Loading />
         ) : error ? (
           <div className='h-[753px] text-center pt-[300px]'>
             오류 발생: {error}
@@ -132,7 +130,7 @@ const ProfilePage = () => {
                 <Pagination
                   totalPages={totalPages}
                   onPageChange={(page) => setCurrentPage(page)}
-                  currentPage={0}
+                  currentPage={currentPage}
                 />
               </div>
             ) : (

@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import Header from '@/app/_components/Header/Header';
@@ -16,18 +16,20 @@ import ImageUploader from '@/app/_components/ImageUploader';
 import useModal from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
 import { getShopInfo, updateShopInfo } from '@/app/_api/owner_api';
+import Loading from '@/app/_components/Loding';
 
 const EditStore = () => {
   const router = useRouter();
   const { id } = useParams();
   const shopId = id as string;
   const { isOpen, openModal, closeModal } = useModal();
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     control,
     register,
     handleSubmit,
-    reset, // 가져온 데이터를 초기값으로 설정하기 위한 메서드
+    reset,
     setValue,
     watch,
     formState: { errors },
@@ -46,11 +48,13 @@ const EditStore = () => {
         reset(response.data.item);
       } catch (err) {
         console.error('가게 정보를 불러오는데 실패했어요:', err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchShopInfo();
-  }, [reset]);
+  }, [reset, shopId]);
 
   const onImageChange = (image: string) => {
     setValue('imageUrl', image, { shouldValidate: true });
@@ -73,6 +77,10 @@ const EditStore = () => {
       console.error('가게 정보를 수정하는데 오류가 발생했어요:', err);
     }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
