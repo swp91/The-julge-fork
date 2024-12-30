@@ -61,7 +61,12 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
             { 'bg-red-10': type === 'store' },
           )}>
           <div className='w-[311px] h-[177px] md:w-[632px] md:h-[361px] lg:w-[539px] lg:h-[308px] relative flex-shrink-0 rounded-xl overflow-hidden'>
-            <Image src={imageUrl} alt='가게 사진' className='object-cover' />
+            <Image
+              src={imageUrl}
+              alt='가게 사진'
+              layout='fill'
+              className='object-cover'
+            />
             {closed && (
               <div className='absolute bg-black inset-0 opacity-70 flex justify-center items-center'>
                 <span className='text-20b md:text-28b text-gray-300'>
