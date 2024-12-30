@@ -8,6 +8,7 @@ import useAlbaTimeFormat from '@/app/_hooks/useAlbaTimeFormat';
 import { createApplicationForNotice } from '@/app/_api/owner_api';
 import Modal from '../Modal';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface DetailPostCard {
   type?: 'store' | 'notice';
@@ -154,7 +155,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
               {shopDescription}
             </div>
           </div>
-          {type === 'notice' && (
+          {type === 'notice' ? (
             <div>
               {closed ? (
                 <Button size='full' disabled>
@@ -174,6 +175,17 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
                 </Button>
               )}
             </div>
+          ) : (
+            <>
+              <Link href={`/store/edit/${shopId}`}>
+                <Button size='full' style='bordered'>
+                  편집하기
+                </Button>
+              </Link>
+              <Link href='/announce/post'>
+                <Button size='full'>공고 등록하기</Button>
+              </Link>
+            </>
           )}
         </div>
       </div>
