@@ -105,6 +105,7 @@ const StoreDetailPage: React.FC = () => {
                 address1={storeData?.address1 || ''}
                 imageUrl={storeData?.imageUrl || ''}
                 shopDescription={storeData?.description || ''}
+                shopId={shopId}
               />
               {announcementStatus ? (
                 <div className='mt-[60px]'>
