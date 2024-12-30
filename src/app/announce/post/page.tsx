@@ -33,7 +33,7 @@ const PostAnnounce = () => {
     mode: 'all',
   });
 
-  if (user?.shop.item.id !== shopId) router.replace('/');
+  if (user?.shop?.item && user.shop.item.id !== shopId) router.replace('/');
 
   const onSubmit = async (data: ownerNoticeRequest) => {
     if (!shopId) {
@@ -41,9 +41,21 @@ const PostAnnounce = () => {
       return;
     }
 
+    if (Number(data.workhour) < 1 || Number(data.workhour) > 24) {
+      alert('근무시간은 1시간 이상 24시간 이하여야 합니다.');
+      return;
+    }
+
+    const localDate = new Date(data.startsAt);
+    const now = new Date();
+
+    if (localDate < now) {
+      alert('과거 시간으로 설정할 수 없습니다.');
+      return;
+    }
+
     try {
-      setIsLoading(true); // 로딩 시작
-      const localDate = new Date(data.startsAt);
+      setIsLoading(true);
       const utcDate = localDate.toISOString();
 
       const postData = {
