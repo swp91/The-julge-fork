@@ -41,7 +41,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
   workhour,
   originalHourlyPay,
   startsAt,
-  closed,
+  closed: initialIsClosed,
   shopId,
   userId,
   noticeId,
@@ -62,7 +62,8 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
     hourlyPay !== undefined && originalHourlyPay !== undefined
       ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
       : undefined;
-  const magam = startsAt ? new Date(startsAt) < new Date() : false;
+  const closed =
+    initialIsClosed || (startsAt ? new Date(startsAt) < new Date() : false);
   const handleApplication = async () => {
     if (isAlreadyApplied) {
       setModalContent("이미 이 공고에 신청하셨습니다.");
@@ -135,7 +136,9 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
           {closed && (
             <div className="absolute bg-black inset-0 opacity-70 flex justify-center items-center">
               <span className="text-20b md:text-28b text-gray-300">
-                {magam ? "지난 공고" : "마감 완료"}
+                {startsAt && new Date(startsAt) < new Date()
+                  ? "지난 공고"
+                  : "마감 완료"}
               </span>
             </div>
           )}
@@ -148,7 +151,9 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
             {type === "notice" ? (
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-24b md:text-28b">{hourlyPay}원</span>
-                <Badge percent={percent} isPast={closed} />
+                {percent !== undefined && percent > 0 && (
+                  <Badge percent={percent} isPast={closed} />
+                )}
               </div>
             ) : (
               <h2 className="text-24b md:text-28b">{name}</h2>
