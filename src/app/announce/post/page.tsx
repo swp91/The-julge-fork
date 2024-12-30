@@ -14,9 +14,11 @@ import Modal from '@/app/_components/Modal';
 import useModal from '@/app/_hooks/useModal';
 import { createShopNotice } from '@/app/_api/owner_api';
 import Loading from '@/app/_components/Loding';
+import { useAuth } from '@/app/_hooks/useAuth';
 
 const PostAnnounce = () => {
   const router = useRouter();
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const shopId = searchParams.get('shopId');
   const { isOpen, openModal, closeModal } = useModal();
@@ -30,6 +32,8 @@ const PostAnnounce = () => {
   } = useForm<ownerNoticeRequest>({
     mode: 'all',
   });
+
+  if (user?.shop.item.id !== shopId) router.replace('/');
 
   const onSubmit = async (data: ownerNoticeRequest) => {
     if (!shopId) {

@@ -15,6 +15,7 @@ import { LOCATIONS } from '@/app/_constants/constants';
 import { getUserInfo, updateUserInfo } from '@/app/_api/worker_api';
 import Link from 'next/link';
 import Loading from '@/app/_components/Loding';
+import { useAuth } from '@/app/_hooks/useAuth';
 
 interface FormData {
   name: string;
@@ -24,6 +25,7 @@ interface FormData {
 }
 
 const ProfilePost = () => {
+  const { user } = useAuth();
   const router = useRouter();
   const { id } = useParams();
   const user_id = id as string;
@@ -50,6 +52,8 @@ const ProfilePost = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        if (!user_id) router.replace('/');
+        if (user?.type === 'employer') router.replace('/');
         const response = await getUserInfo(user_id);
         const userInfo = response.data.item;
 
