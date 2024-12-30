@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 import Footer from '@/app/_components/Footer';
-import Header from '@/app/_components/Header';
+import Header from '@/app/_components/Header/Header';
 import Input from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
 import Dropdown from '@/app/_components/Dropdown';

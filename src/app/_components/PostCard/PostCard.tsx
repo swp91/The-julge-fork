@@ -83,7 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({
               src={isPast ? '/image/path11-off.svg' : '/image/path11.svg'}
               alt='주소 아이콘'
               width={16}
-              height={20}
+              height={16}
               className='mr-1'
             />
 

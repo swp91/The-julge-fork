@@ -5,7 +5,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import clsx from 'clsx';
 
-import Header from '@/app/_components/Header';
+import Header from '@/app/_components/Header/Header';
 import Footer from '@/app/_components/Footer';
 import Button from '@/app/_components/Button';
 import Input from '@/app/_components/Input';

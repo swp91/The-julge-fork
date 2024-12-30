@@ -7,7 +7,6 @@ import { useWindowWidth } from '../../_hooks/useWindowWidth';
 
 import { useRouter } from 'next/navigation'; // 수정: next/navigation에서 useRouter 가져오기
 
-
 interface PostCardProps {
   name: string; // 이름
   address1: string; // 주소1
@@ -28,7 +27,6 @@ const PostCard: React.FC<PostCardProps> = ({
 
   const handleEdit = () => router.push('/edit');
   const handleRegister = () => router.push('/register');
-
 
   if (isDesktop) {
     // 데스크톱 레이아웃
