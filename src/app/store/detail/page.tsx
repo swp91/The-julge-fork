@@ -6,101 +6,81 @@ import PostCard from '@/app/_components/PostCard/PostCardV.1';
 import PostCardV2 from '@/app/_components/PostCard/PostCardV2';
 import PostProfile from '@/app/_components/PostProfile';
 
-import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getShopInfo, getApplicationsForNotice } from '../../_api/owner_api';
+import { useAuth } from '@/app/_hooks/useAuth';
+import { getUserInfo } from '@/app/_api/worker_api';
+import { getShopNotices } from '@/app/_api/announce_api';
 
 interface StoreData {
+  id: string;
   name: string;
+  category: string;
   address1: string;
+  address2: string;
   imageUrl: string;
   description: string;
+  originalHourlyPay: number;
 }
 
 const StoreDetailPage: React.FC = () => {
-  const { shopId, noticeId } = useParams();
-  const router = useRouter();
-  const shopIdString = Array.isArray(shopId) ? shopId[0] : shopId; // shopId의 타입이 string|string[]으로 되서 배열을 방지하기 위해 사용
-  const noticeIdString = Array.isArray(noticeId) ? noticeId[0] : noticeId;
-
-  const [loading, setLoading] = useState<boolean>(true);
+  const { user } = useAuth();
   const [storeStatus, setStoreStatus] = useState<boolean>(false);
   const [announcementStatus, setAnnouncementStatus] = useState<boolean>(false);
   const [storeData, setStoreData] = useState<StoreData | null>(null);
   const [notices, setNotices] = useState<StoreData[]>([]);
+  const [shopId, setShopId] = useState<string>();
 
-  const fetchShopInfo = async () => {
-    try {
-      setLoading(true);
-      const response = await getShopInfo(shopIdString as string);
-      if (response?.data.item) {
-        setStoreData(response.data.item);
-        setStoreStatus(true);
-      } else {
-        setStoreStatus(false);
+  const userId = user?.id;
+
+  useEffect(() => {
+    if (userId) {
+      const fetchData = async () => {
+        try {
+          const response = await getUserInfo(userId as string);
+          setStoreData(response.data.item.shop?.item as StoreData | null);
+          setShopId(response.data.item.shop?.item.id);
+        } catch (error) {
+          console.error('유저 정보를 불러오는데 실패하였습니다.:', error);
+        }
+      };
+      if (shopId) {
+        const fetchNotices = async () => {
+          try {
+            const response = await getShopNotices(shopId, 0, 6);
+            const noticeItems =
+              response?.data?.items?.map((item: any) => item.item) || [];
+            setNotices(noticeItems);
+          } catch (error) {
+            console.error('가게 정보를 불러오는데 실패하였습니다.:', error);
+          }
+        };
+        fetchNotices();
       }
-    } catch (error) {
-      console.error('가게 정보를 가져오는 중 오류 발생:', error);
-      setStoreStatus(false);
-    } finally {
-      setLoading(false);
+      fetchData();
     }
-  };
+  }, [userId, shopId]);
 
-  const fetchNotices = async () => {
-    try {
-      const response = await getApplicationsForNotice(
-        shopIdString as string,
-        noticeIdString as string,
-        0,
-        6,
-      );
-      if (response?.data.items) {
-        const sortedNotices = response.data.items
-          .map((item: any) => item.item)
-          .filter((item: any) => item && item.notice?.item?.startsAt)
-          .sort(
-            (a: any, b: any) =>
-              new Date(b.notice.item.startsAt).getTime() -
-              new Date(a.notice.item.startsAt).getTime(),
-          );
-        setNotices(sortedNotices);
-        setAnnouncementStatus(sortedNotices.length > 0);
+  useEffect(() => {
+    if (storeData) {
+      setStoreStatus(true);
+      if (notices.length > 0) {
+        setAnnouncementStatus(true);
+        console.log(notices);
       } else {
         setAnnouncementStatus(false);
       }
-    } catch (error) {
-      console.error('공고 정보를 가져오는 중 오류 발생:', error);
-      setAnnouncementStatus(false);
+    } else {
+      setStoreStatus(false);
     }
-  };
-
-  useEffect(() => {
-    if (!shopIdString) {
-      alert('가게 ID가 없습니다. 이전 페이지로 이동합니다.');
-      router.back();
-      return;
-    } else if (!shopIdString || !noticeIdString) return;
-
-    fetchShopInfo();
-    fetchNotices();
-  }, [shopIdString, router, noticeIdString]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!storeStatus) {
-    return <div>가게 정보를 불러올 수 없습니다. 다시 시도해 주세요.</div>;
-  }
-
+  }, [storeData, notices]);
   return (
     <>
       <Header />
       <div className='bg-gray-50'>
         <div className='mx-auto pt-10 px-4 sm:px-6 lg:px-8 max-w-[90%] sm:max-w-[680px] lg:max-w-[964px] pb-[80px] md:pb-[60px]'>
           {storeStatus ? (
-            <div>
+            <div className=' mb-[60px]'>
+              <h2 className='text-28b mb-6'>내 가게</h2>
               <PostCard
                 name={storeData?.name || ''}
                 address1={storeData?.address1 || ''}
@@ -108,13 +88,14 @@ const StoreDetailPage: React.FC = () => {
                 description={storeData?.description || ''}
               />
               {announcementStatus ? (
-                <div>
+                <div className='mt-[60px]'>
+                  <h2 className='text-28b mb-6'>내가 등록한 공고</h2>
                   {notices.map((notice, index) => (
                     <PostCardV2
                       key={index}
                       name={notice.name || ''}
                       address1={notice.address1 || ''}
-                      imageUrl={notice.imageUrl || ''}
+                      imageUrl={storeData?.imageUrl || ''}
                       description={notice.description || ''}
                     />
                   ))}
@@ -123,12 +104,17 @@ const StoreDetailPage: React.FC = () => {
                 <PostProfile
                   isExist={announcementStatus}
                   type={'announcement'}
+                  navigateTo={`/announce/post?shopId=${shopId}`}
                 />
               )}
             </div>
           ) : (
             <div>
-              <PostProfile isExist={storeStatus} type={'myStore'} />
+              <PostProfile
+                isExist={storeStatus}
+                type={'myStore'}
+                navigateTo={'/store/post'}
+              />
               <div className='h-[358px]'></div>
             </div>
           )}

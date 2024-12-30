@@ -7,6 +7,18 @@ interface User {
   address?: string;
   bio?: string;
   iat?: number;
+  shop: {
+    item: {
+      id: string;
+      name: string;
+      category: string;
+      address1: string;
+      address2: string;
+      description: string;
+      imageUrl: string;
+      originalHourlyPay: number;
+    };
+  };
 }
 
 interface LoginRequest {

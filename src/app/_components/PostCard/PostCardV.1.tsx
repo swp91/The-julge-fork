@@ -4,7 +4,9 @@ import clsx from 'clsx';
 import Button from '../Button';
 import Image from 'next/image';
 import { useWindowWidth } from '../../_hooks/useWindowWidth';
+
 import { useRouter } from 'next/navigation'; // 수정: next/navigation에서 useRouter 가져오기
+
 
 interface PostCardProps {
   name: string; // 이름
@@ -21,16 +23,19 @@ const PostCard: React.FC<PostCardProps> = ({
 }) => {
   const windowWidth = useWindowWidth(); // 현재 창 너비 가져오기
   const isDesktop = windowWidth >= 964;
+
   const router = useRouter(); // 수정: next/navigation의 useRouter 사용
 
   const handleEdit = () => router.push('/edit');
   const handleRegister = () => router.push('/register');
+
 
   if (isDesktop) {
     // 데스크톱 레이아웃
     return (
       <div
         className={clsx(
+
           'w-full max-w-[964px] p-6 bg-red-10 border rounded-xl shadow-md flex flex-row gap-6'
         )}
       >
@@ -53,11 +58,13 @@ const PostCard: React.FC<PostCardProps> = ({
                   width={20}
                   height={20}
                   className="mr-1"
+
                 />
                 {address1}
               </p>
             )}
             {/* 상세 설명 */}
+
             <p className="mt-4 line-clamp-4 text-black text-16 leading-relaxed">
               {description}
             </p>
@@ -78,6 +85,7 @@ const PostCard: React.FC<PostCardProps> = ({
               className="text-16b"
               onClick={handleRegister}
             >
+
               공고 등록하기
             </Button>
           </div>
@@ -85,6 +93,7 @@ const PostCard: React.FC<PostCardProps> = ({
       </div>
     );
   }
+
 
   // 모바일 및 태블릿 레이아웃
   return (
@@ -127,6 +136,7 @@ const PostCard: React.FC<PostCardProps> = ({
               공고 등록하기
             </Button>
           </div>
+
         </div>
       </div>
     </div>
