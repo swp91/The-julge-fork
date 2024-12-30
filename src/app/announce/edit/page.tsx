@@ -39,9 +39,13 @@ const EditAnnounce = () => {
         const response = await getShopNoticeDetail(shopId, noticeId);
         const noticeData = response.data.item;
 
+        const startsAtFormatted = new Date(noticeData.startsAt)
+          .toISOString()
+          .slice(0, 16);
+
         const initialData = {
           hourlyPay: noticeData.hourlyPay,
-          startsAt: noticeData.startsAt,
+          startsAt: startsAtFormatted,
           workhour: noticeData.workhour,
           description: noticeData.description,
         };
