@@ -1,7 +1,9 @@
+import React from 'react';
+
 interface Column<T> {
   header: string;
   accessor: keyof T;
-  render?: (value: T[keyof T]) => React.ReactNode;
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
   hiddenOn?: 'sm' | 'md' | 'lg';
 }
 
@@ -15,7 +17,7 @@ const Table = <T extends Record<string, any>>({
   columns,
 }: TableProps<T>) => {
   return (
-    <div className='w-[351px] md:w-[680px] lg:w-[964px] rounded-t-[10px] overflow-hidden border-t border-l border-r border-gray-200 '>
+    <div className='w-[351px] md:w-[680px] lg:w-[964px] rounded-t-[10px] overflow-hidden border-t border-l border-r border-gray-200 mb-3 mt-5'>
       <table className='w-full table-fixed border-collapse'>
         <thead>
           <tr className='bg-red-10 border-b border-gray-200'>
@@ -47,7 +49,7 @@ const Table = <T extends Record<string, any>>({
                   }`}>
                   <div className='line-clamp-2'>
                     {col.render
-                      ? col.render(row[col.accessor])
+                      ? col.render(row[col.accessor], row)
                       : row[col.accessor]}
                   </div>
                 </td>

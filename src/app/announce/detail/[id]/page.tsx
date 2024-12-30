@@ -9,7 +9,10 @@ import Header from '@/app/_components/Header/Header';
 import Footer from '@/app/_components/Footer';
 import { getUserInfo } from '@/app/_api/worker_api';
 import { useAuth } from '@/app/_hooks/useAuth';
-import { getApplicationsForNotice } from '@/app/_api/owner_api';
+import {
+  getApplicationsForNotice,
+  updateApplicationStatus,
+} from '@/app/_api/owner_api';
 import Table from '@/app/_components/Table';
 import Pagination from '@/app/_components/Pagination';
 import { tableConfig, OwnerData } from '@/app/_config/tableConfig';
@@ -18,6 +21,7 @@ import {
   saveToRecentNotices,
 } from '@/app/_context/util/recentNotices';
 import Link from 'next/link';
+import Modal from '@/app/_components/Modal';
 
 const Page = () => {
   const { id } = useParams();
@@ -28,6 +32,8 @@ const Page = () => {
   const [recentNotices, setRecentNotices] = useState<Notice[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState('');
 
   const itemsPerPage = 5;
 
@@ -63,14 +69,13 @@ const Page = () => {
             0,
             100,
           );
-
           const transformedData = response.data.items.map((application) => ({
+            applicationId: application.item.id,
             name: application.item.user?.item.name || '익명',
             introduction: application.item.user?.item.bio || '소개 없음',
             phone: application.item.user?.item.phone || '전화번호 없음',
             status: application.item.status,
           }));
-
           setApplications(transformedData);
           setTotalPages(Math.ceil(transformedData.length / itemsPerPage));
         } catch (err) {
@@ -99,6 +104,43 @@ const Page = () => {
     setCurrentPage(page);
   };
 
+  const handleApplicationStatusChange = async (
+    applicationId: string,
+    newStatus: 'accepted' | 'rejected',
+  ) => {
+    if (!userShopid || !currentNotice?.id) return;
+
+    try {
+      await updateApplicationStatus(
+        userShopid,
+        currentNotice.id,
+        applicationId,
+        {
+          status: newStatus,
+        },
+      );
+
+      setApplications((prevApplications) =>
+        prevApplications.map((application) =>
+          application.applicationId === applicationId
+            ? { ...application, status: newStatus }
+            : application,
+        ),
+      );
+
+      setModalContent(
+        `지원 상태가 '${
+          newStatus === 'accepted' ? '승인됨' : '거절됨'
+        }'으로 변경되었습니다.`,
+      );
+      setIsModalOpen(true);
+    } catch (err) {
+      console.error('Error updating application status:', err);
+      setModalContent('상태 변경에 실패했습니다. 다시 시도해주세요.');
+      setIsModalOpen(true);
+    }
+  };
+
   const paginatedData = applications.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage,
@@ -108,6 +150,8 @@ const Page = () => {
     userShopid &&
     currentNotice?.shop.item.id &&
     userShopid === currentNotice.shop.item.id;
+
+  console.log(currentNotice);
 
   return (
     <>
@@ -128,6 +172,7 @@ const Page = () => {
             userId={userShopid}
             noticeId={currentNotice.id}
             userType={user?.type}
+            closed={currentNotice.closed}
           />
         )}
       </div>
@@ -138,7 +183,13 @@ const Page = () => {
             <h2 className='text-20b md:text-28b'>신청자 목록</h2>
             {paginatedData.length > 0 ? (
               <>
-                <Table data={paginatedData} columns={tableConfig.owner} />
+                <Table
+                  data={paginatedData.map((item) => ({
+                    ...item,
+                    onStatusChange: handleApplicationStatusChange,
+                  }))}
+                  columns={tableConfig.owner}
+                />
                 <Pagination
                   totalPages={totalPages}
                   currentPage={currentPage}
@@ -177,6 +228,12 @@ const Page = () => {
           </div>
         </section>
       )}
+      <Modal
+        isOpen={isModalOpen}
+        type='alert'
+        content={modalContent}
+        onClose={() => setIsModalOpen(false)}
+      />
 
       <Footer />
     </>
