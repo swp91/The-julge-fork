@@ -10,6 +10,8 @@ import { useAuth } from '@/app/_hooks/useAuth';
 import { getUserInfo } from '@/app/_api/worker_api';
 import { getShopNotices } from '@/app/_api/announce_api';
 import PostCard from '@/app/_components/PostCard/PostCard';
+import Loading from '@/app/_components/Loding';
+
 
 interface StoreData {
   id: string;
@@ -29,6 +31,7 @@ const StoreDetailPage: React.FC = () => {
   const [storeData, setStoreData] = useState<StoreData | null>(null);
   const [notices, setNotices] = useState<StoreData[]>([]);
   const [shopId, setShopId] = useState<string>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const userId = user?.id;
 
@@ -43,6 +46,7 @@ const StoreDetailPage: React.FC = () => {
           console.error('유저 정보를 불러오는데 실패하였습니다.:', error);
         }
       };
+
       if (shopId) {
         const fetchNotices = async () => {
           try {
@@ -58,6 +62,7 @@ const StoreDetailPage: React.FC = () => {
       }
       fetchData();
     }
+    setIsLoading(false);
   }, [userId, shopId]);
 
   useEffect(() => {
@@ -65,7 +70,6 @@ const StoreDetailPage: React.FC = () => {
       setStoreStatus(true);
       if (notices.length > 0) {
         setAnnouncementStatus(true);
-        console.log(notices);
       } else {
         setAnnouncementStatus(false);
       }
@@ -73,6 +77,11 @@ const StoreDetailPage: React.FC = () => {
       setStoreStatus(false);
     }
   }, [storeData, notices]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <Header />

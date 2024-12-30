@@ -11,6 +11,7 @@ import Button from '../_components/Button';
 import { register as registerApi } from '../_api/auth_api';
 import Modal from '../_components/Modal';
 import { useRouter } from 'next/navigation';
+import Loading from '../_components/Loding';
 
 const SignUp = () => {
   const {
@@ -39,7 +40,7 @@ const SignUp = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
-    setLoading(true);
+    setLoading(true); // 로딩 시작
     try {
       const { email, password, type } = data;
       await registerApi({ email, password, type });
@@ -69,6 +70,10 @@ const SignUp = () => {
       router.push('/login');
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

@@ -1,7 +1,7 @@
 'use client';
 
-import { useContext, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation'; // useSearchParams 사용
+import { useContext, useMemo, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Dropdown from '../_components/Dropdown';
 import Footer from '../_components/Footer';
 import Header from '../_components/Header/Header';
@@ -9,6 +9,7 @@ import { NoticeContext } from '@/app/_context/NoticeContext';
 import DetailFilter from '../_components/DetailFilter/DetailFilter';
 import Pagination from '../_components/Pagination';
 import PostCard from '../_components/PostCard/PostCard';
+import Loading from '../_components/Loding';
 
 const options = [
   '마감임박순',
@@ -19,8 +20,8 @@ const options = [
 ];
 
 const SearchPage = () => {
-  const searchParams = useSearchParams(); // URL 검색 파라미터 가져오기
-  const keyword = searchParams.get('keyword'); // "keyword" 파라미터 추출
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get('keyword');
   const context = useContext(NoticeContext);
   const [selectedOption, setSelectedOption] = useState<string | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,9 +31,16 @@ const SearchPage = () => {
     amount: '',
     startDate: '',
   });
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+
+  useEffect(() => {
+    if (context) {
+      setIsLoading(false); // 데이터가 로드되면 로딩 종료
+    }
+  }, [context]);
 
   if (!context) {
-    return <p>로딩</p>;
+    return <Loading />; // 로딩 중일 때 Loading 컴포넌트 표시
   }
 
   const { notices } = context;
@@ -121,6 +129,10 @@ const SearchPage = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  if (isLoading) {
+    return <Loading />; // 로딩 중일 때 Loading 컴포넌트 표시
+  }
 
   return (
     <div>

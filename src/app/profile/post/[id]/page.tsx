@@ -14,6 +14,7 @@ import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
 import { getUserInfo, updateUserInfo } from '@/app/_api/worker_api';
 import Link from 'next/link';
+import Loading from '@/app/_components/Loding';
 
 interface FormData {
   name: string;
@@ -72,7 +73,7 @@ const ProfilePost = () => {
   }, [user_id, reset]);
 
   const onSubmit = async (data: FormData) => {
-    console.log('폼 데이터:', data); // 폼 데이터 확인
+    setIsLoading(true); // 로딩 시작
     try {
       const response = await updateUserInfo(user_id, {
         name: data.name,
@@ -80,11 +81,12 @@ const ProfilePost = () => {
         address: data.address,
         bio: data.bio,
       });
-      console.log('응답 데이터:', response.data); // 응답 확인
       setIsModalOpen(true);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('프로필 등록 중 문제가 발생했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false); // 로딩 종료
     }
   };
 
@@ -98,13 +100,7 @@ const ProfilePost = () => {
   };
 
   if (isLoading) {
-    return (
-      <div>
-        <Header />
-        <div className='text-center pt-[200px]'>로딩 중...</div>
-        <Footer />
-      </div>
-    );
+    return <Loading />; // 로딩 애니메이션 표시
   }
 
   return (
