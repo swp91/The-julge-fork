@@ -15,7 +15,7 @@ const Table = <T extends Record<string, any>>({
   columns,
 }: TableProps<T>) => {
   return (
-    <div className='w-[351px] md:w-[680px] lg:w-[964px] rounded-t-[10px] overflow-hidden border-t border-l border-r border-gray-200 mb-3'>
+    <div className='w-[351px] md:w-[680px] lg:w-[964px] rounded-t-[10px] overflow-hidden border-t border-l border-r border-gray-200 '>
       <table className='w-full table-fixed border-collapse'>
         <thead>
           <tr className='bg-red-10 border-b border-gray-200'>
@@ -23,7 +23,9 @@ const Table = <T extends Record<string, any>>({
               <th
                 key={index}
                 className={`p-3 text-left text-12 md:text-14 border-b border-gray-200 ${
-                  col.hiddenOn ? `hidden ${col.hiddenOn}:table-cell` : ''
+                  col.hiddenOn
+                    ? `hidden ${col.hiddenOn}:table-cell !important`
+                    : ''
                 }`}>
                 {col.header}
               </th>
