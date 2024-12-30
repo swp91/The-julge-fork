@@ -1,8 +1,10 @@
 'use client';
+
 import { useContext, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation'; // useSearchParams 사용
 import Dropdown from '../_components/Dropdown';
 import Footer from '../_components/Footer';
-import Header from '../_components/Header';
+import Header from '../_components/Header/Header';
 import { NoticeContext } from '@/app/_context/NoticeContext';
 import DetailFilter from '../_components/DetailFilter/DetailFilter';
 import Pagination from '../_components/Pagination';
@@ -17,6 +19,8 @@ const options = [
 ];
 
 const SearchPage = () => {
+  const searchParams = useSearchParams(); // URL 검색 파라미터 가져오기
+  const keyword = searchParams.get('keyword'); // "keyword" 파라미터 추출
   const context = useContext(NoticeContext);
   const [selectedOption, setSelectedOption] = useState<string | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,8 +37,15 @@ const SearchPage = () => {
 
   const { notices } = context;
 
+  // 검색 필터 적용
   const filteredNotices = useMemo(() => {
     let result = [...notices];
+
+    if (keyword) {
+      result = result.filter((notice) =>
+        notice.shop.item.name.includes(keyword),
+      );
+    }
 
     if (filters.selectedOptions.length > 0) {
       result = result.filter((notice) =>
@@ -75,7 +86,7 @@ const SearchPage = () => {
       default:
         return result;
     }
-  }, [notices, selectedOption, filters]);
+  }, [notices, keyword, selectedOption, filters]);
 
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
@@ -117,7 +128,9 @@ const SearchPage = () => {
       <div className='w-full flex flex-col items-center py-10 md:py-[60px] px-3 md:px-8'>
         <div className='w-[351px] md:w-[679px] lg:w-[964px] max-w-screen-xl flex flex-col items-center'>
           <div className='w-full flex flex-col md:flex-row justify-between mb-4 relative'>
-            <h1 className='text-20b md:text-28b'>{}에 대한 공고 목록</h1>
+            <h1 className='text-20b md:text-28b'>
+              {keyword ? `"${keyword}"에 대한 공고 목록` : '공고 목록'}
+            </h1>
             <div className='flex gap-3 mt-3'>
               <div>
                 <Dropdown
@@ -170,4 +183,5 @@ const SearchPage = () => {
     </div>
   );
 };
+
 export default SearchPage;
