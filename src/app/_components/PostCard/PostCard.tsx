@@ -31,7 +31,7 @@ const PostCard: React.FC<PostCardProps> = ({
     originalHourlyPay !== undefined
       ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
       : undefined;
-
+  const magam = startsAt ? new Date(startsAt) < new Date() : false;
   return (
     <div
       className={clsx(
@@ -42,7 +42,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {isPast && (
           <div className='absolute inset-0 flex justify-center items-center bg-opacity-70 bg-black'>
             <span className='text-gray-300 inset-0 text-20b md:text-28b'>
-              지난 공고
+              {magam ? '지난 공고' : '마감 완료'}
             </span>
           </div>
         )}
