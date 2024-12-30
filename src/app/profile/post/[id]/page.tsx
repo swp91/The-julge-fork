@@ -2,8 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useForm, Controller } from 'react-hook-form';
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 import Footer from '@/app/_components/Footer';
@@ -13,7 +12,7 @@ import Button from '@/app/_components/Button';
 import Dropdown from '@/app/_components/Dropdown';
 import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
-import { updateUserInfo } from '@/app/_api/worker_api';
+import { getUserInfo, updateUserInfo } from '@/app/_api/worker_api';
 
 interface FormData {
   name: string;
@@ -22,14 +21,16 @@ interface FormData {
   bio: string;
 }
 
-const ProfilePost = (formData?: FormData) => {
+const ProfilePost = () => {
   const router = useRouter();
   const { id } = useParams();
   const user_id = id as string;
+
   const {
     control,
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -40,7 +41,34 @@ const ProfilePost = (formData?: FormData) => {
     },
   });
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUserInfo(user_id);
+        const userInfo = response.data.item;
+
+        if (userInfo) {
+          reset({
+            name: userInfo.name || '',
+            phone: userInfo.phone || '',
+            address: userInfo.address || '',
+            bio: userInfo.bio || '',
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        alert('사용자 정보를 불러오는 데 실패했습니다.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [user_id, reset]);
 
   const onSubmit = async (data: FormData) => {
     console.log('폼 데이터:', data); // 폼 데이터 확인
@@ -68,6 +96,16 @@ const ProfilePost = (formData?: FormData) => {
     router.push('/profile');
   };
 
+  if (isLoading) {
+    return (
+      <div>
+        <Header />
+        <div className='text-center pt-[200px]'>로딩 중...</div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Header />
@@ -92,7 +130,6 @@ const ProfilePost = (formData?: FormData) => {
             <Input
               label='이름*'
               placeholder='이름을 입력해주세요'
-              value={formData?.name}
               error={errors.name?.message}
               {...register('name', { required: '이름은 필수 항목입니다.' })}
               className='w-full h-[92px] mt-2'
@@ -101,7 +138,6 @@ const ProfilePost = (formData?: FormData) => {
             <Input
               label='연락처*'
               placeholder='연락처를 입력해주세요'
-              value={formData?.phone}
               error={errors.phone?.message}
               {...register('phone', {
                 required: '연락처는 필수 항목입니다.',
@@ -116,15 +152,16 @@ const ProfilePost = (formData?: FormData) => {
             <Controller
               name='address'
               control={control}
-              rules={{ required: '선호 지역을 선택해주세요.' }}
+              rules={{ required: '선호 지역은 필수 항목입니다.' }}
               render={({ field }) => (
                 <Dropdown
-                  label='선호 지역'
+                  label='선호 지역*'
                   options={LOCATIONS}
-                  value={formData ? formData.address : field.value}
+                  value={field.value}
                   onChange={(value) => {
                     field.onChange(value);
                   }}
+                  error={errors.address?.message}
                   className='w-full mt-2'
                 />
               )}
@@ -141,7 +178,6 @@ const ProfilePost = (formData?: FormData) => {
               <textarea
                 id='introduction'
                 placeholder='자기소개를 입력해주세요'
-                value={formData?.bio}
                 {...register('bio')}
                 className='w-full h-[187px] border rounded p-2'></textarea>
             </div>
