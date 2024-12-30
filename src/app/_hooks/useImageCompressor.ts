@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import imageCompression from 'browser-image-compression';
+import { useState } from "react";
+import imageCompression from "browser-image-compression";
 
 type UseImageCompressorReturn = {
   compressedImage: string | null;
@@ -20,8 +20,6 @@ const useImageCompressor = (): UseImageCompressorReturn => {
         useWebWorker: true,
       };
 
-      console.log(file);
-
       const compressed = await imageCompression(file, options);
 
       setCompressedFile(compressed);
@@ -29,8 +27,8 @@ const useImageCompressor = (): UseImageCompressorReturn => {
 
       return compressed;
     } catch (error) {
-      console.error('이미지 압축 중 에러 발생:', error);
-      throw new Error('이미지 압축 실패');
+      console.error("이미지 압축 중 에러 발생:", error);
+      throw new Error("이미지 압축 실패");
     }
   };
 

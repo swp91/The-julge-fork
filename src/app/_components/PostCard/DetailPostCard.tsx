@@ -10,6 +10,7 @@ import Modal from "../Modal";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "@/app/_hooks/useAuth";
+import { useApplicationContext } from "@/app/_context/ApplicationContext";
 
 interface DetailPostCard {
   type?: "store" | "notice";
@@ -53,6 +54,9 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
   const [modalContent, setModalContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { appliedNotices, addApplication } = useApplicationContext();
+
+  const isAlreadyApplied = appliedNotices.includes(noticeId || "");
 
   const percent =
     hourlyPay !== undefined && originalHourlyPay !== undefined
@@ -60,6 +64,12 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
       : undefined;
   const magam = startsAt ? new Date(startsAt) < new Date() : false;
   const handleApplication = async () => {
+    if (isAlreadyApplied) {
+      setModalContent("이미 이 공고에 신청하셨습니다.");
+      setIsResultModalOpen(true);
+      return;
+    }
+
     if (!user?.address) {
       setModalContent("프로필을 등록해주세요.");
       setIsResultModalOpen(true);
@@ -71,6 +81,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
     try {
       setIsLoading(true);
       await createApplicationForNotice(shopId, noticeId);
+      addApplication(noticeId || "");
       setModalContent("신청이 완료되었습니다!");
     } catch (err: any) {
       console.error(err);
@@ -95,7 +106,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
     }
   };
 
-  console.log(shopId);
+  console.log(noticeId);
 
   return (
     <div>
@@ -183,6 +194,10 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
               ) : userType === "employer" ? (
                 <Button size="full" disabled>
                   알바생만 신청가능해요
+                </Button>
+              ) : isAlreadyApplied ? (
+                <Button size="full" disabled>
+                  이미 신청한 공고입니다.
                 </Button>
               ) : (
                 <Button size="full" onClick={() => setIsModalOpen(true)}>

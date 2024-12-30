@@ -77,7 +77,7 @@ const EditAnnounce = () => {
       await updateShopNotice(shopId, noticeId, postData);
       openModal();
     } catch (err) {
-      console.log("공고를 수정하는데 오류가 발생했어요:", err);
+      console.error("공고를 수정하는데 오류가 발생했어요:", err);
     }
   };
 
