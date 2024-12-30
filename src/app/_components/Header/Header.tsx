@@ -7,6 +7,7 @@ import Menu from './Menu';
 import { useAuth } from '../../_hooks/useAuth';
 import { useWindowWidth } from '../../_hooks/useWindowWidth';
 import { getAlarms } from '../../_api/alarm_api';
+import { Notification } from '../NotificationModal/types';
 
 const Header = () => {
   const { user, logout } = useAuth();
@@ -15,17 +16,21 @@ const Header = () => {
   const [isNoticeActive, setIsNoticeActive] = useState(false);
 
   const userId = user?.id;
-  // 알림 상태 가져오기
+
   useEffect(() => {
     if (!userId) return;
+
     const fetchAlarms = async () => {
-      if (user) {
-        try {
-          const response = await getAlarms(userId);
-          setIsNoticeActive(response.data.items.length > 0);
-        } catch (error) {
-          console.error('알림 상태를 가져오는 중 오류 발생:', error);
-        }
+      console.log('Fetching alarms for userId:', userId); // 디버깅용
+      try {
+        const response = await getAlarms(userId, 0, 10);
+        const alarms: Notification[] = response.data.items;
+
+        console.log('알림 데이터:', alarms); // 디버깅용
+        // 읽지 않은 알림이 있는지 확인
+        setIsNoticeActive(alarms.some((alarm) => !alarm.read));
+      } catch (error) {
+        console.error('알림 상태를 가져오는 중 오류 발생:', error); // 디버깅용
       }
     };
 

@@ -67,8 +67,8 @@ jobs:
         with:
           project: T3
           issuetype: Task
-          summary: "${{ github.event.issue.title }}"
-          description: "${{ github.event.issue.body }}"
+          summary: '${{ github.event.issue.title }}'
+          description: '${{ github.event.issue.body }}'
           fields: |
             {
               "assignee": {
