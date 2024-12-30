@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 // types.ts
 export enum NotificationStatus {
   APPROVED = '승인',
@@ -5,6 +7,7 @@ export enum NotificationStatus {
 }
 
 export interface Notification {
+  formattedTime: ReactNode;
   id: string;
   message: string;
   timestamp: string;
