@@ -14,9 +14,11 @@ import Modal from '@/app/_components/Modal';
 import useModal from '@/app/_hooks/useModal';
 import { updateShopNotice } from '@/app/_api/owner_api';
 import { getShopNoticeDetail } from '@/app/_api/announce_api';
+import { useAuth } from '@/app/_hooks/useAuth';
 
 const EditAnnounce = () => {
   const router = useRouter();
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const shopId = searchParams.get('shopId');
   const noticeId = searchParams.get('noticeId') || '';
@@ -32,6 +34,7 @@ const EditAnnounce = () => {
   });
 
   useEffect(() => {
+    if (user?.shop.item.id !== shopId) router.replace('/');
     if (!shopId || !noticeId) return;
 
     const fetchAnnounceInfo = async () => {

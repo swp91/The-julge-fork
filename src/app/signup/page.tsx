@@ -12,8 +12,10 @@ import { register as registerApi } from '../_api/auth_api';
 import Modal from '../_components/Modal';
 import { useRouter } from 'next/navigation';
 import Loading from '../_components/Loding';
+import { useAuth } from '../_hooks/useAuth';
 
 const SignUp = () => {
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
@@ -38,6 +40,8 @@ const SignUp = () => {
   const password = watch('password');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  if (user) router.replace('/');
 
   const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
     setLoading(true); // 로딩 시작
