@@ -1,3 +1,4 @@
+'use client';
 import { useContext, useMemo, useState } from 'react';
 import Dropdown from '../_components/Dropdown';
 import Footer from '../_components/Footer';
@@ -113,54 +114,56 @@ const SearchPage = () => {
   return (
     <div>
       <Header />
-      <div>
-        <div>
-          <h1>{}에 대한 공고 목록</h1>
-          <div className='flex gap-3 mt-3'>
-            <div>
-              <Dropdown
-                options={options}
-                label=''
-                value={selectedOption}
-                onChange={handleOptionChange}
-                className='w-auto min-w-[120px] h-[54px] md:h-[66px] text-14b border-none'
+      <div className='w-full flex flex-col items-center py-10 md:py-[60px] px-3 md:px-8'>
+        <div className='w-[351px] md:w-[679px] lg:w-[964px] max-w-screen-xl flex flex-col items-center'>
+          <div className='w-full flex flex-col md:flex-row justify-between mb-4 relative'>
+            <h1 className='text-20b md:text-28b'>{}에 대한 공고 목록</h1>
+            <div className='flex gap-3 mt-3'>
+              <div>
+                <Dropdown
+                  options={options}
+                  label=''
+                  value={selectedOption}
+                  onChange={handleOptionChange}
+                  className='w-auto min-w-[120px] h-[54px] md:h-[66px] text-14b border-none'
+                />
+              </div>
+              <div
+                className='h-[34px] w-20 flex justify-center items-center cursor-pointer bg-red-30 text-white rounded-[5px]'
+                onClick={() => setFilterVisible(true)}>
+                상세 필터
+              </div>
+              <DetailFilter
+                isVisible={filterVisible}
+                onClose={() => setFilterVisible(false)}
+                onApply={handleApplyFilters}
+                className='absolute z-50 right-0 top-16'
               />
             </div>
-            <div
-              className='h-[34px] w-20 flex justify-center items-center cursor-pointer bg-red-30 text-white rounded-[5px]'
-              onClick={() => setFilterVisible(true)}>
-              상세 필터
-            </div>
-            <DetailFilter
-              isVisible={filterVisible}
-              onClose={() => setFilterVisible(false)}
-              onApply={handleApplyFilters}
-              className='absolute z-50 right-0 top-16'
+          </div>
+          <div className='grid grid-cols-2 lg:grid-cols-3 w-full gap-1 md:gap-[14px]'>
+            {currentPosts.map((post) => (
+              <PostCard
+                key={post.id}
+                name={post.shop.item.name}
+                startsAt={post.startsAt}
+                workhour={post.workhour.toString()}
+                address1={post.shop.item.address1}
+                imageUrl={post.shop.item.imageUrl}
+                hourlyPay={post.hourlyPay}
+                originalHourlyPay={post.shop.item.originalHourlyPay}
+                isPast={post.closed}
+              />
+            ))}
+          </div>
+
+          <div className='mt-6'>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
             />
           </div>
-        </div>
-        <div className='grid grid-cols-2 lg:grid-cols-3 w-full gap-1 md:gap-[14px]'>
-          {currentPosts.map((post) => (
-            <PostCard
-              key={post.id}
-              name={post.shop.item.name}
-              startsAt={post.startsAt}
-              workhour={post.workhour.toString()}
-              address1={post.shop.item.address1}
-              imageUrl={post.shop.item.imageUrl}
-              hourlyPay={post.hourlyPay}
-              originalHourlyPay={post.shop.item.originalHourlyPay}
-              isPast={post.closed}
-            />
-          ))}
-        </div>
-
-        <div className='mt-6'>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
         </div>
       </div>
       <Footer />
