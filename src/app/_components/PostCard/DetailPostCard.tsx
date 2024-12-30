@@ -9,6 +9,7 @@ import { createApplicationForNotice } from "@/app/_api/owner_api";
 import Modal from "../Modal";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuth } from "@/app/_hooks/useAuth";
 
 interface DetailPostCard {
   type?: "store" | "notice";
@@ -45,6 +46,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
   noticeId,
   userType,
 }) => {
+  const { user } = useAuth();
   const TimeFormat = useAlbaTimeFormat(startsAt, (workhour ?? 0).toString());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
@@ -58,6 +60,12 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
       : undefined;
   const magam = startsAt ? new Date(startsAt) < new Date() : false;
   const handleApplication = async () => {
+    if (!user?.address) {
+      setModalContent("프로필을 등록해주세요.");
+      setIsResultModalOpen(true);
+      return;
+    }
+
     if (!shopId || !noticeId) return;
 
     try {
