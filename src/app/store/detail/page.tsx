@@ -11,7 +11,7 @@ import { getUserInfo } from '@/app/_api/worker_api';
 import { getShopNotices } from '@/app/_api/announce_api';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import Loading from '@/app/_components/Loding';
-
+import { useRouter } from 'next/navigation';
 
 interface StoreData {
   id: string;
@@ -26,6 +26,7 @@ interface StoreData {
 
 const StoreDetailPage: React.FC = () => {
   const { user } = useAuth();
+  const router = useRouter();
   const [storeStatus, setStoreStatus] = useState<boolean>(false);
   const [announcementStatus, setAnnouncementStatus] = useState<boolean>(false);
   const [storeData, setStoreData] = useState<StoreData | null>(null);
@@ -36,6 +37,7 @@ const StoreDetailPage: React.FC = () => {
   const userId = user?.id;
 
   useEffect(() => {
+    if (user?.type === 'employee') router.replace('/');
     if (userId) {
       const fetchData = async () => {
         try {

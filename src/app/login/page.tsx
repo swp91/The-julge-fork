@@ -30,7 +30,9 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const { loginSave } = useAuth();
+  const { loginSave, user } = useAuth();
+
+  if (user) router.replace('/');
 
   const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
     setLoading(true); // 로딩 시작
