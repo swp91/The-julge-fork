@@ -61,7 +61,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
 
     try {
       setIsLoading(true);
-      const response = await createApplicationForNotice(shopId, noticeId);
+      await createApplicationForNotice(shopId, noticeId);
       setModalContent('신청이 완료되었습니다!');
     } catch (err) {
       console.error(err);
@@ -77,7 +77,8 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
     if (shopId && noticeId) {
       router.push(`/announce/edit?shopId=${shopId}&noticeId=${noticeId}`);
     } else {
-      alert('공고 정보를 찾을 수 없어요.');
+      setModalContent('오류가 발생했습니다.');
+      setIsResultModalOpen(true);
     }
   };
 
