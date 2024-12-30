@@ -1,7 +1,9 @@
+'use client';
 import Image from 'next/image';
 import Badge from '../Badge';
 import Button from '../Button';
 import clsx from 'clsx';
+import useAlbaTimeFormat from '@/app/_hooks/useAlbaTimeFormat';
 
 interface DetailPostCard {
   type?: 'store' | 'notice';
@@ -11,9 +13,9 @@ interface DetailPostCard {
   address1: string;
   imageUrl: string;
   hourlyPay?: number;
-  percent?: number;
   shopDescription: string;
   noticeDescription?: string;
+  originalHourlyPay?: number;
   closed?: boolean;
   shopId?: string;
   userId?: string;
@@ -27,13 +29,19 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
   shopDescription,
   noticeDescription,
   hourlyPay,
-  percent,
   workhour,
+  originalHourlyPay,
   startsAt,
   closed,
   shopId,
   userId,
 }) => {
+  const TimeFormat = useAlbaTimeFormat(startsAt, (workhour ?? 0).toString());
+  const percent =
+    hourlyPay !== undefined && originalHourlyPay !== undefined
+      ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
+      : undefined;
+
   return (
     <>
       <div>
@@ -87,7 +95,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
                     />
                   </div>
                   <p className='text-14 md:text-16 text-gray-500'>
-                    {startsAt} ({workhour})
+                    {TimeFormat} ({workhour}시간)
                   </p>
                 </div>
               )}
@@ -135,7 +143,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
         </div>
         {/* 카드 설명부분 */}
         {type === 'notice' && (
-          <div className='mt-6 w-[345px] md:w-[680px] lg:w-[964px] h-auto rounded-xl bg-gray-100 p-5'>
+          <div className='mt-6 w-[345px] md:w-[680px] lg:w-[964px] h-auto rounded-xl bg-gray-100 p-5 md:p-8'>
             <h3 className='text-14b md:text-16b'>공고 설명</h3>
             <p className='text-14 md:text-16 mt-2'>{noticeDescription}</p>
           </div>
