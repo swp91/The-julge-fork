@@ -37,9 +37,8 @@ const PostCard: React.FC<PostCardProps> = ({
     return (
       <div
         className={clsx(
-          'w-full max-w-[964px] p-6 bg-white border border-gray-200 rounded-xl shadow-md flex flex-row gap-6'
-        )}
-      >
+          'w-full max-w-[964px] p-6 bg-white border border-gray-200 rounded-xl shadow-md flex flex-row gap-6',
+        )}>
         {/* 이미지 */}
         <div className='relative w-[539px] h-[308px] flex-shrink-0 rounded-xl overflow-hidden'>
           <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
@@ -47,7 +46,6 @@ const PostCard: React.FC<PostCardProps> = ({
 
         {/* 텍스트 */}
         <div className='flex-1 flex flex-col justify-between mt-6'>
-          
           <div>
             {/* 시급 */}
             <h1 className='text-16b text-primary'>시급</h1>
@@ -64,7 +62,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {startsAt && workhour && (
               <p className='flex items-center mt-2 text-14 text-gray-500'>
                 <Image
-                  src='./image/clock-icon.svg'
+                  src='/image/clock-icon.svg'
                   alt='시계 아이콘'
                   width={16}
                   height={16}
@@ -78,7 +76,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {address1 && (
               <p className='flex items-center mt-2 text-14 text-gray-500'>
                 <Image
-                  src='./image/path11.svg'
+                  src='/image/path11.svg'
                   alt='주소 아이콘'
                   width={16}
                   height={16}
@@ -99,8 +97,9 @@ const PostCard: React.FC<PostCardProps> = ({
             style='bordered'
             size='lg'
             className='w-full py-3 text-14 font-semibold mt-6'
-            onClick={() => navigate('/edit')}> {/* 경로 수정 */}
-          
+            onClick={() => navigate('/edit')}>
+            {' '}
+            {/* 경로 수정 */}
             공고 편집하기
           </Button>
         </div>
@@ -112,9 +111,8 @@ const PostCard: React.FC<PostCardProps> = ({
   return (
     <div
       className={clsx(
-        'w-full max-w-[351px] h-auto md:w-[680px] p-3 md:p-4 bg-white border border-gray-200 rounded-xl shadow-md'
-      )}
-    >
+        'w-full max-w-[351px] h-auto md:w-[680px] p-3 md:p-4 bg-white border border-gray-200 rounded-xl shadow-md',
+      )}>
       {/* 이미지 */}
       <div className='relative w-full h-[200px] md:h-[360px] rounded-xl overflow-hidden'>
         <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
@@ -137,10 +135,9 @@ const PostCard: React.FC<PostCardProps> = ({
         {startsAt && workhour && (
           <p className='flex items-center mt-2 text-14 text-gray-500'>
             <Image
-              src='./image/clock-icon.svg'
+              src='/image/clock-icon.svg'
               alt='시계 아이콘'
               width={16}
-              height={16}
               className='mr-1'
             />
             {startsAt} ({workhour}시간)
@@ -154,7 +151,6 @@ const PostCard: React.FC<PostCardProps> = ({
               src='./image/path11.svg'
               alt='주소 아이콘'
               width={16}
-              height={16}
               className='mr-1'
             />
             {address1}
@@ -171,13 +167,14 @@ const PostCard: React.FC<PostCardProps> = ({
           style='bordered'
           size='lg'
           className='w-full py-3 mt-6 text-14b md:text-16b'
-          onClick={() => navigate('/edit')}> {/* 경로 수정 */}
+          onClick={() => navigate('/edit')}>
+          {' '}
+          {/* 경로 수정 */}
           공고 편집하기
         </Button>
       </div>
     </div>
   );
 };
-
 
 export default PostCard;

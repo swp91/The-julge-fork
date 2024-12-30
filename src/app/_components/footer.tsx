@@ -20,19 +20,19 @@ const Footer = () => {
               src={'/image/envelope-square.svg'}
               alt='e-mail'
               width={24}
-              fill
+              height={24}
             />
             <Image
               src={'/image/facebook-square.svg'}
               alt='facebook'
               width={24}
-              fill
+              height={24}
             />
             <Image
               src={'/image/instagram.svg'}
               alt='instagram'
               width={24}
-              fill
+              height={24}
             />
           </div>
         </div>
@@ -50,19 +50,19 @@ const Footer = () => {
               src={'/image/envelope-square.svg'}
               alt='e-mail'
               width={24}
-              fill
+              height={24}
             />
             <Image
               src={'/image/facebook-square.svg'}
               alt='facebook'
               width={24}
-              fill
+              height={24}
             />
             <Image
               src={'/image/instagram.svg'}
               alt='instagram'
               width={24}
-              fill
+              height={24}
             />
           </div>
         </div>

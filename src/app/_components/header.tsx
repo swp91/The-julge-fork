@@ -49,7 +49,7 @@ const Header = () => {
         src={'/image/search.svg'}
         alt='검색'
         width={20}
-        fill
+        height={20}
         className='ml-2'
       />
       <input
@@ -76,14 +76,14 @@ const Header = () => {
                 src={'/image/notification-active.svg'}
                 alt='알림 활성화'
                 width={24}
-                fill
+                height={24}
               />
             ) : (
               <Image
                 src={'/image/notification-inactive.svg'}
                 alt='알림 비활성화'
                 width={24}
-                fill
+                height={24}
               />
             )}
           </button>

@@ -53,12 +53,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
             { 'bg-red-10': type === 'store' },
           )}>
           <div className='w-[311px] h-[177px] md:w-[632px] md:h-[361px] lg:w-[539px] lg:h-[308px] relative flex-shrink-0 rounded-xl overflow-hidden'>
-            <Image
-              src={imageUrl}
-              alt='가게 사진'
-              fill
-              className='object-cover'
-            />
+            <Image src={imageUrl} alt='가게 사진' className='object-cover' />
             {closed && (
               <div className='absolute bg-black inset-0 opacity-70 flex justify-center items-center'>
                 <span className='text-20b md:text-28b text-gray-300'>
@@ -84,7 +79,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
                 <div className='flex mb-3 gap-2'>
                   <div className='inline w-4 h-4 md:w-5 md:h-5'>
                     <Image
-                      src='./image/clock-icon.svg'
+                      src='/image/clock-icon.svg'
                       alt='근무시간'
                       width={20}
                       height={20}
@@ -100,10 +95,10 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
               <div className='flex mb-3 gap-2'>
                 <div className='inline w-4 h-4 md:w-5 md:h-5 flex justify-center'>
                   <Image
-                    src='./image/path11.svg'
+                    src='/image/path11.svg'
                     alt='주소'
                     width={16}
-                    height={20}
+                    height={16}
                     className='w-[13px] h-4 md:w-4 md:h-5'
                   />
                 </div>

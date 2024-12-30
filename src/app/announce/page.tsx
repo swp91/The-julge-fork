@@ -5,7 +5,7 @@ import Header from '@/app/_components/Header';
 import Footer from '@/app/_components/Footer';
 import { AuthProvider } from '@/app/_context/AuthContext';
 import PostCard from '@/app/_components/PostCard/PostCard';
-import DetailFilter from '@/app/_components/DetailFilter';
+import DetailFilter from '@/app/_components/DetailFilter/DetailFilter';
 import Pagination from '@/app/_components/Pagination';
 import Dropdown from '@/app/_components/Dropdown';
 import Button from '@/app/_components/Button';
@@ -54,7 +54,7 @@ const JobListPage = () => {
                       address1='서울시 강남구'
                       imageUrl='/image/default.jpg'
                       originalHourlyPay={15000}
-                      percent={50}
+                      hourlyPay={0}
                     />
                   </Link>
                 ))}
@@ -98,7 +98,7 @@ const JobListPage = () => {
                       address1='서울시 송파구'
                       imageUrl='/image/default.jpg'
                       originalHourlyPay={10000}
-                      percent={30}
+                      hourlyPay={0}
                     />
                   </Link>
                 ))}
@@ -108,6 +108,7 @@ const JobListPage = () => {
                 <Pagination
                   totalPages={totalPages}
                   onPageChange={handlePageChange}
+                  currentPage={0}
                 />
               </div>
             </section>
