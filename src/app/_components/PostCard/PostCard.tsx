@@ -97,7 +97,7 @@ const PostCard: React.FC<PostCardProps> = ({
                 ' text-18b md:text-24b lg:text-24b',
                 isPast ? 'text-gray-300' : 'text-black',
               )}>
-              {hourlyPay.toLocaleString()}원
+              {hourlyPay ? `${hourlyPay.toLocaleString()}원` : '정보 없음'}
             </h2>
             {percent !== undefined && percent > 0 && (
               <p className='flex md:hidden text-12 text-red-30'>

@@ -10,13 +10,10 @@ import Pagination from '../_components/Pagination';
 import { getUserInfo, getUserApplications } from '../_api/worker_api';
 import { tableConfig, WorkerData } from '../_config/tableConfig';
 import { ProfileData } from './_type/type';
-import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../_hooks/useAuth';
-import { useRouter } from 'next/navigation';
 
 const ProfilePage = () => {
-  const { token } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth();
   // 상태 관리
   const [profileStatus, setProfileStatus] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState(false);
@@ -31,25 +28,7 @@ const ProfilePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // user_id 가져오기
-  const getUserid = () => {
-    if (!token) return null;
-    try {
-      const decoded = jwtDecode<{ id: string }>(token); // 토큰 디코드
-      return decoded.id;
-    } catch (error) {
-      console.error('토큰 decode에 실패하였습니다:', error);
-      return null;
-    }
-  };
-
-  const user_id = getUserid();
-
-  useEffect(() => {
-    if (!user_id) {
-      router.replace('/announce');
-    }
-  }, [user_id, router]);
+  const user_id = user?.id || null;
 
   // 데이터 로드
   useEffect(() => {
@@ -71,7 +50,7 @@ const ProfilePage = () => {
         });
 
         // 신청 내역 데이터 가져오기
-        const applicationsResponse = await getUserApplications(user_id!); // user_id는 null이 아님
+        const applicationsResponse = await getUserApplications(user_id!);
         const applicationItems = applicationsResponse.data.items;
         if (applicationItems) setApplicationStatus(true);
         setApplications(
@@ -141,13 +120,14 @@ const ProfilePage = () => {
                 <Pagination
                   totalPages={totalPages}
                   onPageChange={(page) => setCurrentPage(page)}
+                  currentPage={0}
                 />
               </div>
             ) : (
               <PostProfile
                 isExist={applicationStatus}
                 type='application'
-                navigateTo={'/announce'}
+                navigateTo={'/'}
               />
             )}
           </div>
