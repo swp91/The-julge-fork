@@ -8,6 +8,7 @@ import useAlbaTimeFormat from '@/app/_hooks/useAlbaTimeFormat';
 import { createApplicationForNotice } from '@/app/_api/owner_api';
 import Modal from '../Modal';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface DetailPostCard {
   type?: 'store' | 'notice';
@@ -55,7 +56,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
     hourlyPay !== undefined && originalHourlyPay !== undefined
       ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
       : undefined;
-
+  const magam = startsAt ? new Date(startsAt) < new Date() : false;
   const handleApplication = async () => {
     if (!shopId || !noticeId) return;
 
@@ -63,9 +64,13 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
       setIsLoading(true);
       await createApplicationForNotice(shopId, noticeId);
       setModalContent('신청이 완료되었습니다!');
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setModalContent('신청 중 오류가 발생했습니다.');
+      if (err.response?.status === 401) {
+        setModalContent('로그인이 필요합니다.');
+      } else {
+        setModalContent('신청 중 오류가 발생했습니다.');
+      }
     } finally {
       setIsLoading(false);
       setIsModalOpen(false);
@@ -81,6 +86,8 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
       setIsResultModalOpen(true);
     }
   };
+
+  console.log(startsAt);
 
   return (
     <div>
@@ -104,7 +111,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
           {closed && (
             <div className='absolute bg-black inset-0 opacity-70 flex justify-center items-center'>
               <span className='text-20b md:text-28b text-gray-300'>
-                마감 완료
+                {magam ? '지난 공고' : '마감 완료'}
               </span>
             </div>
           )}
@@ -117,7 +124,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
             {type === 'notice' ? (
               <div className='flex items-center gap-2 mb-3'>
                 <span className='text-24b md:text-28b'>{hourlyPay}원</span>
-                <Badge percent={percent} />
+                <Badge percent={percent} isPast={closed} />
               </div>
             ) : (
               <h2 className='text-24b md:text-28b'>{name}</h2>
@@ -154,7 +161,7 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
               {shopDescription}
             </div>
           </div>
-          {type === 'notice' && (
+          {type === 'notice' ? (
             <div>
               {closed ? (
                 <Button size='full' disabled>
@@ -174,6 +181,17 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
                 </Button>
               )}
             </div>
+          ) : (
+            <>
+              <Link href={`/store/edit/${shopId}`}>
+                <Button size='full' style='bordered'>
+                  편집하기
+                </Button>
+              </Link>
+              <Link href='/announce/post'>
+                <Button size='full'>공고 등록하기</Button>
+              </Link>
+            </>
           )}
         </div>
       </div>
