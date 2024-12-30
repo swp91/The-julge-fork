@@ -49,7 +49,7 @@ const Header = () => {
         src={'/image/search.svg'}
         alt='검색'
         width={20}
-        height={20}
+        fill
         className='ml-2'
       />
       <input
@@ -65,7 +65,9 @@ const Header = () => {
     <div className='relative'>
       {user ? (
         <div className='flex gap-4 lg:gap-10'>
-          {userType === 'employer' && <Link href={'/store/detail'}>내 가게</Link>}
+          {userType === 'employer' && (
+            <Link href={'/store/detail'}>내 가게</Link>
+          )}
           {userType === 'employee' && <Link href={'/profile'}>내 프로필</Link>}
           <button onClick={logout}>로그아웃</button>
           <button onClick={toggleModal}>
@@ -74,14 +76,14 @@ const Header = () => {
                 src={'/image/notification-active.svg'}
                 alt='알림 활성화'
                 width={24}
-                height={24}
+                fill
               />
             ) : (
               <Image
                 src={'/image/notification-inactive.svg'}
                 alt='알림 비활성화'
                 width={24}
-                height={24}
+                fill
               />
             )}
           </button>
