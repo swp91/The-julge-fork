@@ -1,18 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import React from 'react';
 import ArrowButton from './ArrowButton';
 
 interface PaginationProps {
   totalPages: number;
+  currentPage: number;
   onPageChange: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   totalPages,
+  currentPage,
   onPageChange,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const pagesPerGroup = 7;
 
   const getPageGroup = () => {
@@ -26,7 +27,6 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
       onPageChange(page);
     }
   };
@@ -41,7 +41,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <ArrowButton
         direction='first'
         onClick={() => goToPage(1)}
-        isDisabled={start === 1}
+        isDisabled={currentPage === 1}
       />
 
       <ArrowButton
@@ -49,6 +49,7 @@ const Pagination: React.FC<PaginationProps> = ({
         onClick={() => goToPage(start - 1)}
         isDisabled={start <= 1}
       />
+
       {pageNumbers.map((page) => (
         <button
           key={page}
@@ -69,7 +70,7 @@ const Pagination: React.FC<PaginationProps> = ({
       <ArrowButton
         direction='last'
         onClick={() => goToPage(totalPages)}
-        isDisabled={start + pagesPerGroup > totalPages}
+        isDisabled={currentPage === totalPages}
       />
     </div>
   );

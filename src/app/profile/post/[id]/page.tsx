@@ -1,27 +1,31 @@
 'use client';
 
+import { useParams, useRouter } from 'next/navigation';
+import { useForm, Controller } from 'react-hook-form';
+import { useState } from 'react';
+import axios from 'axios';
+import Image from 'next/image';
+
 import Footer from '@/app/_components/Footer';
 import Header from '@/app/_components/Header';
-import Image from 'next/image';
-import { Input } from '@/app/_components/Input';
+import Input from '@/app/_components/Input';
 import Button from '@/app/_components/Button';
-import { Dropdown } from '@/app/_components/Dropdown';
+import Dropdown from '@/app/_components/Dropdown';
+import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
-import { Modal } from '@/app/_components/Modal';
-import { useRouter } from 'next/navigation';
-import { useForm, Controller } from 'react-hook-form';
-import axios from 'axios';
-import { useState } from 'react';
+import { updateUserInfo } from '@/app/_api/worker_api';
 
 interface FormData {
   name: string;
-  contact: string;
-  location: string;
-  introduction: string;
+  phone: string;
+  address: string;
+  bio: string;
 }
 
-const ProfilePost = () => {
+const ProfilePost = (formData?: FormData) => {
   const router = useRouter();
+  const { id } = useParams();
+  const user_id = id as string;
   const {
     control,
     handleSubmit,
@@ -30,9 +34,9 @@ const ProfilePost = () => {
   } = useForm<FormData>({
     defaultValues: {
       name: '',
-      contact: '',
-      location: '',
-      introduction: '',
+      phone: '',
+      address: '',
+      bio: '',
     },
   });
 
@@ -41,13 +45,11 @@ const ProfilePost = () => {
   const onSubmit = async (data: FormData) => {
     console.log('폼 데이터:', data); // 폼 데이터 확인
     try {
-      const response = await axios.put(`/user/user_id`, {
-        item: {
-          name: data.name,
-          phone: data.contact,
-          address: data.location,
-          bio: data.introduction,
-        },
+      const response = await updateUserInfo(user_id, {
+        name: data.name,
+        phone: data.phone,
+        address: data.address,
+        bio: data.bio,
       });
       console.log('응답 데이터:', response.data); // 응답 확인
       setIsModalOpen(true);
@@ -90,6 +92,7 @@ const ProfilePost = () => {
             <Input
               label='이름*'
               placeholder='이름을 입력해주세요'
+              value={formData?.name}
               error={errors.name?.message}
               {...register('name', { required: '이름은 필수 항목입니다.' })}
               className='w-full h-[92px] mt-2'
@@ -98,8 +101,9 @@ const ProfilePost = () => {
             <Input
               label='연락처*'
               placeholder='연락처를 입력해주세요'
-              error={errors.contact?.message}
-              {...register('contact', {
+              value={formData?.phone}
+              error={errors.phone?.message}
+              {...register('phone', {
                 required: '연락처는 필수 항목입니다.',
                 pattern: {
                   value: /^[0-9-]+$/,
@@ -110,14 +114,14 @@ const ProfilePost = () => {
             />
 
             <Controller
-              name='location'
+              name='address'
               control={control}
               rules={{ required: '선호 지역을 선택해주세요.' }}
               render={({ field }) => (
                 <Dropdown
                   label='선호 지역'
                   options={LOCATIONS}
-                  value={field.value}
+                  value={formData ? formData.address : field.value}
                   onChange={(value) => {
                     field.onChange(value);
                   }}
@@ -137,7 +141,8 @@ const ProfilePost = () => {
               <textarea
                 id='introduction'
                 placeholder='자기소개를 입력해주세요'
-                {...register('introduction')}
+                value={formData?.bio}
+                {...register('bio')}
                 className='w-full h-[187px] border rounded p-2'></textarea>
             </div>
           </div>
