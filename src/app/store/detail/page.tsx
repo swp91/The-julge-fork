@@ -110,7 +110,8 @@ const StoreDetailPage: React.FC = () => {
                     const startsAt = notice.item.startsAt || 'N/A';
                     const workhour = Number(notice.item.workhour) || 0;
                     const hourlyPay = Number(notice.item.hourlyPay) || 0;
-
+                    const closed =
+                      new Date() > new Date(startsAt) ? true : false;
                     return (
                       <Link
                         key={notice.item.id}
@@ -122,6 +123,7 @@ const StoreDetailPage: React.FC = () => {
                           address1={storeData?.address1 || ''}
                           imageUrl={storeData?.imageUrl || ''}
                           hourlyPay={hourlyPay}
+                          isPast={closed}
                         />
                       </Link>
                     );
