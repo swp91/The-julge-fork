@@ -175,7 +175,7 @@ const SearchPage = () => {
                   <PostCard
                     name={post.shop.item.name}
                     startsAt={post.startsAt}
-                    workhour={post.workhour.toString()}
+                    workhour={post.workhour}
                     address1={post.shop.item.address1}
                     imageUrl={post.shop.item.imageUrl}
                     hourlyPay={post.hourlyPay}
@@ -191,7 +191,7 @@ const SearchPage = () => {
                   key={post.id}
                   name={post.shop.item.name}
                   startsAt={post.startsAt}
-                  workhour={post.workhour.toString()}
+                  workhour={post.workhour}
                   address1={post.shop.item.address1}
                   imageUrl={post.shop.item.imageUrl}
                   hourlyPay={post.hourlyPay}

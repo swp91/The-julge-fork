@@ -11,6 +11,7 @@ import { getUserInfo } from '@/app/_api/worker_api';
 import { getShopNotices } from '@/app/_api/announce_api';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import Loading from '@/app/_components/Loding';
+import Link from 'next/link';
 
 interface StoreData {
   id: string;
@@ -22,11 +23,12 @@ interface StoreData {
   description: string;
   originalHourlyPay: number;
 }
+
 interface announceData {
   item: {
     id: string;
     hourlyPay: number;
-    startAt: string;
+    startsAt: string;
     workhour: number;
     description: string;
     closed: boolean;
@@ -77,11 +79,7 @@ const StoreDetailPage: React.FC = () => {
   useEffect(() => {
     if (storeData) {
       setStoreStatus(true);
-      if (notices.length > 0) {
-        setAnnouncementStatus(true);
-      } else {
-        setAnnouncementStatus(false);
-      }
+      setAnnouncementStatus(notices.length > 0);
     } else {
       setStoreStatus(false);
     }
@@ -90,11 +88,7 @@ const StoreDetailPage: React.FC = () => {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(
-    notices.map((notice, index) => {
-      console.log(notice.item);
-    }),
-  );
+
   return (
     <>
       <Header />
@@ -112,17 +106,26 @@ const StoreDetailPage: React.FC = () => {
               {announcementStatus ? (
                 <div className='mt-[60px]'>
                   <h2 className='text-28b mb-6'>내가 등록한 공고</h2>
-                  {notices.map((notice, index) => (
-                    <PostCard
-                      key={index}
-                      name={storeData?.name || ''}
-                      startsAt={notice.item.startAt}
-                      workhour={notice.item.workhour}
-                      address1={storeData?.address1 || ''}
-                      imageUrl={storeData?.imageUrl || ''}
-                      hourlyPay={notice.item.hourlyPay}
-                    />
-                  ))}
+                  {notices.map((notice) => {
+                    const startsAt = notice.item.startsAt || 'N/A';
+                    const workhour = Number(notice.item.workhour) || 0;
+                    const hourlyPay = Number(notice.item.hourlyPay) || 0;
+
+                    return (
+                      <Link
+                        key={notice.item.id}
+                        href={`/announce/detail/${notice.item.id}`}>
+                        <PostCard
+                          name={storeData?.name || ''}
+                          startsAt={startsAt}
+                          workhour={workhour}
+                          address1={storeData?.address1 || ''}
+                          imageUrl={storeData?.imageUrl || ''}
+                          hourlyPay={hourlyPay}
+                        />
+                      </Link>
+                    );
+                  })}
                 </div>
               ) : (
                 <PostProfile
