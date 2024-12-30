@@ -13,6 +13,7 @@ import Dropdown from '@/app/_components/Dropdown';
 import Modal from '@/app/_components/Modal';
 import { LOCATIONS } from '@/app/_constants/constants';
 import { getUserInfo, updateUserInfo } from '@/app/_api/worker_api';
+import Link from 'next/link';
 
 interface FormData {
   name: string;
@@ -116,14 +117,16 @@ const ProfilePost = () => {
           style={{ width: '100%', maxWidth: '964px' }}>
           <div className='flex justify-between items-center mb-6'>
             <h1 className='text-[20px] font-bold'>내 프로필</h1>
-            <button type='button'>
-              <Image
-                src={'/image/closeBtn.svg'}
-                alt='닫기버튼'
-                width={24}
-                height={24}
-              />
-            </button>
+            <Link href={'/profile'}>
+              <button type='button'>
+                <Image
+                  src={'/image/closeBtn.svg'}
+                  alt='닫기버튼'
+                  width={24}
+                  height={24}
+                />
+              </button>
+            </Link>
           </div>
 
           <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-6'>
