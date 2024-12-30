@@ -15,24 +15,19 @@ const useImageCompressor = (): UseImageCompressorReturn => {
   const compressFile = async (file: File): Promise<File> => {
     try {
       const options = {
-        maxSizeMB: 0.5, // 최대 파일 크기 (MB)
-        maxWidthOrHeight: 1024, // 최대 가로/세로 길이 (픽셀)
-        useWebWorker: true, // Web Worker 사용
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1024,
+        useWebWorker: true,
       };
 
       console.log(file);
 
-      // 이미지 압축
       const compressed = await imageCompression(file, options);
 
-      // 디버깅용 로그
-      console.log('압축된 파일:', compressed);
-
-      // 상태 업데이트
       setCompressedFile(compressed);
       setCompressedImage(URL.createObjectURL(compressed));
 
-      return compressed; // 압축된 파일 반환
+      return compressed;
     } catch (error) {
       console.error('이미지 압축 중 에러 발생:', error);
       throw new Error('이미지 압축 실패');

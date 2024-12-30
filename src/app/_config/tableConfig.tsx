@@ -8,7 +8,7 @@ interface OwnerData {
   status: string;
 }
 
-interface WorkerData {
+export interface WorkerData {
   shopName: string;
   date: string;
   hourlyPay: string;

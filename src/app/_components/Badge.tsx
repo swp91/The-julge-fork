@@ -28,7 +28,9 @@ export default function Badge({ status, percent, isPast }: BadgeProps) {
           ? '승인 완료'
           : status === '거절'
             ? '거절'
-            : '대기중'}
+            : status === '대기'
+              ? '대기중'
+              : ''}
       {percent !== undefined && (
         <Image
           src='/image/arrow-up-bold.svg'
