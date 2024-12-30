@@ -155,19 +155,39 @@ const SearchPage = () => {
             </div>
           </div>
           <div className='grid grid-cols-2 lg:grid-cols-3 w-full gap-1 md:gap-[14px]'>
-            {currentPosts.map((post) => (
-              <PostCard
-                key={post.id}
-                name={post.shop.item.name}
-                startsAt={post.startsAt}
-                workhour={post.workhour.toString()}
-                address1={post.shop.item.address1}
-                imageUrl={post.shop.item.imageUrl}
-                hourlyPay={post.hourlyPay}
-                originalHourlyPay={post.shop.item.originalHourlyPay}
-                isPast={post.closed}
-              />
-            ))}
+            {currentPosts.length === 0 ? (
+              <div className='h-[495px] '>게시물이 없습니다.</div>
+            ) : currentPosts.length < 3 ? (
+              currentPosts.map((post) => (
+                <div key={post.id}>
+                  <PostCard
+                    name={post.shop.item.name}
+                    startsAt={post.startsAt}
+                    workhour={post.workhour.toString()}
+                    address1={post.shop.item.address1}
+                    imageUrl={post.shop.item.imageUrl}
+                    hourlyPay={post.hourlyPay}
+                    originalHourlyPay={post.shop.item.originalHourlyPay}
+                    isPast={post.closed}
+                  />
+                  <div className='h-[128px]'></div>
+                </div>
+              ))
+            ) : (
+              currentPosts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  name={post.shop.item.name}
+                  startsAt={post.startsAt}
+                  workhour={post.workhour.toString()}
+                  address1={post.shop.item.address1}
+                  imageUrl={post.shop.item.imageUrl}
+                  hourlyPay={post.hourlyPay}
+                  originalHourlyPay={post.shop.item.originalHourlyPay}
+                  isPast={post.closed}
+                />
+              ))
+            )}
           </div>
 
           <div className='mt-6'>
