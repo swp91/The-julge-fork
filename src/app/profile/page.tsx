@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Footer from '../_components/Footer';
-import Header from '../_components/Header';
+import Header from '../_components/Header/Header';
 import PostProfile from '../_components/PostProfile';
 import ProfileCard from './_components/ProfileCard';
 import Table from '../_components/Table';

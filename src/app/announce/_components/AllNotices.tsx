@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import Pagination from '@/app/_components/Pagination';
 import Dropdown from '@/app/_components/Dropdown';
-import DetailFilter from '@/app/_components/DetailFilter';
+import DetailFilter from '@/app/_components/DetailFilter/DetailFilter';
 import { useFilteredNotices } from '@/app/_hooks/useFilteredNotices';
 import Link from 'next/link';
 
