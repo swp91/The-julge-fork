@@ -72,6 +72,7 @@ export default {
         lg: '1440px',
       },
       safelist: [
+        'hidden',
         'sm:hidden',
         'md:hidden',
         'lg:hidden',
