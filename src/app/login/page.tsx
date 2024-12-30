@@ -6,10 +6,11 @@ import Link from 'next/link';
 import Input from '../_components/Input';
 import Logo from '../_components/Logo';
 import Button from '../_components/Button';
-import { login } from '../_api/auth_api';
 import Modal from '../_components/Modal';
+import { login } from '../_api/auth_api';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../_hooks/useAuth';
+import Loading from '../_components/Loding';
 
 const Login = () => {
   const {
@@ -32,7 +33,7 @@ const Login = () => {
   const { loginSave } = useAuth();
 
   const onSubmit: SubmitHandler<RegisterRequest> = async (data) => {
-    setLoading(true);
+    setLoading(true); // 로딩 시작
     try {
       const response = await login({
         email: data.email,
@@ -53,13 +54,17 @@ const Login = () => {
         content: errorMessage,
       });
     } finally {
-      setLoading(false);
+      setLoading(false); // 로딩 종료
     }
   };
 
   const handleCloseModal = () => {
     setModalState({ ...modalState, isOpen: false });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

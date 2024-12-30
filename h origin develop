@@ -1,0 +1,250 @@
+[33md028aba[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/feature/#124-PostCard디자인크기수정[m[33m, [m[1;31morigin/develop[m[33m)[m Merge pull request #123 from codeit-frontend-part3-team3/feature/#107-공고리스트페이지
+[33m1d3149b[m feat; 공고 리스트 페이지 완전 미완성 본
+[33me016f52[m Merge pull request #121 from codeit-frontend-part3-team3/feature/#120-announcepostpage페이지import문변경
+[33m9afb6b2[m announce import header footer수정
+[33m638055d[m Merge pull request #119 from codeit-frontend-part3-team3/feature/#118-빌드에러수정
+[33m222b719[m import, footer,header 대소문자 수정
+[33m74c65d9[m Merge pull request #116 from codeit-frontend-part3-team3/feature/#115-프로필페이지에유저데이터연결
+[33md0b9876[m Merge pull request #113 from codeit-frontend-part3-team3/feature/#109-가게상세페이지구현2
+[33mb99a0c4[m Merge branch 'develop' into feature/#109-가게상세페이지구현2
+[33m87028b8[m useEffect 최적화
+[33m719e024[m 함수를 외부로 돌리고  useEffect 훅 내부를 보기 깔끔하게 수정
+[33me54afe2[m 공고 리스트 페이지로 이동
+[33m2e7d7b5[m 프로필 카드에 props로 user_id 넘겨주기
+[33m890baa0[m 프로필 등록페이지로 이동하는 로직 수정
+[33m96251cb[m 토큰을 불러와 user_id 들고오기
+[33m746548d[m 근로자 데이터 객체를 tableConfig에 있는 객체를 사용
+[33mb134472[m 프로필 페이지에 id값 추가
+[33ma997f65[m 프로필 등록 페이지에 id값 추가
+[33m65ce71c[m post 카드 id 추가
+[33m8ae9551[m header 컴포넌트 수정
+[33m2f6818c[m Merge pull request #111 from codeit-frontend-part3-team3/feature/#110-404페이지구현
+[33me7b0b6b[m 겹치는 interface 제거
+[33mcd94a89[m api 연결
+[33m34d1917[m Feat: 404 에러 페이지 구현
+[33m2d95224[m[33m ([m[1;31morigin/feature/#114-공고상세페이지[m[33m)[m Merge pull request #105 from codeit-frontend-part3-team3/feature/#99-공고등록API구현및리팩토링
+[33m7a196a8[m useEffect 삭제
+[33m0476816[m Merge pull request #108 from codeit-frontend-part3-team3/feature/#101-데이터저장작업
+[33mcda8881[m Merge pull request #106 from codeit-frontend-part3-team3/feature/#60-카드공통컴포넌트
+[33m0eb545f[m feat:onClick 수정
+[33ma2f3f5d[m Merge pull request #102 from codeit-frontend-part3-team3/feature/#100-가게상세페이지구현
+[33mf0f7a36[m 유저정보 암호화로직 추가
+[33m01e00d6[m feat: 카드 컴포넌트
+[33m5ffe62e[m Feat: 공고 등록 API 구현 및 리팩토링
+[33m1cc0409[m Merge pull request #104 from codeit-frontend-part3-team3/feature/#103-헤더컴포넌트프롭추가
+[33m19ef249[m useAuth훅 사용
+[33mb3f228b[m 카드 컴포넌트 반응형 수정사항
+[33m4596777[m Merge branch 'develop' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#99-공고등록API구현및리팩토링
+[33m2701a4e[m Fix: 이미지 업로드 관련 버그 수정
+[33mc5120c3[m AuthContext를 이용한 로그인 상태 확인
+[33m5dee31d[m 미완성본
+[33m68d65ed[m 내 가게 아래 빈 공간 추가
+[33m158d27b[m Merge pull request #98 from codeit-frontend-part3-team3/feature/#94-가게정보수정API구현및리팩토링
+[33m389f2f8[m 기본 구조 구현
+[33mb8163f1[m Merge pull request #96 from codeit-frontend-part3-team3/feature/#86-내프로필상세페이지구현
+[33m020a00c[m 상태 코드 주석 추가
+[33me7578ff[m 타입 파일 생성
+[33m79a1f6d[m 프로필 데이터 상태와 공고 신청 상태 불러오기
+[33m5c5370b[m 편집하기 버튼 Link로 수정
+[33md5a6398[m Refactor: 의존성 배열에서 shopId를 제외
+[33m76b3d3f[m Refactor: import문에서 중괄호 제거
+[33mc988836[m Merge branch 'develop' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#94-가게정보수정API구현및리팩토링
+[33m2bf3c17[m Merge pull request #97 from codeit-frontend-part3-team3/feature/#95-로그인페이지작업
+[33m92fcf73[m Feat/Refactor: 가게 정보 수정 페이지 API 구현 및 코드 리팩토링
+[33m091b15a[m 로그인 페이지 작업 완료
+[33m7c8b86f[m Merge pull request #93 from codeit-frontend-part3-team3/feature/#91-가게정보등록API구현및리팩토링
+[33m0110858[m 구조 수정
+[33ma34dd38[m 프로필 페이지 구현
+[33md01180a[m 프로필 데이터 옵셔널 추가
+[33mbc8c6a1[m 테이블 마진 제거
+[33m6912f3b[m Merge pull request #92 from codeit-frontend-part3-team3/feature/#84-회원가입페이지작업
+[33m6af442c[m Merge branch 'develop' into feature/#84-회원가입페이지작업
+[33m9fc405d[m 버튼 반응형 스타일 불필요한 항목 제거
+[33m61a1680[m Refactor: default export 하여 중괄호 제거 및 import 순서 수정
+[33m238ad60[m Feat/Refactor: 가게 정보 등록 API 구현 및 리팩토링
+[33me90d452[m 프로필 카드 반응형 디자인 재수정
+[33me2aef79[m Merge pull request #90 from codeit-frontend-part3-team3/feature/#88-가게정보등록API구현
+[33mc8d570b[m Merge branch 'develop' into feature/#88-가게정보등록API구현
+[33m57c354e[m 회원가입 완료
+[33m85d3ce4[m Merge pull request #85 from codeit-frontend-part3-team3/feature/#83-내프로필등록페이지useHookForm연결
+[33m014cbdc[m 디자인 수정 및 편집페이지로 이동 추가
+[33m931b10d[m 버튼컴포넌트  디테일수정, 회원가입 틀 작업
+[33mc926475[m Fix: 이미지 업로그 로직 버그 수정
+[33mb629d38[m Refactor: import문 대소문자 변경
+[33mdc94e10[m Merge pull request #87 from codeit-frontend-part3-team3/feature/#80-공고등록페이지
+[33m82b78bd[m Refactor: replace로 라우터 이동 방식 개선
+[33m890fae8[m 프로필 컴포넌트 추가
+[33m5235fcc[m 프로필 컴포넌트에 사용할 이미지 추가
+[33mcfd4952[m 프로필 상세 페이지 기본 구성
+[33m567f5ea[m Feat: 가게 공고 등록 페이지 구현
+[33m4015a3b[m 에러 출력을 위한 useHookForm 추가
+[33m24f5710[m Merge pull request #82 from codeit-frontend-part3-team3/feature/#77-각페이지별로사용할API작업
+[33mac4c514[m button타입을 button으로 지정
+[33m4e25de4[m Header파일 경로 수정
+[33m6d040e6[m Locations 경로 수정
+[33m0924287[m Merge pull request #81 from codeit-frontend-part3-team3/feature/#70-내프로필등록페이지구현
+[33mb38d0cb[m Merge pull request #79 from codeit-frontend-part3-team3/feature/#73-가게정보수정페이지구현
+[33me6c8803[m 가게,유저 지원목록쪽 API 작업
+[33ma1a6061[m 전체공고, 공고상세 API 작업
+[33mcfa78bb[m 알람 명칭 직관적으로  수정
+[33m0e852b8[m 알람 API 작업
+[33m64ea054[m types 폴더 생성후 공통타입 분리
+[33m4238fd4[m 가게 등록, 조회, 수정 API 작업
+[33m12300fd[m requiresToken 설정 추가
+[33m431ee59[m 알바생 프로필 관련 API 작업
+[33m9c42023[m 로그인, 회원가입 API 작업
+[33m4aa1aa3[m 이미지 URL생성 API 작업+ 커스텀훅 작업
+[33m6250f76[m api 연결 추가
+[33m7e18249[m Merge pull request #74 from codeit-frontend-part3-team3/feature/#71-헤더알림모달리팩토링
+[33mefdbc9c[m Merge branch 'develop' into feature/#71-헤더알림모달리팩토링
+[33m23a4f20[m 프로필 페이지 생성
+[33m7de99c8[m 등록 후 페이지 이동 설정
+[33m4337d1f[m 반응형 디자인 추가
+[33m6c25946[m Feat: 가게 정보 수정 페이지 구현
+[33md8502a4[m Merge pull request #78 from codeit-frontend-part3-team3/feature/#75-Input컴포넌트에useHookForm구현
+[33mb85ce60[m Merge pull request #69 from codeit-frontend-part3-team3/feature/#68-헤더알림모달연결
+[33m827e6a7[m Merge pull request #66 from codeit-frontend-part3-team3/feature/#56-페이지네이션컴포넌트제작
+[33m5f05fe7[m Merge pull request #76 from codeit-frontend-part3-team3/feature/#67-API기능과양식작업하겠습니다
+[33m93c0b54[m Feat: 가게 정보 등록 페이지 api 데이터명 통일
+[33m97215f4[m Feat: 가게 정보 등록 유효성 검사 구현
+[33mba647da[m Feat: 에러메시지 구현을 위한 prop와 style 추가
+[33m4bce7fc[m API, Context 셋팅
+[33m84e8d43[m Style: 오류 Input 포커스 시 그대로 빨간 테두리 유지하도록 스타일  수정
+[33m3b45326[m Chore: react-hook-form 패키지 설치
+[33m39141ce[m Merge pull request #72 from codeit-frontend-part3-team3/feature/#64-가게정보등록페이지구현
+[33m83c9d3d[m feat: 코드 리팩토링
+[33m74c0cca[m 드롭다운에 use client 추가
+[33m39132fc[m 기본 페이지 구조 구현
+[33mbe9abae[m Feat: 가상의 id 만든 후 모달  확인 버튼을 누르면 이동하도록 구현
+[33m574f2ef[m Merge branch 'develop' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#64-가게정보등록페이지구현
+[33md79cfb0[m Feat: 가게 등록하기 페이지 구현
+[33me272117[m Merge pull request #55 from codeit-frontend-part3-team3/feature/#36-테이블공통컴포넌트
+[33m781ac5c[m Merge pull request #65 from codeit-frontend-part3-team3/feature/#61-상세필터리렌더링방지
+[33m617c242[m 로그아웃 시 알람 모달 닫기
+[33m69aa062[m 디자인 버그 수정
+[33m66a0082[m 알람 모달 추가
+[33m7ab647e[m 커스텀 훅 파일 명 수정
+[33ma0629f3[m 알람 모달 위치 조정
+[33m14bdf98[m 로그인 상태 변경 시 동작 추가
+[33m2e97dd2[m 파일명 수정
+[33ma6d5a88[m 방향아이콘 컴포넌트 분리
+[33m64be43a[m 페이지 네이션 기능구현 작업
+[33m0a06904[m Feat: 가게 정보 등록 페이지 구현을 위한 Dropdown 컴포넌트 props 추가 및 스타일 수정
+[33m1ad7eab[m Feat: Locations.ts -> constants.ts 로 파일명 변경 후 가게 분류 카테고리 추가
+[33mefdb638[m Merge pull request #63 from codeit-frontend-part3-team3/feature/#62-파일Input컴포넌트구현
+[33ma68f222[m 테이블 컴포넌트 구조변경 재작업
+[33mef62ee1[m 버튼 컴포넌트로 수정
+[33mc68356a[m Feat: ImageUploader 컴포넌트 구현
+[33m1226627[m Feat: 이미지 업로더 컴포넌트를 위한 이미지 추가
+[33m93301f2[m Merge pull request #58 from codeit-frontend-part3-team3/feature/#57-공통컴포넌트타입리팩토링
+[33m35adbeb[m URL수정
+[33m1abd092[m Merge pull request #59 from codeit-frontend-part3-team3/feature/#34-토스트공통컴포넌트
+[33ma1733e1[m Merge pull request #51 from codeit-frontend-part3-team3/feature/#43-헤더알림공통컴포넌트
+[33m8f4731f[m Merge pull request #54 from codeit-frontend-part3-team3/feature/#47-프로필정보등록공통컴포넌트
+[33mf51e479[m Merge pull request #53 from codeit-frontend-part3-team3/feature/#52-버튼컴포넌트사이즈추가작업
+[33mb3c590b[m Merge branch 'develop' into feature/#52-버튼컴포넌트사이즈추가작업
+[33mbaac2ae[m Merge pull request #48 from codeit-frontend-part3-team3/feature/#41-뱃지컴포넌트작업
+[33m7ef0c62[m 수정사항 반영
+[33mde58b07[m feat:토스트 기능 추가가
+[33m23976fd[m Refactor: Modal 컴포넌트 props 이름 명시화
+[33m8fb2c79[m Refactor: Dropdown 컴포넌트 제네릭 타입 적용
+[33mfea190b[m 테이블 컴포넌트 작업
+[33m0d94d2a[m PostProfile 컴포넌트 추가
+[33m90f2211[m 필요없는 주석 삭제
+[33m8ae93be[m Merge pull request #50 from codeit-frontend-part3-team3/feature/#49-Input컴포넌트리팩토링
+[33m38324e5[m 버튼 사이즈 추가작업 xxs 추가
+[33m6a0a56e[m 임시저장: 버튼추가후 작업예정
+[33mea7053a[m feat: 알림 모달 기능 구현현
+[33m5d54245[m Refactor: Input 컴포넌트에 InputHTMLAttributes 확장 적용
+[33m0bc6f27[m 버튼 호버클래스 제거
+[33mfde7932[m 뱃지 컴포넌트 작업
+[33mf4c76d4[m Merge pull request #42 from codeit-frontend-part3-team3/feature/#32-Modal공통컴포넌트작업
+[33med03cc0[m Merge pull request #45 from codeit-frontend-part3-team3/feature/#44-커스텀훅분리
+[33m4f95332[m 커스텀 생성
+[33m7ec4b29[m 자주 쓸 훅들 분리
+[33m8452706[m Merge pull request #40 from codeit-frontend-part3-team3/feature/#38-상세필터공통컴포넌트작업
+[33m9504fcb[m Location 파일 생성
+[33mdf036af[m props 추가
+[33me41f215[m 함수들을 모두 애로우 펑션으로 변경
+[33md5e7a50[m Feat: 모달 공통 컴포넌트 구현
+[33m03cce22[m Feat: 모달 환경설정 스타일 추가 및 question 모달 타입 세분화
+[33m5571d57[m 초기화 버튼 누락된 요소 추가
+[33m5659c58[m 상세 필터 구현
+[33ma03e47a[m inputClassName prop 추가
+[33mef035b7[m spinner 제거 css 추가
+[33m9297112[m 닫기 버튼 이미지 파일 추가
+[33mc4d9ac4[m Merge branch 'develop' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#32-Modal공통컴포넌트작업
+[33m8128ecd[m Merge pull request #39 from codeit-frontend-part3-team3/feature/#8-Button공통컴포넌트작업
+[33m0e4eb0f[m Rename: hooks, config 폴더명 수정 및 중복 파일 삭제
+[33mb857719[m Feat: 모달 환경설정(modalConfig.ts) 생성
+[33m2f94495[m 커스텀훅 폴더 생성
+[33m5ef17be[m _api 폴더 생성
+[33m455edb6[m button 컴포넌트 작업
+[33mbfecea2[m Feat: Tailwind 반응형 breakpoint(sm, md, lg) 추가
+[33m5d61e83[m Merge pull request #37 from codeit-frontend-part3-team3/feature/#10-Header공통컴포넌트작업
+[33m53667ab[m Merge pull request #13 from codeit-frontend-part3-team3/feature/#12-Footer반응형웹코드수정
+[33m91b767f[m Merge branch 'develop' into feature/#12-Footer반응형웹코드수정
+[33m4ba4dea[m Merge branch 'develop' into feature/#10-Header공통컴포넌트작업
+[33mdaa240e[m 744px에서 디자인이 잘못되어있는 것 수정
+[33mf4027aa[m md기준으로 디자인 구조 바뀌도록 수정
+[33mebdb3ac[m 불필요한 부분 삭제
+[33m6bc2569[m 로그아웃 기능 추가
+[33m01cdca6[m 알람 유무 확인 코드 추가
+[33mfcef38b[m 로그인 여부 확인
+[33m23c8451[m 헤더 컴포넌트 반응형 구현
+[33ma5d5969[m Update create-jira-issue.yml
+[33m9dd1f28[m Update task_plan.md
+[33m88c80ca[m Merge pull request #35 from codeit-frontend-part3-team3/feature/#33-이슈템플릿셋팅
+[33m7dda602[m 이슈 템플릿 셋팅
+[33m4d25c26[m Feat: useModal 커스텀 훅 구현
+[33m804f268[m Style: Modal 관련 이미지 추가
+[33md80f591[m Merge pull request #28 from codeit-frontend-part3-team3/feature/#5-공통컴포넌트inputdropdown작업
+[33me3188fe[m Merge branch 'feature/#5-공통컴포넌트inputdropdown작업' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#5-공통컴포넌트inputdropdown작업
+[33mbe65594[m Refactor: Input prop 기본값 지정 및 주석 제거
+[33mf542ce8[m component폴더이름 수정
+[33mb2ff5c9[m Feat: Dropdown 외부 클릭시 닫힘 기능 추가 및 props 수정
+[33m79ba931[m component폴더를 components로 변경
+[33m7168717[m Update create-jira-issue.yml
+[33m902515b[m Update closed-jira-Issue.yml
+[33m7bc3e0a[m Update create-jira-issue.yml
+[33m3d657e9[m Update create-jira-issue.yml
+[33mff79da4[m Update create-jira-issue.yml
+[33m20c0a9c[m Rename: footer.tsx를 _components 폴더로 이동
+[33ma03eee9[m Update create-jira-issue.yml
+[33ma086b2e[m Merge branch 'develop' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#5-공통컴포넌트inputdropdown작업
+[33m9626200[m :Merge branch 'develop' of https://github.com/codeit-frontend-part3-team3/The-julge into feature/#5-공통컴포넌트inputdropdown작업
+[33me4a6dbc[m Refactor: Dropdown.tsx에서 clsx를 사용해 스타일 간소화
+[33mfeeab85[m Update create-jira-issue.yml
+[33m0dbdc77[m Update create-jira-issue.yml
+[33m45c67dc[m Update create-jira-issue.yml
+[33mdc4e900[m Update create-jira-issue.yml
+[33m40359f8[m Update create-branch.yml
+[33mea5c327[m Update create-jira-issue.yml
+[33m99347bd[m Update closed-jira-Issue.yml
+[33m6b062b4[m Update and rename jira-Issue-closed.yml to closed-jira-Issue.yml
+[33mf1c39a4[m Create jira-Issue-closed.yml
+[33mc583bc4[m Update create-jira-issue.yml
+[33m3bb50cb[m Create create-jira-issue.yml
+[33m4b91b83[m Refactor: Input.tsx에서 clsx를 사용해 스타일 간소화
+[33me1bdc89[m Chore: clsx 패키지 추가
+[33m5f7adc4[m Feat: 공통 Dropdown 컴포넌트 구현
+[33me55edd9[m footer 컴포넌트 반응형 코드 수정
+[33m88fc840[m header 컴포넌트 디자인 작업
+[33m8261d19[m header컴포넌트에 사용할 이미지 추가
+[33m8d8d342[m globals.css에 주석 오류 수정
+[33m4776cab[m Merge pull request #9 from codeit-frontend-part3-team3/feature/#6-Footer공통컴포넌트작업
+[33m19364bf[m 반응형 추가
+[33m05ad70c[m Footer PR 1차 수정
+[33m9b01cc7[m Refactor: 명시적으로 함수 타입 정의
+[33m37da0ca[m Footer 컴포넌트 추가
+[33md7867b8[m Footer에 사용할 sns 이미지 다운
+[33maa5e3f4[m Feat: 공통 Input 컴포넌트 구현
+[33m2a88237[m Merge pull request #7 from codeit-frontend-part3-team3/feature/#4-폰트셋팅작업
+[33mb3866e1[m 주석추가
+[33m026b02e[m 전역 폰트 셋팅 추가
+[33me584fd4[m Merge pull request #3 from codeit-frontend-part3-team3/feature/#2-이슈연동테스트
+[33m4895195[m 테스트
+[33m34c332b[m PR 템플릿추가
+[33m4134875[m Create create-branch.yml
+[33ma28da1f[m axios 라이브러리 설치
+[33meee45d0[m 기본셋팅

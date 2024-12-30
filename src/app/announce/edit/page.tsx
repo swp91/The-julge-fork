@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import Header from '@/app/_components/Header/Header';
 import Footer from '@/app/_components/Footer';
@@ -12,33 +12,56 @@ import Button from '@/app/_components/Button';
 import Modal from '@/app/_components/Modal';
 
 import useModal from '@/app/_hooks/useModal';
-import { createShopNotice } from '@/app/_api/owner_api';
-import Loading from '@/app/_components/Loding';
+import { updateShopNotice } from '@/app/_api/owner_api';
+import { getShopNoticeDetail } from '@/app/_api/announce_api';
 
-const PostAnnounce = () => {
+const EditAnnounce = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const shopId = searchParams.get('shopId');
+  const noticeId = searchParams.get('noticeId') || '';
   const { isOpen, openModal, closeModal } = useModal();
-  const [noticeId, setNoticeId] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false); // 로딩 상태 추가
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ownerNoticeRequest>({
     mode: 'all',
   });
 
+  useEffect(() => {
+    if (!shopId || !noticeId) return;
+
+    const fetchAnnounceInfo = async () => {
+      try {
+        const response = await getShopNoticeDetail(shopId, noticeId);
+        const noticeData = response.data.item;
+
+        const initialData = {
+          hourlyPay: noticeData.hourlyPay,
+          startsAt: noticeData.startsAt,
+          workhour: noticeData.workhour,
+          description: noticeData.description,
+        };
+
+        reset(initialData);
+      } catch (err) {
+        console.error('공고 정보를 불러오는데 실패했어요:', err);
+      }
+    };
+
+    fetchAnnounceInfo();
+  }, [reset]);
+
   const onSubmit = async (data: ownerNoticeRequest) => {
     if (!shopId) {
-      alert('가게 정보를 찾을 수 없어요.');
+      alert('공고 정보를 찾을 수 없어요.');
       return;
     }
 
     try {
-      setIsLoading(true); // 로딩 시작
       const localDate = new Date(data.startsAt);
       const utcDate = localDate.toISOString();
 
@@ -47,20 +70,12 @@ const PostAnnounce = () => {
         startsAt: utcDate,
       };
 
-      const response = await createShopNotice(shopId, postData);
-      setNoticeId(response.data.item.id);
-
+      await updateShopNotice(shopId, noticeId, postData);
       openModal();
     } catch (err) {
-      console.log('공고를 등록하는데 오류가 발생했어요:', err);
-    } finally {
-      setIsLoading(false);
+      console.log('공고를 수정하는데 오류가 발생했어요:, err');
     }
   };
-
-  if (isLoading) {
-    return <Loading />;
-  }
 
   return (
     <>
@@ -80,7 +95,7 @@ const PostAnnounce = () => {
                 className='cursor-pointer text-18m hover:text-red-40'
                 onClick={() =>
                   window.confirm(
-                    '공고 등록을 취소하시겠습니까?\n\n작성된 데이터가 사라질 수 있습니다.',
+                    '공고 수정을 취소하시겠습니까?\n\n작성된 데이터가 사라질 수 있습니다.',
                   ) && router.back()
                 }>
                 ✖
@@ -152,7 +167,7 @@ const PostAnnounce = () => {
                   type='button'
                   onClick={handleSubmit(onSubmit)}
                   className='mt-4'>
-                  등록하기
+                  수정하기
                 </Button>
               </div>
             </div>
@@ -160,7 +175,7 @@ const PostAnnounce = () => {
             <Modal
               isOpen={isOpen}
               type='success'
-              content='등록이 완료되었습니다.'
+              content='수정이 완료되었습니다.'
               onClose={() => {
                 closeModal();
                 if (noticeId) {
@@ -176,4 +191,4 @@ const PostAnnounce = () => {
   );
 };
 
-export default PostAnnounce;
+export default EditAnnounce;
