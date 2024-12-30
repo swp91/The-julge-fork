@@ -12,7 +12,6 @@ import { getShopNotices } from '@/app/_api/announce_api';
 import PostCard from '@/app/_components/PostCard/PostCard';
 import Loading from '@/app/_components/Loding';
 
-
 interface StoreData {
   id: string;
   name: string;
@@ -23,13 +22,23 @@ interface StoreData {
   description: string;
   originalHourlyPay: number;
 }
+interface announceData {
+  item: {
+    id: string;
+    hourlyPay: number;
+    startAt: string;
+    workhour: number;
+    description: string;
+    closed: boolean;
+  };
+}
 
 const StoreDetailPage: React.FC = () => {
   const { user } = useAuth();
   const [storeStatus, setStoreStatus] = useState<boolean>(false);
   const [announcementStatus, setAnnouncementStatus] = useState<boolean>(false);
   const [storeData, setStoreData] = useState<StoreData | null>(null);
-  const [notices, setNotices] = useState<StoreData[]>([]);
+  const [notices, setNotices] = useState<announceData[]>([]);
   const [shopId, setShopId] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -52,7 +61,7 @@ const StoreDetailPage: React.FC = () => {
           try {
             const response = await getShopNotices(shopId, 0, 6);
             const noticeItems =
-              response?.data?.items?.map((item: any) => item.item) || [];
+              response?.data?.items?.map((item: any) => item) || [];
             setNotices(noticeItems);
           } catch (error) {
             console.error('가게 정보를 불러오는데 실패하였습니다.:', error);
@@ -81,7 +90,11 @@ const StoreDetailPage: React.FC = () => {
   if (isLoading) {
     return <Loading />;
   }
-
+  console.log(
+    notices.map((notice, index) => {
+      console.log(notice.item);
+    }),
+  );
   return (
     <>
       <Header />
@@ -94,7 +107,7 @@ const StoreDetailPage: React.FC = () => {
                 name={storeData?.name || ''}
                 address1={storeData?.address1 || ''}
                 imageUrl={storeData?.imageUrl || ''}
-                shopDescription={''}
+                shopDescription={storeData?.description || ''}
               />
               {announcementStatus ? (
                 <div className='mt-[60px]'>
@@ -102,10 +115,12 @@ const StoreDetailPage: React.FC = () => {
                   {notices.map((notice, index) => (
                     <PostCard
                       key={index}
-                      name={notice.name || ''}
-                      address1={notice.address1 || ''}
+                      name={storeData?.name || ''}
+                      startsAt={notice.item.startAt}
+                      workhour={notice.item.workhour}
+                      address1={storeData?.address1 || ''}
                       imageUrl={storeData?.imageUrl || ''}
-                      hourlyPay={notice.originalHourlyPay}
+                      hourlyPay={notice.item.hourlyPay}
                     />
                   ))}
                 </div>
