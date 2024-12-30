@@ -14,12 +14,14 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isNoticeActive, setIsNoticeActive] = useState(false);
 
+  const userId = user?.id;
   // 알림 상태 가져오기
   useEffect(() => {
+    if (!userId) return;
     const fetchAlarms = async () => {
       if (user) {
         try {
-          const response = await getAlarms(user.id);
+          const response = await getAlarms(userId);
           setIsNoticeActive(response.data.items.length > 0);
         } catch (error) {
           console.error('알림 상태를 가져오는 중 오류 발생:', error);
@@ -28,7 +30,7 @@ const Header = () => {
     };
 
     fetchAlarms();
-  }, [user]);
+  }, [userId]);
 
   const toggleModal = () => {
     setIsModalOpen((prev) => !prev);

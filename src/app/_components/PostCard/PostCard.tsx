@@ -8,7 +8,7 @@ import useAlbaTimeFormat from '@/app/_hooks/useAlbaTimeFormat';
 interface PostCardProps {
   name: string;
   startsAt?: string;
-  workhour?: string;
+  workhour?: number;
   address1: string;
   imageUrl: string;
   hourlyPay: number;
@@ -26,12 +26,12 @@ const PostCard: React.FC<PostCardProps> = ({
   originalHourlyPay,
   isPast,
 }) => {
-  const TimeFormat = useAlbaTimeFormat(startsAt, workhour);
+  const TimeFormat = useAlbaTimeFormat(startsAt, workhour?.toLocaleString());
   const percent =
     originalHourlyPay !== undefined
       ? Math.round(((hourlyPay - originalHourlyPay) / originalHourlyPay) * 100)
       : undefined;
-
+  const magam = startsAt ? new Date(startsAt) < new Date() : false;
   return (
     <div
       className={clsx(
@@ -42,7 +42,7 @@ const PostCard: React.FC<PostCardProps> = ({
         {isPast && (
           <div className='absolute inset-0 flex justify-center items-center bg-opacity-70 bg-black'>
             <span className='text-gray-300 inset-0 text-20b md:text-28b'>
-              지난 공고
+              {magam ? '지난 공고' : '마감 완료'}
             </span>
           </div>
         )}
@@ -97,7 +97,9 @@ const PostCard: React.FC<PostCardProps> = ({
                 ' text-18b md:text-24b lg:text-24b',
                 isPast ? 'text-gray-300' : 'text-black',
               )}>
-              {hourlyPay ? `${hourlyPay.toLocaleString()}원` : '정보 없음'}
+              {typeof hourlyPay === 'number' && !isNaN(hourlyPay)
+                ? `${hourlyPay.toLocaleString()}원`
+                : '정보 없음'}
             </h2>
             {percent !== undefined && percent > 0 && (
               <p className='flex md:hidden text-12 text-red-30'>
