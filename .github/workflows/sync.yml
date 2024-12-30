@@ -17,11 +17,17 @@ jobs:
       - name: Checkout Fork Repository
         uses: actions/checkout@v3
 
-      # 2. 원본(Upstream) 레포지토리 추가
+      # 2. 사용자 정보 설정 (Committer Identity)
+      - name: Set Git Identity
+        run: |
+          git config --global user.email "seongwoo4477@gmail.com"
+          git config --global user.name "swp91"
+
+      # 3. 원본(Upstream) 레포지토리 추가
       - name: Add Upstream Repository
         run: git remote add upstream https://github.com/codeit-frontend-part3-team3/The-julge
 
-      # 3. main 브랜치 동기화
+      # 4. main 브랜치 동기화
       - name: Sync main branch
         if: github.ref == 'refs/heads/main'
         run: |
@@ -30,7 +36,7 @@ jobs:
           git merge upstream/main --allow-unrelated-histories --no-edit || git merge --strategy-option theirs upstream/main
           git push https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/swp91/The-julge-fork.git main --force
 
-      # 4. develop 브랜치 동기화
+      # 5. develop 브랜치 동기화
       - name: Sync develop branch
         if: github.ref == 'refs/heads/develop'
         run: |
