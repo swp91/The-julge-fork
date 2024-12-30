@@ -33,7 +33,7 @@ const Search: React.FC<SearchProps> = ({ windowWidth }) => {
       />
       <input
         type='text'
-        className='min-w-[280px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1'
+        className='min-w-[280px] lg:w-[430px] h-10 bg-gray-100 rounded-[10px] ml-1 p-1 focus:outline-none'
         placeholder='가게 이름으로 찾아보세요.'
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
