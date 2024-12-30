@@ -37,9 +37,8 @@ const PostCard: React.FC<PostCardProps> = ({
     return (
       <div
         className={clsx(
-          'w-full max-w-[964px] p-6 bg-white border border-gray-200 rounded-xl shadow-md flex flex-row'
-        )}
-      >
+          'w-full max-w-[964px] p-6 bg-white border border-gray-200 rounded-xl shadow-md flex flex-row',
+        )}>
         {/* 이미지 */}
         <div className='relative w-[539px] h-[308px] flex-shrink-0 rounded-xl overflow-hidden'>
           <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
@@ -94,7 +93,9 @@ const PostCard: React.FC<PostCardProps> = ({
           </div>
 
           {/* 버튼 */}
-          <div className='mt-4 flex'> {/* 버튼을 감싸는 div 추가 */}
+          <div className='mt-4 flex'>
+            {' '}
+            {/* 버튼을 감싸는 div 추가 */}
             <Button
               style='bordered'
               size='lg'
@@ -114,9 +115,8 @@ const PostCard: React.FC<PostCardProps> = ({
     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto'>
       <div
         className={clsx(
-          'w-full max-w-[351px] h-auto p-3 bg-white border border-gray-200 rounded-xl shadow-md'
-        )}
-      >
+          'w-full max-w-[351px] h-auto p-3 bg-white border border-gray-200 rounded-xl shadow-md',
+        )}>
         {/* 이미지 */}
         <div className='relative w-full h-[200px] md:h-[360px] rounded-xl overflow-hidden'>
           <Image src={imageUrl} alt={name} layout='fill' objectFit='cover' />
@@ -169,7 +169,9 @@ const PostCard: React.FC<PostCardProps> = ({
           </p>
 
           {/* 버튼 */}
-          <div className='mt-4 flex justify-center'> {/* 버튼을 감싸는 div 추가 */}
+          <div className='mt-4 flex justify-center'>
+            {' '}
+            {/* 버튼을 감싸는 div 추가 */}
             <Button
               style='bordered'
               size='lg'
