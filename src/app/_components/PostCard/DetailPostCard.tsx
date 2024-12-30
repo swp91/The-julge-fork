@@ -183,19 +183,16 @@ const DetailPostCard: React.FC<DetailPostCard> = ({
               )}
             </div>
           ) : (
-            <div className="flex gap-2">
-              <div className="block">
-                <Link href={`/store/edit/${shopId}`}>
-                  <Button size="full" style="bordered">
-                    편집하기
-                  </Button>
-                </Link>
-              </div>
-              <div className="block">
-                <Link href={`/announce/post?shopId=${shopId}`}>
-                  <Button size="full">공고 등록하기</Button>
-                </Link>
-              </div>
+            <div className="flex gap-2 w-full">
+              <Link href={`/store/edit/${shopId}`} className="flex-1">
+                <Button size="full" style="bordered">
+                  편집하기
+                </Button>
+              </Link>
+
+              <Link href={`/announce/post?shopId=${shopId}`} className="flex-1">
+                <Button size="full">공고 등록하기</Button>
+              </Link>
             </div>
           )}
         </div>
