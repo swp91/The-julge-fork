@@ -2,15 +2,16 @@
 
 import Footer from '@/app/_components/Footer';
 import Header from '@/app/_components/Header/Header';
-import PostCard from '@/app/_components/PostCard/PostCardV.1';
-import PostCardV2 from '@/app/_components/PostCard/PostCardV2';
+import DetailPostCard from '@/app/_components/PostCard/DetailPostCard';
 import PostProfile from '@/app/_components/PostProfile';
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/app/_hooks/useAuth';
 import { getUserInfo } from '@/app/_api/worker_api';
 import { getShopNotices } from '@/app/_api/announce_api';
+import PostCard from '@/app/_components/PostCard/PostCard';
 import Loading from '@/app/_components/Loding';
+
 
 interface StoreData {
   id: string;
@@ -88,23 +89,23 @@ const StoreDetailPage: React.FC = () => {
         <div className='mx-auto pt-10 px-4 sm:px-6 lg:px-8 max-w-[90%] sm:max-w-[680px] lg:max-w-[964px] pb-[80px] md:pb-[60px]'>
           {storeStatus ? (
             <div className=' mb-[60px]'>
-              <h2 className='text-28b mb-6'>내 가게</h2>
-              <PostCard
+              <DetailPostCard
+                type='store'
                 name={storeData?.name || ''}
                 address1={storeData?.address1 || ''}
                 imageUrl={storeData?.imageUrl || ''}
-                description={storeData?.description || ''}
+                shopDescription={''}
               />
               {announcementStatus ? (
                 <div className='mt-[60px]'>
                   <h2 className='text-28b mb-6'>내가 등록한 공고</h2>
                   {notices.map((notice, index) => (
-                    <PostCardV2
+                    <PostCard
                       key={index}
                       name={notice.name || ''}
                       address1={notice.address1 || ''}
                       imageUrl={storeData?.imageUrl || ''}
-                      description={notice.description || ''}
+                      hourlyPay={notice.originalHourlyPay}
                     />
                   ))}
                 </div>
