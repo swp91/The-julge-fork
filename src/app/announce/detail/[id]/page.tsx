@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { NoticeContext } from '@/app/_context/NoticeContext';
 import DetailPostCard from '@/app/_components/PostCard/DetailPostCard';
+import PostCard from '@/app/_components/PostCard/PostCard';
 import Header from '@/app/_components/Header';
 import Footer from '@/app/_components/Footer';
 import { getUserInfo } from '@/app/_api/worker_api';
@@ -12,6 +13,11 @@ import { getApplicationsForNotice } from '@/app/_api/owner_api';
 import Table from '@/app/_components/Table';
 import Pagination from '@/app/_components/Pagination';
 import { tableConfig, OwnerData } from '@/app/_config/tableConfig';
+import {
+  getRecentNotices,
+  saveToRecentNotices,
+} from '@/app/_context/util/recentNotices';
+import Link from 'next/link';
 
 const Page = () => {
   const { id } = useParams();
@@ -19,6 +25,7 @@ const Page = () => {
   const { notices } = noticeContext;
   const [userShopid, setUserShopid] = useState<string>();
   const [applications, setApplications] = useState<OwnerData[]>([]);
+  const [recentNotices, setRecentNotices] = useState<Notice[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -75,6 +82,19 @@ const Page = () => {
     }
   }, [userShopid, currentNotice]);
 
+  useEffect(() => {
+    const fetchRecentData = () => {
+      const recentData = getRecentNotices();
+      setRecentNotices(recentData);
+    };
+
+    if (currentNotice) {
+      saveToRecentNotices(currentNotice);
+    }
+
+    fetchRecentData();
+  }, [currentNotice]);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -110,7 +130,7 @@ const Page = () => {
         )}
       </div>
 
-      {isApplicationView && (
+      {isApplicationView ? (
         <section className='w-full flex flex-col items-center py-10 md:py-[60px] px-3 md:px-8'>
           <div className='w-[351px] md:w-[679px] lg:w-[964px] max-w-screen-xl flex flex-col'>
             <h2 className='text-20b md:text-28b'>신청자 목록</h2>
@@ -128,6 +148,30 @@ const Page = () => {
                 <div className='p-10 md:p-20'>아직 신청자가 없습니다.</div>
               </div>
             )}
+          </div>
+        </section>
+      ) : (
+        <section className='w-full flex flex-col items-center py-10 md:py-[60px] px-3 md:px-8'>
+          <div className='w-[351px] md:w-[679px] lg:w-[964px] max-w-screen-xl flex flex-col items-center'>
+            <div className='w-full flex flex-col md:flex-row justify-between mb-4 relative'>
+              <h2 className='text-20b md:text-28b'>최근에 본 공고</h2>
+            </div>
+            <div className='grid grid-cols-2 lg:grid-cols-3 w-full gap-1 md:gap-[14px]'>
+              {recentNotices.map((post) => (
+                <Link href={`/announce/detail/${post.id}`} key={post.id}>
+                  <PostCard
+                    name={post.shop.item.name}
+                    startsAt={post.startsAt}
+                    workhour={post.workhour.toString()}
+                    address1={post.shop.item.address1}
+                    imageUrl={post.shop.item.imageUrl}
+                    hourlyPay={post.hourlyPay}
+                    originalHourlyPay={post.shop.item.originalHourlyPay}
+                    isPast={post.closed}
+                  />
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
       )}
