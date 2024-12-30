@@ -17,11 +17,9 @@ import useModal from '@/app/_hooks/useModal';
 import { CATEGORIES, LOCATIONS } from '@/app/_constants/constants';
 import { getShopInfo, updateShopInfo } from '@/app/_api/owner_api';
 import Loading from '@/app/_components/Loding';
-import { useAuth } from '@/app/_hooks/useAuth';
 
 const EditStore = () => {
   const router = useRouter();
-  const { user } = useAuth();
   const { id } = useParams();
   const shopId = id as string;
   const { isOpen, openModal, closeModal } = useModal();
@@ -42,7 +40,6 @@ const EditStore = () => {
   const imageUrl: string = watch('imageUrl');
 
   useEffect(() => {
-    if (user?.shop.item.id !== shopId) router.replace('/');
     if (!shopId) return;
 
     const fetchShopInfo = async () => {

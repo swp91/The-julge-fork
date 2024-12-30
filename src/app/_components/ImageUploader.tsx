@@ -86,7 +86,12 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
                 'flex flex-col items-center justify-center gap-[11px]',
                 'absolute inset-0 text-white cursor-pointer',
               )}>
-              <Image src='/image/edit-image.svg' alt='이미지 변경' width={32} />
+              <Image
+                src='/image/edit-image.svg'
+                alt='이미지 변경'
+                width={32}
+                height={32}
+              />
               <span className='ml-2 text-white'>이미지 변경하기</span>
               <input
                 type='file'
