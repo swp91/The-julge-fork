@@ -46,7 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       id: decoded.userId,
       iat: decoded.iat,
     });
-
+    setGlobalToken(data.token);
     const encryptedData = await encryptData({
       token: data.token,
       user: {
