@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { createPresignedUrl, uploadToS3 } from '../_api/imageURL_api';
-import useImageCompressor from './useImageCompressor';
+import { useState } from "react";
+import { createPresignedUrl, uploadToS3 } from "../_api/imageURL_api";
+import useImageCompressor from "./useImageCompressor";
 
 export const useCreateImgUrl = () => {
   const { compressFile, reset: resetCompressor } = useImageCompressor();
@@ -19,13 +19,13 @@ export const useCreateImgUrl = () => {
 
       await uploadToS3(presignedUrl, compressed);
 
-      const cleanUrl = presignedUrl.split('?')[0];
+      const cleanUrl = presignedUrl.split("?")[0];
 
       setUploadedUrl(cleanUrl);
 
       return cleanUrl;
     } catch (err) {
-      setError(err instanceof Error ? err.message : '알 수 없는 에러');
+      setError(err instanceof Error ? err.message : "알 수 없는 에러");
       console.error(err);
       return null;
     } finally {
