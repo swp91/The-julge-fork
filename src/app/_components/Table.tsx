@@ -26,7 +26,7 @@ const Table = <T extends Record<string, any>>({
                 key={index}
                 className={`p-3 text-left text-12 md:text-14 border-b border-gray-200 ${
                   col.hiddenOn === "sm"
-                    ? "hidden sm:table-cell"
+                    ? "hidden"
                     : col.hiddenOn === "md"
                     ? "hidden md:table-cell"
                     : col.hiddenOn === "lg"
