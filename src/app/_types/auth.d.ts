@@ -1,7 +1,7 @@
 interface User {
   id: string;
   email: string;
-  type: 'employer' | 'employee';
+  type: "employer" | "employee";
   name?: string;
   phone?: string;
   address?: string;
@@ -41,14 +41,14 @@ interface RegisterRequest {
   email: string;
   password: string;
   confirmPassword?: string;
-  type: 'employee' | 'employer';
+  type: "employee" | "employer";
 }
 
 interface RegisterResponse {
   item: {
     id: string;
     email: string;
-    type: 'employee' | 'employer';
+    type: "employee" | "employer";
   };
   links: any[];
 }
